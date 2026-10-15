@@ -3190,11 +3190,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           <>
                             {showFreeform?(
                               <div style={{paddingBottom:8}}>
-                                <div style={{opacity:0.6,fontSize:16,marginBottom:12,fontFamily:'"T-Star Mono",monospace'}}>{ locale === 'ja' ? JA.cta_more : 'Anything further to add?' }</div>
-                                <div className="chat-input-row" style={{margin:0}}>
-                                  <input className="chat-input" placeholder="..." aria-label="Open message" autoFocus/>
-                                  <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
-                                </div>
+                                <AboutChat/>
                                 <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
                               </div>
                             ):(
@@ -3239,7 +3235,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                   <a href="mailto:hello@mishasky.net" className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#1B6EF3",color:"#fff",textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Contact</a>
                                 </BrutalShadow>
                                 <BrutalShadow>
-                                  <button onClick={()=>setShowFreeform(true)} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Details</button>
+                                  <button onClick={()=>setShowFreeform(true)} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Chat with fake Misha</button>
                                 </BrutalShadow>
                               </>
                             ) : (
@@ -3675,25 +3671,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   <>
                     {showFreeform ? (
                       <div style={{paddingBottom:8}}>
-                        <div style={{opacity:0.6,fontSize:16,marginBottom:12,fontFamily:'"T-Star Mono",monospace'}}>{ locale === 'ja' ? JA.cta_more : 'Anything further to add?' }</div>
-                        {freeformResponse ? (
-                          <div style={{fontSize:16,lineHeight:1.8,marginBottom:16,fontFamily:'"T-Star Mono",monospace'}}>
-                            {freeformResponse}
-                          </div>
-                        ) : (
-                          <div className="chat-input-row" style={{margin:0}}>
-                            <input
-                              className="chat-input"
-                              placeholder="..."
-                              aria-label="Open message"
-                              autoFocus
-                              value={freeformInput}
-                              onChange={e => setFreeformInput(e.target.value)}
-                              onKeyDown={e => e.key === "Enter" && handleFreeformSubmit()}
-                            />
-                            <button className="chat-input-send" aria-label="Send" onClick={handleFreeformSubmit}><ArrowRight size={20}/></button>
-                          </div>
-                        )}
+                        <AboutChat/>
                         <button onClick={()=>{setShowFreeform(false);setFreeformResponse(null);}} style={{marginTop:12,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
                       </div>
                     ) : (
@@ -3711,11 +3689,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             {/* A/B/C + go during question phase; text input during processing; CTAs on done */}
             {phase === "done" && endState ? (
               showFreeform ? (
-                <div className="btn-row" style={{flexDirection:"column",alignItems:"flex-start",gap:12}}>
-                  <div style={{display:"flex",alignItems:"center",gap:12,width:"100%"}}>
-                    <input className="chat-input" placeholder="..." aria-label="Open message" autoFocus style={{background:"#fff"}}/>
-                    <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
-                  </div>
+                <div style={{padding:"0 0 8px"}}>
+                  <AboutChat/>
                 </div>
               ) : (
                 <div className="btn-row">
@@ -3735,7 +3710,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     <button onClick={() => setShowFreeform(true)}
                       className="go ready"
                       style={{fontSize:30,fontWeight:300,height:64}}>
-                      Provide Details
+                      Chat with fake Misha
                     </button>
                   )}
                   {endState !== "win" && (
