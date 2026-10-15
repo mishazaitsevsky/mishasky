@@ -3688,11 +3688,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
 
             {/* A/B/C + go during question phase; text input during processing; CTAs on done */}
             {phase === "done" && endState ? (
-              showFreeform ? (
-                <div style={{padding:"0 0 8px"}}>
-                  <AboutChat/>
-                </div>
-              ) : (
+              showFreeform ? null : (
                 <div className="btn-row">
                   {endState === "win" && (
                     <a href="mailto:hello@mishasky.net"
