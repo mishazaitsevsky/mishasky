@@ -3165,7 +3165,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         {phase==="question" && (
                           <>
                             {twTyped[0]!==undefined && (
-                              <div className="chat-q" style={{whiteSpace:"nowrap",overflow:"visible"}}>
+                              <div className="chat-q" style={{}}>
                                 {twTyped[0]}{twTyped.length===1&&!twDone&&<span className="tw-cursor"/>}
                               </div>
                             )}
@@ -3176,7 +3176,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                 const isActive=i+1===twTyped.length-1&&!twDone;
                                 const isSel=selected===i;
                                 return(
-                                  <span key={i} className="chat-opt" onClick={()=>selectOption(i as 0|1|2)} style={{cursor:"pointer",display:"block",whiteSpace:"nowrap",overflow:"visible"}}>
+                                  <span key={i} className="chat-opt" onClick={()=>selectOption(i as 0|1|2)} style={{cursor:"pointer",display:"block"}}>
                                     {isSel?<span style={{color:"#fff"}}>&gt; {lineText}</span>:lineText}
                                     {isActive&&<span className="tw-cursor"/>}
                                   </span>
@@ -3628,7 +3628,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   <>
                     {/* Line 0: question */}
                     {twTyped[0] !== undefined && (
-                      <div className="chat-q" style={{whiteSpace:"nowrap", overflow:"visible"}}>
+                      <div className="chat-q" style={{}}>
                         {twTyped[0]}
                         {/* cursor only while question is still typing — disappears the moment it's done */}
                         {twTyped.length === 1 && !twDone && <span className="tw-cursor"/>}
@@ -3647,7 +3647,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           <span key={i}
                             className="chat-opt"
                             onClick={() => selectOption(i as 0|1|2)}
-                            style={{cursor:"pointer", display:"block", whiteSpace:"nowrap", overflow:"visible"}}
+                            style={{cursor:"pointer", display:"block", }}
                           >
                             {isBinaryQ ? (
                               <span style={{display:"inline-flex",alignItems:"center",gap:12,color: isSelected ? "#fff" : undefined}}>
@@ -4038,7 +4038,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                               {phase==="question" && (
                                 <>
                                   {twTyped[0]!==undefined && (
-                                    <div className="chat-q" style={{whiteSpace:"nowrap",overflow:"visible"}}>
+                                    <div className="chat-q" style={{}}>
                                       {twTyped[0]}{twTyped.length===1&&!twDone&&<span className="tw-cursor"/>}
                                     </div>
                                   )}
@@ -4049,7 +4049,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                       const isActive=i+1===twTyped.length-1&&!twDone;
                                       const isSel=selected===i;
                                       return(
-                                        <span key={i} className="chat-opt" onClick={()=>selectOption(i as 0|1|2)} style={{cursor:"pointer",display:"block",whiteSpace:"nowrap",overflow:"visible"}}>
+                                        <span key={i} className="chat-opt" onClick={()=>selectOption(i as 0|1|2)} style={{cursor:"pointer",display:"block"}}>
                                           {isSel?<span style={{color:"#fff"}}>&gt; {lineText}</span>:lineText}
                                           {isActive&&<span className="tw-cursor"/>}
                                         </span>
@@ -4240,7 +4240,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           {phase === "question" && (
                             <>
                               {twTyped[0] !== undefined && (
-                                <div className="chat-q" style={{whiteSpace:"nowrap",overflow:"visible"}}>
+                                <div className="chat-q" style={{}}>
                                   {twTyped[0]}
                                   {twTyped.length === 1 && !twDone && <span className="tw-cursor"/>}
                                 </div>
@@ -4253,7 +4253,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                   const isActivelyTyping = lineIdx === twTyped.length - 1 && !twDone;
                                   const isSelected = selected === i;
                                   return (
-                                    <span key={i} className="chat-opt" onClick={() => selectOption(i as 0|1|2)} style={{cursor:"pointer",display:"block",whiteSpace:"nowrap",overflow:"visible"}}>
+                                    <span key={i} className="chat-opt" onClick={() => selectOption(i as 0|1|2)} style={{cursor:"pointer",display:"block"}}>
                                       {isBinaryQ ? (
                                         <span style={{display:"inline-flex",alignItems:"center",gap:12,color:isSelected?"#fff":undefined}}>
                                           {isSelected && <span>&gt;&nbsp;</span>}
