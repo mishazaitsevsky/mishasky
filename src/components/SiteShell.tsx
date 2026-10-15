@@ -3672,7 +3672,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     {showFreeform ? (
                       <div style={{paddingBottom:8}}>
                         <AboutChat/>
-                        <button onClick={()=>{setShowFreeform(false);setFreeformResponse(null);}} style={{marginTop:12,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                        <button onClick={()=>{setShowFreeform(false);setFreeformResponse(null);}} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
                       </div>
                     ) : (
                       <>
