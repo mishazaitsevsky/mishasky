@@ -803,7 +803,7 @@ const ABOUT_CARDS: {
             {img("/images/About/editorial-template-71abac.png","Editorial Template",{flex:1,minWidth:200})}
           </div>
           {img("/images/About/retro-theme-7501fa.png","Retro Theme",{margin:"0 0 16px"})}
-          <p style={body}>- More complex like button and cartridge components require thorough breakdown of parts{"\n"}- Surprisingly most angular gradients translate smoothly with a combo of numeric and visual reference</p>
+          <p style={body}>- More complex animations like the button and cartridge components require a thorough breakdown of parts{"\n"}- Surprisingly most angular gradients translate smoothly with a combo of numeric and visual reference</p>
           <div style={{display:"flex",gap:32,margin:"0 0 32px",flexWrap:"wrap"}}>
             {img("/images/About/breakout-d209fd.png",undefined,{flex:1,minWidth:180})}
             {img("/images/About/buttonstack.png",undefined,{flex:1,minWidth:180,background:"#F5F5F5"})}
