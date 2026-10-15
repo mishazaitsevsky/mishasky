@@ -2673,7 +2673,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           animation:fadeIn .3s ease .8s both;
         }
         .chat-input{
-          flex:1;height:56px;border-radius:999px;
+          flex:1;min-width:0;height:56px;border-radius:999px;
           border:1px solid #e0e0e0;background:#fff;
           color:#111;font-family:"T-Star Mono",monospace;
           font-size:16px;padding:0 20px;outline:none;
@@ -3017,6 +3017,10 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .hero-nav-row{display:flex;align-items:flex-start;justify-content:space-between;margin-top:24px;gap:24px}
         .hero-text{display:flex;flex-direction:column;gap:4px;min-width:0;align-items:flex-start}
         .hero-text .headline{margin-top:0}
+        @media(max-width:600px){
+          .hero-nav-row{flex-direction:column}
+          .hero-text{width:100%}
+        }
         .hero-body{font-size:14px;font-weight:300;line-height:1.5;font-family:"T-Star Mono",monospace;color:#444}
         .hero-link{text-decoration:underline;background:none;border:none;cursor:pointer;font:inherit;padding:0;color:inherit}
         .nav-btns-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
