@@ -113,6 +113,6 @@ export function generateResponse(question: string, ctx: PathContext): string {
   ].filter(Boolean).join(", ");
 
   return isWin
-    ? `The path held: ${pathSummary}. The full version of this input connects to Claude — who knows your answers — and can go further. For now: get in touch.`
-    : `The path showed: ${pathSummary}. Something in that combination didn't resolve. The full version of this input would explain specifically why. For now: try again, or reach out directly.`;
+    ? `Good question. Hit the AI Chat button above — that's the real version, and it has context.`
+    : `Worth asking directly. Try the AI Chat above, or reach out.`;
 }
