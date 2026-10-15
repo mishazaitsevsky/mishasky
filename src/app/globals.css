@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "T-Star Mono";
+  font-weight: 300;
+  src: url("/fonts/TSTARMonoRoundReg.otf") format("opentype"),
+       url("/fonts/t-star-mono.woff2") format("woff2"),
+       url("/fonts/t-star-mono.woff") format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "T-Star Mono";
+  font-weight: 500;
+  src: url("/fonts/T-Star-Mono-Round-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f5f4f0;
+  --fg: #111111;
+  --fg-muted: #888888;
+  --border: #e0deda;
+  --accent: #111111;
+  --font-mono: "T-Star Mono", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Dark mode for project pages that opt in */
+[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --fg: #f0efeb;
+  --fg-muted: #666666;
+  --border: #222222;
+}
+
+/* ── Gameboy card grid — responsive columns ─────────────────────────────────── */
+.gb-card-grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 900px) {
+  .gb-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .gb-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Work page: two-column half-cards stack below 960px ── */
+@media (max-width: 959px) {
+  .work-two-col {
+    flex-direction: column !important;
+  }
+}
+
+/* ── Standard theme — theme picker button hover ── */
+.work-theme-btn {
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.work-theme-btn:hover {
+  background: #1B6EF3 !important;
+  color: #fff !important;
+  border-color: #1B6EF3 !important;
 }
