@@ -229,12 +229,13 @@ function Screen({ children, overlay }: { children: React.ReactNode; overlay?: Re
     padding:"16px 20px",
     fontFamily:'"T-Star Mono",monospace',
     color:"#3A4324", fontSize:30, fontWeight:300, lineHeight:1.2,
+    textShadow:"2px 2px 1px rgba(58,67,36,0.15)",
     flex:1, minHeight:300,
   };
   return (
     <div style={{ position:"relative", flex:1, minHeight:300 }}>
       {/* Real content — drop-shadow replaces the old ghost copy */}
-      <div className="gb-screen-content" style={{ ...screenStyle, filter:"drop-shadow(2px 2px 1px rgba(58,67,36,0.15))" }}>
+      <div className="gb-screen-content" style={{ ...screenStyle }}>
         {children}
       </div>
       {/* Overlay slot */}
@@ -470,17 +471,17 @@ function TopBar() {
   return (
     <div style={{display:"flex", flexDirection:"column"}}>
       {/* Main bar row */}
-      <div style={{display:"flex", flexDirection:"row", alignItems:"stretch", height:CORNER_H}}>
+      <div className="gb-topbar-row" style={{display:"flex", flexDirection:"row", alignItems:"stretch", height:CORNER_H}}>
 
-        {/* Left corner — flat fill + inset white TL highlight */}
-        <div style={{
+        {/* Left corner */}
+        <div className="gb-topbar-corner" style={{
           width: CORNER_W, height: CORNER_H, flexShrink: 0,
           background: FLAT,
           borderRadius: "32px 4px 4px 4px",
           boxShadow: "inset 16px 8px 8px rgba(255,242,199,0.25)",
         }}/>
 
-        {/* Left gap divider — transparent 8px at top, shadowed bar below */}
+        {/* Left gap divider */}
         <div style={{width: GAP_W, flexShrink: 0, display:"flex", flexDirection:"column"}}>
           <div style={{height: 8}}/>
           <div style={{flex: 1, background: DARK, boxShadow: insetShadowV}}/>
@@ -494,7 +495,7 @@ function TopBar() {
           boxShadow: "inset 0px 8px 4px rgba(255,242,199,0.25)",
           borderRadius: "4px 4px 0 0",
         }}>
-          <div style={{
+          <div className="gb-topbar-pill" style={{
             width: 98, height: 32, borderRadius: 100,
             background: "#BEBBB6",
             boxShadow: "4px 4px 16px rgba(0,0,0,0.1), inset 8px 8px 16px rgba(0,0,0,0.1)",
@@ -507,8 +508,8 @@ function TopBar() {
           <div style={{flex: 1, background: DARK, boxShadow: insetShadowV}}/>
         </div>
 
-        {/* Right corner — flat fill + inset dark BR shadow */}
-        <div style={{
+        {/* Right corner */}
+        <div className="gb-topbar-corner" style={{
           width: CORNER_W, height: CORNER_H, flexShrink: 0,
           background: FLAT,
           borderRadius: "4px 32px 4px 4px",
@@ -703,7 +704,7 @@ export default function GameboyShell({
                 }} className="gb-screen-frame">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/icons/gb_screen_BG.png" alt="" aria-hidden="true" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",mixBlendMode:"screen",opacity:0.15,pointerEvents:"none",zIndex:10}}/>
-                  <div style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <div className="gb-led-container" style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <LED blinking={warnBlink}/>
                   </div>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:64,display:"flex",alignItems:"center",gap:12}}>
