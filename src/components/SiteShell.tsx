@@ -2913,11 +2913,11 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .gb-screen-frame{padding:36px 40px!important;border-radius:16px 16px 32px 16px!important}
           .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;min-height:200px!important}
           .gb-screen-content *{font-weight:500!important}
-          .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important}
-          .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important}
-          .gb-end-headline{font-size:15px!important;line-height:16px!important;font-weight:700!important}
+          .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
+          .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
+          .gb-end-headline{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
           .gb-end-body{font-size:15px!important;line-height:16px!important;font-weight:500!important}
-          .gb-sel-opt{font-weight:700!important}
+          .gb-sel-opt{font-weight:700!important;text-shadow:none!important}
           .gb-outer{padding-left:0!important;padding-right:0!important}
           .gb-nav-body{line-height:18px!important}
           .gb-next-btn{height:24px!important;font-size:15px!important;padding:0 8px!important}
