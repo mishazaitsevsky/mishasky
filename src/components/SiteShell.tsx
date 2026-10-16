@@ -1181,47 +1181,53 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
   );
 
   return (
-    <div style={{width:"100%", display:"grid", gridTemplateColumns:"2fr 1fr", gap:32, alignItems:"stretch"}}>
+    <div style={{width:"100%", maxWidth:800, display:"flex", flexDirection:"column", gap:16}}>
 
-      {/* Left — conversation + input, max 800 on this column only */}
-      <div style={{minWidth:0, maxWidth:800, display:"flex", flexDirection:"column", gap:16}}>
-
-        {/* Scrollable conversation */}
-        {(messages.length > 0 || loading) && (
-          <div ref={scrollRef} style={{
-            maxHeight:236, overflowY:"auto",
-            display:"flex", flexDirection:"column", gap:16,
-            scrollbarWidth:"thin",
-            scrollbarColor:"rgba(0,0,0,0.2) transparent",
+      {/* Conversation — MISHA placeholder when empty, messages when active */}
+      <div ref={scrollRef} style={{
+        maxHeight:300, overflowY:"auto",
+        display:"flex", flexDirection:"column", gap:16,
+        scrollbarWidth:"thin",
+        scrollbarColor:"rgba(0,0,0,0.2) transparent",
+      }}>
+        {messages.length === 0 && !loading && (
+          /* Placeholder: MISHA logo as first response bubble */
+          <div style={{
+            background:"#fff", borderRadius:41,
+            display:"flex", alignItems:"center", justifyContent:"center",
+            padding:"16px 20px", minHeight:80, alignSelf:"flex-start",
+            maxWidth:280,
           }}>
-            {messages.map((m, i) => (
-              <div key={i} style={{display:"flex", flexDirection:"column", gap:8}}>
-                <div style={{display:"flex", justifyContent:"flex-end"}}>
-                  <div style={{background:"#fff", borderRadius:"41px 41px 0px 41px", padding:"12px 20px"}}>
-                    <p style={{...chatFont, color:"rgba(0,0,0,0.6)"}}>{m.q}</p>
-                  </div>
-                </div>
-                {/* Answer — plain text */}
-                <p style={{...chatFont, color:"rgba(0,0,0,0.8)"}}>{m.a}</p>
-              </div>
-            ))}
-
+            <MishaSpinner running={false} color="#1B6EF3"/>
           </div>
         )}
-
-        {/* Input — always at bottom */}
-        {inputEl}
+        {loading && messages.length === 0 && (
+          <div style={{
+            background:"#fff", borderRadius:41,
+            display:"flex", alignItems:"center", justifyContent:"center",
+            padding:"16px 20px", minHeight:80, alignSelf:"flex-start",
+            maxWidth:280,
+          }}>
+            <MishaSpinner running={true} color="#1B6EF3"/>
+          </div>
+        )}
+        {messages.map((m, i) => (
+          <div key={i} style={{display:"flex", flexDirection:"column", gap:8}}>
+            <div style={{display:"flex", justifyContent:"flex-end"}}>
+              <div style={{background:"#fff", borderRadius:"41px 41px 0px 41px", padding:"12px 20px"}}>
+                <p style={{...chatFont, color:"rgba(0,0,0,0.6)"}}>{m.q}</p>
+              </div>
+            </div>
+            <p style={{...chatFont, color:"rgba(0,0,0,0.8)"}}>{m.a}</p>
+          </div>
+        ))}
+        {loading && messages.length > 0 && (
+          <div style={{...chatFont, color:"rgba(0,0,0,0.4)"}}>···</div>
+        )}
       </div>
 
-      {/* Right — MiSH∆ spinner card */}
-      <div style={{
-        background:"#fff", borderRadius:41,
-        display:"flex", alignItems:"center", justifyContent:"center",
-        padding:"16px 20px", minHeight:140,
-      }}>
-        <MishaSpinner running={loading} color="#1B6EF3"/>
-      </div>
-
+      {/* Input — always at bottom */}
+      {inputEl}
     </div>
   );
 }
