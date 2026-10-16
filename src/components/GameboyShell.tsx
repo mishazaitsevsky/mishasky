@@ -751,7 +751,7 @@ export default function GameboyShell({
                         <div style={{fontSize:20,fontWeight:300,color:"#3A4324",lineHeight:1.6,marginBottom:4}}>
                           {locale === "ja" ? (JA[`body_${endState.replace(/-/g,"_")}` as keyof typeof JA] ?? summarizePath(tags ?? [], endState)) : summarizePath(tags ?? [], endState)}
                         </div>
-                        <TreeReveal key={treeKey} path={pathHistory ?? []} killNodeKey={killNode ?? null} endState={endState} theme="gameboy"/>
+                        <div className="gb-tree-reveal"><TreeReveal key={treeKey} path={pathHistory ?? []} killNodeKey={killNode ?? null} endState={endState} theme="gameboy"/></div>
                         <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"space-between",alignItems:"flex-end"}}>
                           <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
                             {endState !== "win" && <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
