@@ -837,13 +837,24 @@ export default function GameboyShell({
               <div style={{padding:"32px 32px 48px",display:"flex",flexDirection:"column",gap:24}}>
                 {/* Nav row */}
                 <div style={{display:"flex",alignItems:"flex-start",gap:16,flexWrap:"wrap"}}>
-                  <GameboyButton sublabel="Quiz" icon={<Icon name="quiz" size={24}/>} onClick={openChat}/>
-                  <GameboyButton sublabel="About" icon={<Icon name="about" size={22}/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")}/>
-                  <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size={22}/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")}/>
-                  <div style={{marginTop:8}}><ControlPill sublabel="Theme" onClick={cycleTheme}/></div>
-                  {/* Title + body lockup — mirrors GameboyButton: 64px circle row / 16px gap / label row */}
+                  {/* Housing container for circle buttons — same conic-gradient style as ControlPill */}
+                  <div style={{
+                    background:"conic-gradient(from 315deg, rgba(0,0,0,0.15) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 30%, rgba(255,255,255,0.36) 42%, rgba(255,255,255,1) 55%, rgba(255,255,255,0) 69%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.15) 100%)",
+                    borderRadius:100, padding:1, display:"inline-flex",
+                  }}>
+                    <div style={{
+                      background:"linear-gradient(160deg, #D9D4CF 0%, #C4C0BB 100%)",
+                      borderRadius:99, padding:"8px 8px",
+                      display:"flex", alignItems:"center", gap:16, position:"relative",
+                    }}>
+                      <GameboyButton sublabel="Quiz" icon={<Icon name="quiz" size={24}/>} onClick={openChat}/>
+                      <GameboyButton sublabel="About" icon={<Icon name="about" size={22}/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")}/>
+                      <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size={22}/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")}/>
+                    </div>
+                  </div>
+                  <div style={{marginTop:16}}><ControlPill sublabel="Theme" onClick={cycleTheme}/></div>
+                  {/* Title + body lockup */}
                   <div style={{flex:1, display:"flex", flexDirection:"column", paddingLeft:8, minWidth:160}}>
-                    {/* Circle row: body text shifted down 8px within 64px */}
                     <div style={{height:64, display:"flex", alignItems:"center", paddingTop:8}}>
                       <p style={{fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:14,color:"#D9D4CF",lineHeight:1.4,margin:0,textShadow:"0.75px 0.75px 1.5px #fff, 0.75px 0.75px 1px rgba(0,0,0,0.26), -0.5px -0.5px 0.75px #000"}}>
                         Can Ai &amp; I replace a team? Learn{" "}
@@ -851,9 +862,7 @@ export default function GameboyShell({
                         , and why Ai can have taste.
                       </p>
                     </div>
-                    {/* Gap row: matches ControlPill offset */}
-                    <div style={{height:12}}/>
-                    {/* Label row: title aligns with button sublabels */}
+                    <div style={{height:20}}/>
                     <div style={{fontFamily:'"T-Star Mono",monospace',fontWeight:500,fontSize:32,color:"#C7C0B9",lineHeight:1,textTransform:"uppercase" as const,filter:"blur(0.5px)",textShadow:"0.75px 0.75px 1.5px #fff, 0.75px 0.75px 1px rgba(0,0,0,0.26), -0.5px -0.5px 0.75px #000"}}>
                       0→1 PRODUCT / Ai &amp; I
                     </div>
