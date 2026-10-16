@@ -2251,6 +2251,18 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+  // Restore MISHA wordmark whenever leaving chat mode through any path
+  // (e.g. clicking Projects from the post-quiz card grid bypasses closeChat)
+  const prevModeRef = useRef<string>(mode);
+  useEffect(() => {
+    const was = prevModeRef.current;
+    prevModeRef.current = mode;
+    if (was === "chat" && mode !== "chat") {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        wordmarkRef.current?.jumpIn();
+      }));
+    }
+  }, [mode]);
   const [freeformInput, setFreeformInput] = useState("");
   const [freeformResponse, setFreeformResponse] = useState<string | null>(null);
   const [treeKey, setTreeKey]           = useState(0);
@@ -2923,9 +2935,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .gb-card-btn{transition:transform 300ms cubic-bezier(0.5,0,0.85,1),filter 300ms cubic-bezier(0.5,0,0.85,1)}
         .gb-card-btn:hover{transform:translateY(-16px)}
         @media(max-width:720px){
-          .gb-screen-frame{padding:36px 40px 8px!important;border-radius:16px 16px 32px 16px!important}
+          .gb-screen-frame{padding:36px 40px!important;border-radius:16px 16px 32px 16px!important}
           .gb-screen-wrapper{min-height:0!important}
-          .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;min-height:380px!important}
+          .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;min-height:250px!important}
           .gb-screen-content *{font-weight:500!important}
           .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
           .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
