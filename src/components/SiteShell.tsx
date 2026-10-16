@@ -3191,7 +3191,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                             {showFreeform?(
                               <div style={{paddingBottom:8}}>
                                 <AboutChat/>
-                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
                               </div>
                             ):(
                               <>
@@ -4038,7 +4038,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                       <input className="chat-input" placeholder="..." aria-label="Open message" autoFocus/>
                                       <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
                                     </div>
-                                    <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                                    <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
                                   </div>):(
                                     <>
                                       <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
@@ -4247,7 +4247,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                   <input className="chat-input" placeholder="..." aria-label="Open message" autoFocus/>
                                   <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
                                 </div>
-                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
                               </div>) : (
                                 <>
                                   <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
