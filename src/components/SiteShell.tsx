@@ -1193,9 +1193,9 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
         {messages.length === 0 && !loading && (
           /* Placeholder: MISHA logo as first response bubble */
           <div style={{
-            background:"#fff", borderRadius:41,
+            background:"#fff", borderRadius:"0px 41px 41px 41px",
             display:"flex", alignItems:"center", justifyContent:"center",
-            padding:"16px 20px", minHeight:80, alignSelf:"flex-start",
+            padding:"16px 24px", minHeight:80, alignSelf:"flex-start",
             maxWidth:280,
           }}>
             <MishaSpinner running={false} color="#1B6EF3"/>
@@ -1203,9 +1203,9 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
         )}
         {loading && messages.length === 0 && (
           <div style={{
-            background:"#fff", borderRadius:41,
+            background:"#fff", borderRadius:"0px 41px 41px 41px",
             display:"flex", alignItems:"center", justifyContent:"center",
-            padding:"16px 20px", minHeight:80, alignSelf:"flex-start",
+            padding:"16px 24px", minHeight:80, alignSelf:"flex-start",
             maxWidth:280,
           }}>
             <MishaSpinner running={true} color="#1B6EF3"/>
