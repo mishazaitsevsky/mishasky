@@ -747,8 +747,8 @@ export default function GameboyShell({
                     )}
                     {phase === "done" && endState && (
                       <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                        <div style={{fontSize:30,fontWeight:500,color:"#3A4324",lineHeight:1.3,marginBottom:8}}>{END_COPY[endState].headline(character ?? "default")}</div>
-                        <div style={{fontSize:20,fontWeight:300,color:"#3A4324",lineHeight:1.6,marginBottom:4}}>
+                        <div className="gb-end-headline" style={{fontSize:30,fontWeight:500,color:"#3A4324",lineHeight:1.3,marginBottom:8}}>{END_COPY[endState].headline(character ?? "default")}</div>
+                        <div className="gb-end-body" style={{fontSize:20,fontWeight:300,color:"#3A4324",lineHeight:1.6,marginBottom:4}}>
                           {locale === "ja" ? (JA[`body_${endState.replace(/-/g,"_")}` as keyof typeof JA] ?? summarizePath(tags ?? [], endState)) : summarizePath(tags ?? [], endState)}
                         </div>
                         <div className="gb-tree-reveal"><TreeReveal key={treeKey} path={pathHistory ?? []} killNodeKey={killNode ?? null} endState={endState} theme="gameboy"/></div>

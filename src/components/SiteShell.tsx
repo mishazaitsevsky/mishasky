@@ -2914,6 +2914,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important}
           .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important}
           .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important}
+          .gb-end-headline{font-size:15px!important;line-height:16px!important}
+          .gb-end-body{font-size:15px!important;line-height:16px!important}
+          .gb-outer{padding-left:0!important;padding-right:0!important}
           .gb-nav-body{line-height:18px!important}
           .gb-next-btn{height:24px!important;font-size:15px!important;padding:0 8px!important}
           .gb-next-btn svg{width:11px!important;height:11px!important}
