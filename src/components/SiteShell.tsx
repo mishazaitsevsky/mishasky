@@ -2980,6 +2980,20 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .gb-led{transform:scale(0.67);transform-origin:center}
           .gb-power-label{display:block!important}
           .gb-quiz-ribbon{height:36px!important}
+          /* ── NON-GB QUIZ ── */
+          .chat-card{height:auto!important;padding:20px 20px 24px!important;animation:none!important}
+          .chat-q{font-size:17px!important;line-height:1.4!important}
+          .chat-opt{font-size:17px!important;line-height:1.5!important}
+          .chat-quip{font-size:17px!important;line-height:1.4!important}
+          .end-headline{font-size:22px!important;line-height:1.25!important;margin-bottom:8px!important}
+          .end-body{font-size:14px!important;line-height:1.6!important;margin-bottom:12px!important}
+          .abc{width:40px!important;height:40px!important;font-size:18px!important}
+          .go{height:40px!important;font-size:17px!important}
+          .btn-row{gap:8px!important;margin:16px 0 0!important}
+          .done-ctas{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;margin:16px 0 0!important}
+          .done-ctas .go,.done-ctas .abc{height:44px!important;font-size:17px!important;border-radius:8px!important}
+          .done-ctas .nav-btn{height:40px!important;font-size:17px!important;padding:0 16px!important}
+          .std-tree-reveal{zoom:0.5}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
@@ -3266,7 +3280,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                               <>
                                 <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
                                 <div className="end-body">{localizedBody(tags, endState)}</div>
-                                <TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState}/>
+                                <div className="std-tree-reveal"><TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState} hideStart={isMobile}/></div>
                               </>
                             )}
                           </>
@@ -3297,27 +3311,30 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           />
                         ) : endState ? (
                           // Done phase CTAs
-                          <>
+                          <div className="done-ctas" style={{display:"flex",alignItems:"center",gap:24,overflow:"visible",flexWrap:"wrap"}}>
                             {endState==="win" ? (
                               <>
                                 <BrutalShadow>
                                   <a href="mailto:hello@mishasky.net" className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#1B6EF3",color:"#fff",textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Contact</a>
                                 </BrutalShadow>
                                 <BrutalShadow>
-                                  <button onClick={()=>setShowFreeform(true)} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Chat with fake Misha</button>
+                                  <button onClick={()=>setShowFreeform(true)} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Fake Misha Chat</button>
+                                </BrutalShadow>
+                                <BrutalShadow>
+                                  <button onClick={openChat} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#fff",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Try Again</button>
                                 </BrutalShadow>
                               </>
                             ) : (
                               <>
                                 <BrutalShadow>
-                                  <button onClick={openChat} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Again</button>
+                                  <button onClick={openChat} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Try Again</button>
                                 </BrutalShadow>
                                 <BrutalShadow>
                                   <button onClick={closeChat} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#fff",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Quit</button>
                                 </BrutalShadow>
                               </>
                             )}
-                          </>
+                          </div>
                         ) : null}
                       </div>
                     </nav>
@@ -3747,7 +3764,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       <>
                         <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
                         <div className="end-body">{localizedBody(tags, endState)}</div>
-                        <TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState}/>
+                        <div className="std-tree-reveal"><TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState} hideStart={isMobile}/></div>
                       </>
                     )}
                   </>
@@ -3758,7 +3775,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             {/* A/B/C + go during question phase; text input during processing; CTAs on done */}
             {phase === "done" && endState ? (
               showFreeform ? null : (
-                <div className="btn-row">
+                <div className="btn-row done-ctas">
                   {endState === "win" && (
                     <a href="mailto:hello@mishasky.net"
                       className="abc on"
@@ -3775,21 +3792,22 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     <button onClick={() => setShowFreeform(true)}
                       className="go ready"
                       style={{fontSize:30,fontWeight:300,height:64}}>
-                      Chat with fake Misha
+                      Fake Misha Chat
+                    </button>
+                  )}
+                  {endState === "win" && (
+                    <button onClick={openChat}
+                      style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #ccc",color:"#555",cursor:"pointer",flex:"0 0 auto",padding:"0 24px",borderRadius:999,fontFamily:'"T-Star Mono",monospace'}}>
+                      Try Again
                     </button>
                   )}
                   {endState !== "win" && (
                     <button className="go ready" onClick={openChat} style={{fontSize:30,fontWeight:300,height:64}}>
-                      { locale === "ja" ? JA.cta_retry : "Again" }
+                      { locale === "ja" ? JA.cta_retry : "Try Again" }
                     </button>
                   )}
                   {endState !== "win" && (
                     <button onClick={() => setTreeKey(k => k + 1)} style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #444",color:"#888",cursor:"pointer",flex:"0 0 auto",padding:"0 24px",borderRadius:999,fontFamily:'"T-Star Mono",monospace'}}>
-                      Refresh
-                    </button>
-                  )}
-                  {endState === "win" && (
-                    <button onClick={() => setTreeKey(k => k + 1)} style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #ccc",color:"#999",cursor:"pointer",flex:"0 0 auto",padding:"0 24px",borderRadius:999,fontFamily:'"T-Star Mono",monospace'}}>
                       Refresh
                     </button>
                   )}
@@ -4112,7 +4130,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                     <>
                                       <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
                                       <div className="end-body">{localizedBody(tags, endState)}</div>
-                                      <TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState}/>
+                                      <div className="std-tree-reveal"><TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState} hideStart={isMobile}/></div>
                                     </>
                                   )}
                                 </>
@@ -4321,7 +4339,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                 <>
                                   <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
                                   <div className="end-body">{localizedBody(tags, endState)}</div>
-                                  <TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState}/>
+                                  <div className="std-tree-reveal"><TreeReveal key={treeKey} path={pathHistory} killNodeKey={killNode} endState={endState} hideStart={isMobile}/></div>
                                 </>
                               )}
                             </>
