@@ -757,7 +757,7 @@ export default function GameboyShell({
                             {endState !== "win" && <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
                             {endState === "win"  && <button onClick={openChat} style={{background:"none",border:"1px solid #3A4324",color:"#3A4324",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
                           </div>
-                          <span style={{fontFamily:'"T-Star Mono",monospace',fontWeight:500,fontSize:16,color:"rgba(58,67,36,0.45)",textTransform:"uppercase",letterSpacing:"0.1em"}}>Next →</span>
+                          <span onClick={openChat} style={{fontFamily:'"T-Star Mono",monospace',fontWeight:500,fontSize:16,color:"rgba(58,67,36,0.6)",textTransform:"uppercase",letterSpacing:"0.1em",cursor:"pointer"}}>Next →</span>
                         </div>
                       </div>
                     )}
