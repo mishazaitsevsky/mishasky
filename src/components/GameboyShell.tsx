@@ -707,7 +707,7 @@ export default function GameboyShell({
                   <div className="gb-led-container" style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <LED blinking={warnBlink}/>
                   </div>
-                  <div style={{position:"absolute",top:0,left:0,right:0,height:64,display:"flex",alignItems:"center",gap:12}}>
+                  <div className="gb-quiz-ribbon" style={{position:"absolute",top:0,left:0,right:0,height:64,display:"flex",alignItems:"center",gap:12}}>
                     <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
                       <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                       <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
@@ -816,9 +816,9 @@ export default function GameboyShell({
                 <div style={{padding:"0 16px",cursor:"pointer"}} onClick={() => setMode("home")}>
                   <WordmarkPlaceholder innerRef={wordmarkPlaceholderRef}/>
                 </div>
-                <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
+                <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
                   <div style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
-                  <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                  <div style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                 </div>
               </div>
               {/* Content */}
