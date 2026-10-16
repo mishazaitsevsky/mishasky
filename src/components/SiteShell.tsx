@@ -2981,18 +2981,16 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .gb-power-label{display:block!important}
           .gb-quiz-ribbon{height:36px!important}
           /* ── NON-GB QUIZ ── */
-          .chat-card{height:auto!important;padding:20px 20px 24px!important;animation:none!important}
+          .chat-card{min-height:340px!important;padding:20px 20px 24px!important;animation:none!important}
           .chat-q{font-size:17px!important;line-height:1.4!important}
           .chat-opt{font-size:17px!important;line-height:1.5!important}
           .chat-quip{font-size:17px!important;line-height:1.4!important}
           .end-headline{font-size:22px!important;line-height:1.25!important;margin-bottom:8px!important}
           .end-body{font-size:14px!important;line-height:1.6!important;margin-bottom:12px!important}
-          .abc{width:40px!important;height:40px!important;font-size:18px!important}
-          .go{height:40px!important;font-size:17px!important}
           .btn-row{gap:8px!important;margin:16px 0 0!important}
           .done-ctas{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;margin:16px 0 0!important}
-          .done-ctas .go,.done-ctas .abc{height:44px!important;font-size:17px!important;border-radius:8px!important}
-          .done-ctas .nav-btn{height:40px!important;font-size:17px!important;padding:0 16px!important}
+          .done-ctas .go,.done-ctas a{height:64px!important;font-size:17px!important;border-radius:999px!important}
+          .done-ctas .nav-btn{height:64px!important;font-size:17px!important;padding:0 20px!important}
           .std-tree-reveal{zoom:0.5}
         }
 
@@ -3300,8 +3298,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 {/* Spacer between card and buttons — same as pill→nav spacer */}
                 {phase==="question"&&<div className="bp-hspacer-nav"/>}
 
-                {/* Button row — question phase: A/B/C selectors. Done phase: Retry/Quit CTAs */}
-                {(phase==="question"||phase==="done")&&(
+                {/* Button row — question phase: A/B/C selectors. Processing: dimmed. Done phase: Retry/Quit CTAs */}
+                {(phase==="question"||phase==="done"||phase==="processing")&&(
                   <div className="bp-row" style={{overflow:"visible", paddingBottom:16}}>
                     <nav className="nav-row" style={{alignItems:"flex-start"}} aria-label="Chat options">
                       <div className="nav-btns" style={{overflow:"visible", gap:24}}>
@@ -3309,6 +3307,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={true} onAboutToggle={closeAbout}
                             chatButtons={{ selected, onSelect: selectOption, onConfirm: confirmSelection }}
                           />
+                        ) : phase==="processing" ? (
+                          <div style={{display:"flex",alignItems:"center",gap:24,opacity:0.35,pointerEvents:"none"}}>
+                            {(['A','B','C'] as const).map(l=>(
+                              <button key={l} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#e8e8e8",color:"#aaa",height:56,width:56,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:'"T-Star Mono",monospace',fontSize:28,fontWeight:300,cursor:"default"}}>{l}</button>
+                            ))}
+                            <button className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#e8e8e8",color:"#aaa",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:28,fontWeight:300,cursor:"default",display:"flex",alignItems:"center",justifyContent:"center"}}>→</button>
+                          </div>
                         ) : endState ? (
                           // Done phase CTAs
                           <div className="done-ctas" style={{display:"flex",alignItems:"center",gap:24,overflow:"visible",flexWrap:"wrap"}}>
@@ -3342,7 +3347,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 )}
 
                 {/* Spacer below buttons */}
-                {(phase==="question"||phase==="done")&&<div className="bp-hspacer"/>}
+                {(phase==="question"||phase==="done"||phase==="processing")&&<div className="bp-hspacer"/>}
               </>
             )}
 
@@ -3772,32 +3777,45 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
               </div>
             </div>
 
-            {/* A/B/C + go during question phase; text input during processing; CTAs on done */}
-            {phase === "done" && endState ? (
-              showFreeform ? null : (
-                <div className="btn-row done-ctas">
+            {/* A/B/C + go always rendered — dimmed during processing, CTAs during done */}
+            <div className={`btn-row${phase === "done" ? " done-ctas" : ""}`}>
+              {phase !== "done" ? (
+                <>
+                  {([0,1,2] as const).map(i => {
+                    let c = "abc";
+                    if (phase === "processing") c += " proc";
+                    else if (selected !== null) c += selected === i ? " on" : " dim";
+                    return (
+                      <button key={i} className={c}
+                        onClick={phase === "question" ? () => selectOption(i) : undefined}
+                        aria-label={`Option ${String.fromCharCode(65+i)}`}>
+                        {String.fromCharCode(65+i)}
+                      </button>
+                    );
+                  })}
+                  <button
+                    className={`go${phase === "processing" ? " proc" : selected !== null ? " ready" : ""}`}
+                    onClick={selected !== null && phase === "question" ? confirmSelection : undefined}
+                    aria-label="Confirm">
+                    <ArrowRight size={22}/>
+                  </button>
+                </>
+              ) : !showFreeform && endState ? (
+                <>
                   {endState === "win" && (
-                    <a href="mailto:hello@mishasky.net"
-                      className="abc on"
-                      style={{
-                        textDecoration:"none",display:"flex",alignItems:"center",
-                        justifyContent:"center",width:"auto",height:64,
-                        borderRadius:999,padding:"0 28px",fontSize:30,
-                        flexShrink:0,
-                      }}>
+                    <a href="mailto:hello@mishasky.net" className="go ready"
+                      style={{textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",height:64,fontSize:30,background:"#1B6EF3",color:"#fff"}}>
                       Contact
                     </a>
                   )}
                   {endState === "win" && (
-                    <button onClick={() => setShowFreeform(true)}
-                      className="go ready"
-                      style={{fontSize:30,fontWeight:300,height:64}}>
+                    <button onClick={() => setShowFreeform(true)} className="go ready" style={{fontSize:30,fontWeight:300,height:64}}>
                       Fake Misha Chat
                     </button>
                   )}
                   {endState === "win" && (
-                    <button onClick={openChat}
-                      style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #ccc",color:"#555",cursor:"pointer",flex:"0 0 auto",padding:"0 24px",borderRadius:999,fontFamily:'"T-Star Mono",monospace'}}>
+                    <button onClick={openChat} className="go"
+                      style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #ccc",color:"#555",cursor:"pointer"}}>
                       Try Again
                     </button>
                   )}
@@ -3811,29 +3829,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       Refresh
                     </button>
                   )}
-                </div>
-              )
-            ) : phase !== "done" && phase !== "processing" && (
-                <div className="btn-row">
-                  {([0,1,2] as const).map(i => {
-                    let c = "abc";
-                    if (selected !== null) c += selected === i ? " on" : " dim";
-                    return (
-                      <button key={i} className={c}
-                        onClick={() => selectOption(i)}
-                        aria-label={`Option ${String.fromCharCode(65+i)}`}>
-                        {String.fromCharCode(65+i)}
-                      </button>
-                    );
-                  })}
-                  <button
-                    className={`go${selected !== null ? " ready" : ""}`}
-                    onClick={selected !== null ? confirmSelection : undefined}
-                    aria-label="Confirm">
-                    <ArrowRight size={22}/>
-                  </button>
-                </div>
-            )}
+                </>
+              ) : null}
+            </div>
           </div>
         </div>
       )}
