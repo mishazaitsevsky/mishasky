@@ -3825,7 +3825,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     </button>
                   )}
                   {endState !== "win" && (
-                    <button onClick={() => setTreeKey(k => k + 1)} style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #444",color:"#888",cursor:"pointer",flex:"0 0 auto",padding:"0 24px",borderRadius:999,fontFamily:'"T-Star Mono",monospace'}}>
+                    <button className="go" onClick={() => setTreeKey(k => k + 1)} style={{fontSize:30,fontWeight:300,height:64,background:"none",border:"1px solid #444",color:"#888",cursor:"pointer",flex:"0 0 auto",padding:"0 24px",borderRadius:999,fontFamily:'"T-Star Mono",monospace'}}>
                       Refresh
                     </button>
                   )}
