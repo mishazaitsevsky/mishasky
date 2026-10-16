@@ -2987,8 +2987,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .chat-quip{font-size:17px!important;line-height:1.4!important}
           .end-headline{font-size:22px!important;line-height:1.25!important;margin-bottom:8px!important}
           .end-body{font-size:14px!important;line-height:1.6!important;margin-bottom:12px!important}
-          .btn-row{gap:8px!important;margin:16px 0 0!important}
-          .done-ctas{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;margin:16px 0 0!important}
+          .btn-row{gap:8px!important;margin:32px 0 0!important}
+          .done-ctas{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;margin:32px 0 0!important}
           .done-ctas .go,.done-ctas a{height:64px!important;font-size:17px!important;border-radius:999px!important}
           .done-ctas .nav-btn{height:64px!important;font-size:17px!important;padding:0 20px!important}
           .std-tree-reveal{zoom:0.5}
@@ -3295,8 +3295,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   </div>
                 </div>
 
-                {/* Spacer between card and buttons — same as pill→nav spacer */}
-                {phase==="question"&&<div className="bp-hspacer-nav"/>}
+                {/* Spacer between card and buttons — 32px consistent with below */}
+                {(phase==="question"||phase==="done"||phase==="processing")&&<div className="bp-hspacer"/>}
 
                 {/* Button row — question phase: A/B/C selectors. Processing: dimmed. Done phase: Retry/Quit CTAs */}
                 {(phase==="question"||phase==="done"||phase==="processing")&&(
@@ -4137,7 +4137,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           </div>
                         </div>
                       </div>
-                      {phase==="question"&&<div className="bp-hspacer-nav"/>}
+                      {phase==="question"&&<div className="bp-hspacer"/>}
                       {phase==="question"&&(
                         <div className="bp-row" style={{overflow:"visible", paddingBottom:16}}>
                           <nav className="nav-row" style={{alignItems:"flex-start"}} aria-label="Chat options">
