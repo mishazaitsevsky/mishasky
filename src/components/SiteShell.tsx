@@ -2097,7 +2097,6 @@ function BrutalChatSection({ onClose, extMessages, setExtMessages, extLoading, s
                 <div className="bc-cta" style={{background:"#fff"}}>
                   <input value={chatInput} onChange={e=>setChatInput(e.target.value)}
                     onKeyDown={e=>e.key==="Enter"&&handleSubmit()}
-                    autoFocus
                     placeholder="Ask anything..."
                     style={{flex:1,border:"none",outline:"none",fontFamily:font,fontSize:15,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
                   />
@@ -2165,7 +2164,7 @@ function ChatSection({ onClose, extMessages, setExtMessages, extLoading, setExtL
       </div>
 
       {/* Chat */}
-      <AboutChat extMessages={extMessages} setExtMessages={setExtMessages} extLoading={extLoading} setExtLoading={setExtLoading} initialQ={initialQ} shouldAutoFocus/>
+      <AboutChat extMessages={extMessages} setExtMessages={setExtMessages} extLoading={extLoading} setExtLoading={setExtLoading} initialQ={initialQ}/>
     </div>
   );
 }
