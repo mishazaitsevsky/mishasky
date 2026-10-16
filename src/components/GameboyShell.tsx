@@ -808,15 +808,15 @@ export default function GameboyShell({
             <>
               {/* Header — Wordmark + Stripes */}
               <div className="gb-home-header" style={{display:"flex",alignItems:"center",gap:16,padding:"32px 0 0"}}>
-                <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
-                  <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
-                  <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
+                  <div style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                  <div style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                 </div>
                 <div style={{padding:"0 16px",cursor:"pointer"}} onClick={() => setMode("home")}>
                   <WordmarkPlaceholder innerRef={wordmarkPlaceholderRef}/>
                 </div>
                 <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
-                  <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                  <div style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                   <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                 </div>
               </div>

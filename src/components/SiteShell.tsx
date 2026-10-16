@@ -2912,7 +2912,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         @media(max-width:720px){
           .gb-screen-frame{padding:32px 48px!important}
           .gb-screen-content{font-size:15px!important;line-height:1.5!important}
-          .gb-ribbon-bar{height:4px!important}
+          .gb-ribbon-bar{height:4px!important;border-radius:0!important}
           .gb-ribbon-bars{gap:4px!important}
           .gb-ribbon-title{font-size:15px!important}
           .gb-home-header{padding:8px 0!important}
