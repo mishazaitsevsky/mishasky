@@ -234,7 +234,7 @@ function Screen({ children, overlay }: { children: React.ReactNode; overlay?: Re
     flex:1, minHeight:300,
   };
   return (
-    <div style={{ position:"relative", flex:1, minHeight:300 }}>
+    <div className="gb-screen-wrapper" style={{ position:"relative", flex:1, minHeight:300 }}>
       {/* Real content — drop-shadow replaces the old ghost copy */}
       <div className="gb-screen-content" style={{ ...screenStyle }}>
         {children}
@@ -654,6 +654,7 @@ export interface GameboyShellProps {
   aboutSlot?: React.ReactNode;
   workSlot?: React.ReactNode;
   openAboutArticle?: (cardId: string) => void;
+  hideStart?: boolean;
 }
 
 // ── Home-screen cartridges — match standard/brutal home page content & order ──
@@ -672,7 +673,7 @@ export default function GameboyShell({
   projects, mode, openProject, openChat, closeChat,
   cycleTheme, setMode, phase, twTyped, twDone,
   selected, selectOption, confirmSelection,
-  endState, tags = [], pathHistory = [], killNode = null, character = "default", treeKey = 0, warnBlink = false, quip = null, showQuip = false, locale = "en", toggleLocale, wordmarkPlaceholderRef, aiChatSlot, aboutSlot, workSlot, openAboutArticle,
+  endState, tags = [], pathHistory = [], killNode = null, character = "default", treeKey = 0, warnBlink = false, quip = null, showQuip = false, locale = "en", toggleLocale, wordmarkPlaceholderRef, aiChatSlot, aboutSlot, workSlot, openAboutArticle, hideStart = false,
 }: GameboyShellProps) {
   const isChat = mode === "chat";
 
@@ -751,7 +752,7 @@ export default function GameboyShell({
                         <div className="gb-end-body" style={{fontSize:20,fontWeight:300,color:"#3A4324",lineHeight:1.6,marginBottom:4}}>
                           {locale === "ja" ? (JA[`body_${endState.replace(/-/g,"_")}` as keyof typeof JA] ?? summarizePath(tags ?? [], endState)) : summarizePath(tags ?? [], endState)}
                         </div>
-                        <div className="gb-tree-reveal"><TreeReveal key={treeKey} path={pathHistory ?? []} killNodeKey={killNode ?? null} endState={endState} theme="gameboy"/></div>
+                        <div className="gb-tree-reveal"><TreeReveal key={treeKey} path={pathHistory ?? []} killNodeKey={killNode ?? null} endState={endState} theme="gameboy" hideStart={hideStart}/></div>
                         <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"space-between",alignItems:"flex-end"}}>
                           <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
                             {endState !== "win" && <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}

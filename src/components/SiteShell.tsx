@@ -309,11 +309,13 @@ export function TreeReveal({
   killNodeKey,
   endState,
   theme = "default",
+  hideStart = false,
 }: {
   path: { nodeKey: string; choiceIdx: number }[];
   killNodeKey: string | null;
   endState: EndState;
   theme?: "default" | "gameboy";
+  hideStart?: boolean;
 }) {
   const SPINE    = ["story","intent","who","where","why","role","env","pay","ai"];
   const visitedMap = new Map(path.map(p => [p.nodeKey, p.choiceIdx]));
@@ -374,8 +376,7 @@ export function TreeReveal({
   function boxStyle(chosen: boolean, kill: boolean) {
     if (GB) {
       if (kill)   return { fill: GBdark,  stroke: GBdark,  fg: "#889D58" }; // solid, letter visible as screen color
-      if (chosen && isWin) return { fill: "none",  stroke: GBdark, fg: GBdark  }; // knockout: letter dark on screen
-      if (chosen) return { fill: GBdark,  stroke: GBdark,  fg: "#889D58" }; // solid, letter as screen color
+      if (chosen) return { fill: GBdark,  stroke: GBdark,  fg: "#889D58" }; // solid, letter as screen color (win + lose same)
       return             { fill: "none",  stroke: GBdark,  fg: GBdark   }; // outline only
     }
     if (kill)   return { fill: "#cc0000", stroke: "#fff", fg: "#fff" };
@@ -404,7 +405,7 @@ export function TreeReveal({
 
   // Bookend geometry
   const BOOKEND_W   = BOX + COL_GAP;
-  const pathOffsetX = PAD_X + BOOKEND_W;
+  const pathOffsetX = hideStart ? PAD_X : PAD_X + BOOKEND_W;
   const finishX     = pathOffsetX + totalCols * colStep;
   const extSvgW     = finishX + BOX + PAD_X + 8;
 
@@ -437,6 +438,7 @@ export function TreeReveal({
         {/* ── Ghost connectors at 20%: all incoming connectors, rendered behind columns ── */}
         <g opacity="0.2">
           {visible.map((nk, col) => {
+            if (hideStart && col === 0) return null;
             const x = pathOffsetX + col * colStep;
             const chosenIdx = visitedMap.get(nk) ?? 1;
             const pts: [number,number][] = [];
@@ -480,6 +482,7 @@ export function TreeReveal({
         </g>
 
         {/* ── Start bookend ── */}
+        {!hideStart && (
         <g style={{}}>
         <rect
           x={PAD_X} y={PAD_Y}
@@ -492,7 +495,8 @@ export function TreeReveal({
            style={{ opacity: 0, animation: `node-fill-in ${REVEAL_DUR}ms ease-out 0ms 1 forwards` }}>
           <path d={startPath} fill={startFlagColor}/>
         </g>
-        </g>{visible.map((nk, col) => {
+        </g>
+        )}{visible.map((nk, col) => {
           const x         = pathOffsetX + col * colStep;
           const colAnimIdx = col + 1; // unused, kept for reference
           const chosenIdx = visitedMap.get(nk) ?? -1;
@@ -567,13 +571,15 @@ export function TreeReveal({
 
                 // INCOMING connector only: from previous node to this node
                 if (col === 0) {
-                  // From start bookend to col 0
-                  const targetY = PAD_Y + (chosenIdx >= 0 ? chosenIdx : 1) * BOX + BOX / 2;
-                  const midX = PAD_X + BOX + COL_GAP / 2;
-                  if (bookendMidY === targetY) {
-                    pts.push([PAD_X + BOX, bookendMidY], [pathOffsetX, bookendMidY]);
-                  } else {
-                    pts.push([PAD_X + BOX, bookendMidY], [midX, bookendMidY], [midX, targetY], [pathOffsetX, targetY]);
+                  // From start bookend to col 0 (skip when hideStart)
+                  if (!hideStart) {
+                    const targetY = PAD_Y + (chosenIdx >= 0 ? chosenIdx : 1) * BOX + BOX / 2;
+                    const midX = PAD_X + BOX + COL_GAP / 2;
+                    if (bookendMidY === targetY) {
+                      pts.push([PAD_X + BOX, bookendMidY], [pathOffsetX, bookendMidY]);
+                    } else {
+                      pts.push([PAD_X + BOX, bookendMidY], [midX, bookendMidY], [midX, targetY], [pathOffsetX, targetY]);
+                    }
                   }
                 } else {
                   // From col-1 to col
@@ -2238,6 +2244,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
   // path history: [{nodeKey, choiceIdx}] for tree reveal
   const [pathHistory, setPathHistory] = useState<{nodeKey:string; choiceIdx:number}[]>([]);
   const [showFreeform, setShowFreeform] = useState(false);
+  const [isMobile, setIsMobile]         = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 720);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
   const [freeformInput, setFreeformInput] = useState("");
   const [freeformResponse, setFreeformResponse] = useState<string | null>(null);
   const [treeKey, setTreeKey]           = useState(0);
@@ -2910,8 +2923,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .gb-card-btn{transition:transform 300ms cubic-bezier(0.5,0,0.85,1),filter 300ms cubic-bezier(0.5,0,0.85,1)}
         .gb-card-btn:hover{transform:translateY(-16px)}
         @media(max-width:720px){
-          .gb-screen-frame{padding:36px 40px!important;border-radius:16px 16px 32px 16px!important}
-          .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;min-height:200px!important}
+          .gb-screen-frame{padding:36px 40px 8px!important;border-radius:16px 16px 32px 16px!important}
+          .gb-screen-wrapper{min-height:0!important}
+          .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;min-height:380px!important}
           .gb-screen-content *{font-weight:500!important}
           .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
           .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
@@ -3091,6 +3105,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           killNode={killNode}
           character={character}
           treeKey={treeKey}
+          hideStart={isMobile}
           warnBlink={warnBlink}
           quip={quip}
           showQuip={showQuip}
