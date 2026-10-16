@@ -785,7 +785,9 @@ export default function GameboyShell({
                       </div>
                     </div>
                   )}
-                  {phase === "done" ? <ControlPill sublabel="Next" onClick={openChat}/> : <ControlPill sublabel="Next" onClick={selected!==null ? confirmSelection : undefined}/>}
+                  <div style={{opacity: phase==="done" || selected!==null ? 1 : 0.5, transition:"opacity 0.12s"}}>
+                    {phase === "done" ? <ControlPill sublabel="Next" onClick={openChat}/> : <ControlPill sublabel="Next" onClick={selected!==null ? confirmSelection : undefined}/>}
+                  </div>
                   <ControlPill sublabel="Quit" onClick={closeChat} secondary/>
                 </div>
               </div>

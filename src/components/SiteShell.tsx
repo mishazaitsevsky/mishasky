@@ -2912,8 +2912,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         @media(max-width:720px){
           .gb-screen-frame{padding:36px 40px!important;border-radius:16px 16px 32px 16px!important}
           .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important}
-          .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important}
-          .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important}
+          .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:500!important}
+          .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:500!important}
           .gb-end-headline{font-size:15px!important;line-height:16px!important}
           .gb-end-body{font-size:15px!important;line-height:16px!important}
           .gb-outer{padding-left:0!important;padding-right:0!important}
