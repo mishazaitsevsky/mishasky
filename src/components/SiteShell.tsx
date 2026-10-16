@@ -2915,6 +2915,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .gb-ribbon-bar{height:4px!important}
           .gb-ribbon-bars{gap:4px!important}
           .gb-ribbon-title{font-size:15px!important}
+          .gb-home-header{padding:8px 0!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */

@@ -233,24 +233,11 @@ function Screen({ children, overlay }: { children: React.ReactNode; overlay?: Re
   };
   return (
     <div style={{ position:"relative", flex:1, minHeight:300 }}>
-      {/* Real content */}
-      <div className="gb-screen-content" style={{ ...screenStyle }}>
+      {/* Real content — drop-shadow replaces the old ghost copy */}
+      <div className="gb-screen-content" style={{ ...screenStyle, filter:"drop-shadow(2px 2px 1px rgba(58,67,36,0.15))" }}>
         {children}
       </div>
-      {/* Ghost: offset copy at 15% for glass thickness illusion */}
-      <div aria-hidden="true" style={{
-        ...screenStyle,
-        position:"absolute",
-        top: 3, left: 2, right: -2, bottom: -3,
-        minHeight:"unset",
-        background:"transparent", boxShadow:"none",
-        opacity:0.15,
-        pointerEvents:"none",
-        zIndex:2,
-      }}>
-        {children}
-      </div>
-      {/* Overlay slot — renders above the ghost, not duplicated */}
+      {/* Overlay slot */}
       {overlay && (
         <div style={{ position:"absolute", inset:0, zIndex:3, pointerEvents:"none" }}>
           <div style={{ position:"absolute", bottom:16, left:20, pointerEvents:"auto", display:"inline-flex" }}>
@@ -820,7 +807,7 @@ export default function GameboyShell({
             /* ════ HOME ════ */
             <>
               {/* Header — Wordmark + Stripes */}
-              <div style={{display:"flex",alignItems:"center",gap:16,padding:"32px 0 0"}}>
+              <div className="gb-home-header" style={{display:"flex",alignItems:"center",gap:16,padding:"32px 0 0"}}>
                 <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
                   <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                   <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
