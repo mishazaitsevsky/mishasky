@@ -2126,14 +2126,28 @@ function BrutalChatSection({ onClose, extMessages, setExtMessages, extLoading, s
 }
 
 // ── ChatSection — same header as About, just the AI chat ─────────────────────
-function ChatSection({ onClose, extMessages, setExtMessages, extLoading, setExtLoading, initialQ }: {
+function ChatSection({ onClose, extMessages, setExtMessages, extLoading, setExtLoading, initialQ, compact }: {
   onClose: () => void;
   extMessages?: {q:string;a:string}[];
   setExtMessages?: React.Dispatch<React.SetStateAction<{q:string;a:string}[]>>;
   extLoading?: boolean;
   setExtLoading?: React.Dispatch<React.SetStateAction<boolean>>;
   initialQ?: string;
+  compact?: boolean;
 }) {
+  if (compact) {
+    return (
+      <div style={{ fontFamily:'"T-Star Mono",monospace', padding:"20px 20px 28px", position:"relative" }}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+          <span style={{fontSize:11,fontWeight:500,letterSpacing:"0.14em",textTransform:"uppercase" as const,color:"#888"}}>WWMD — AI Chat</span>
+          <button onClick={onClose} aria-label="Close chat" style={{background:"none",border:"none",cursor:"pointer",padding:4,color:"#555",lineHeight:1}}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <AboutChat extMessages={extMessages} setExtMessages={setExtMessages} extLoading={extLoading} setExtLoading={setExtLoading} initialQ={initialQ}/>
+      </div>
+    );
+  }
   return (
     <div style={{ fontFamily:'"T-Star Mono",monospace', padding:"32px 32px 48px", position:"relative" }}>
       {/* Close button */}
@@ -2245,6 +2259,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
   const [pathHistory, setPathHistory] = useState<{nodeKey:string; choiceIdx:number}[]>([]);
   const [showFreeform, setShowFreeform] = useState(false);
   const [isMobile, setIsMobile]         = useState(false);
+  const [showWinOptions, setShowWinOptions] = useState(false);
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 720);
     check();
@@ -2258,6 +2273,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
     const was = prevModeRef.current;
     prevModeRef.current = mode;
     if (was === "chat" && mode !== "chat") {
+      setShowWinOptions(false);
       requestAnimationFrame(() => requestAnimationFrame(() => {
         wordmarkRef.current?.jumpIn();
       }));
@@ -2390,6 +2406,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
   }
 
   function openChat() {
+    setShowWinOptions(false);
     // Letters hop out, then chat opens
     wordmarkRef.current?.jumpOut().then(() => {
       setChatKey(k => k + 1);
@@ -2937,7 +2954,10 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         @media(max-width:720px){
           .gb-screen-frame{padding:36px 40px!important;border-radius:16px 16px 32px 16px!important}
           .gb-screen-wrapper{min-height:0!important}
-          .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;min-height:250px!important}
+          .gb-screen-content{font-size:15px!important;line-height:16px!important;padding:16px!important;height:220px!important;overflow-y:auto!important;text-shadow:none!important;scrollbar-width:thin;scrollbar-color:#3A4324 transparent}
+          .gb-screen-content::-webkit-scrollbar{width:4px}
+          .gb-screen-content::-webkit-scrollbar-thumb{background:#3A4324}
+          .gb-screen-content::-webkit-scrollbar-track{background:transparent}
           .gb-screen-content *{font-weight:500!important}
           .gb-screen-content .chat-q{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
           .gb-screen-content .chat-quip{font-size:15px!important;line-height:16px!important;font-weight:700!important;text-shadow:none!important}
@@ -3118,6 +3138,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           character={character}
           treeKey={treeKey}
           hideStart={isMobile}
+          showWinOptions={showWinOptions}
+          onShowWinOptions={() => setShowWinOptions(true)}
           warnBlink={warnBlink}
           quip={quip}
           showQuip={showQuip}
@@ -3125,7 +3147,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           toggleLocale={toggleLocale}
           wordmarkPlaceholderRef={placeholderRef}
           aiChatSlot={(mode === "aichat" || aiChatClosing) ? (
-            <ChatSection onClose={closeAiChat} extMessages={aiChatMessages} setExtMessages={setAiChatMessages} extLoading={aiChatLoading} setExtLoading={setAiChatLoading} initialQ={aiChatInitialQ}/>
+            <ChatSection onClose={closeAiChat} extMessages={aiChatMessages} setExtMessages={setAiChatMessages} extLoading={aiChatLoading} setExtLoading={setAiChatLoading} initialQ={aiChatInitialQ} compact/>
           ) : undefined}
           aboutSlot={(mode === "about" || aboutClosing) ? (
             <AboutSection onClose={closeAbout} openChat={openChat} initialOpenId={aboutInitialCard}/>

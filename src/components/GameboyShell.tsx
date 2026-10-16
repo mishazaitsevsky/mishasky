@@ -655,6 +655,8 @@ export interface GameboyShellProps {
   workSlot?: React.ReactNode;
   openAboutArticle?: (cardId: string) => void;
   hideStart?: boolean;
+  showWinOptions?: boolean;
+  onShowWinOptions?: () => void;
 }
 
 // ── Home-screen cartridges — match standard/brutal home page content & order ──
@@ -673,7 +675,7 @@ export default function GameboyShell({
   projects, mode, openProject, openChat, closeChat,
   cycleTheme, setMode, phase, twTyped, twDone,
   selected, selectOption, confirmSelection,
-  endState, tags = [], pathHistory = [], killNode = null, character = "default", treeKey = 0, warnBlink = false, quip = null, showQuip = false, locale = "en", toggleLocale, wordmarkPlaceholderRef, aiChatSlot, aboutSlot, workSlot, openAboutArticle, hideStart = false,
+  endState, tags = [], pathHistory = [], killNode = null, character = "default", treeKey = 0, warnBlink = false, quip = null, showQuip = false, locale = "en", toggleLocale, wordmarkPlaceholderRef, aiChatSlot, aboutSlot, workSlot, openAboutArticle, hideStart = false, showWinOptions = false, onShowWinOptions,
 }: GameboyShellProps) {
   const isChat = mode === "chat";
 
@@ -753,13 +755,21 @@ export default function GameboyShell({
                           {locale === "ja" ? (JA[`body_${endState.replace(/-/g,"_")}` as keyof typeof JA] ?? summarizePath(tags ?? [], endState)) : summarizePath(tags ?? [], endState)}
                         </div>
                         <div className="gb-tree-reveal"><TreeReveal key={treeKey} path={pathHistory ?? []} killNodeKey={killNode ?? null} endState={endState} theme="gameboy" hideStart={hideStart}/></div>
-                        <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"space-between",alignItems:"flex-end"}}>
-                          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                            {endState !== "win" && <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
-                            {endState === "win"  && <button onClick={openChat} style={{background:"none",border:"1px solid #3A4324",color:"#3A4324",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
+                        {showWinOptions && endState === "win" ? (
+                          <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap"}}>
+                            <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer"}}>Retry</button>
+                            <button onClick={() => setMode("aichat")} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer"}}>Chat</button>
+                            <a href="mailto:misha@mishasky.net" style={{background:"none",border:"1px solid #3A4324",color:"#3A4324",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer",textDecoration:"none",display:"inline-block"}}>Contact</a>
                           </div>
-                          <span onClick={openChat} style={{fontFamily:'"T-Star Mono",monospace',fontWeight:500,fontSize:16,color:"rgba(58,67,36,0.6)",textTransform:"uppercase",letterSpacing:"0.1em",cursor:"pointer"}}>Next →</span>
-                        </div>
+                        ) : (
+                          <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"space-between",alignItems:"flex-end"}}>
+                            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                              {endState !== "win" && <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
+                              {endState === "win"  && <button onClick={openChat} style={{background:"none",border:"1px solid #3A4324",color:"#3A4324",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,padding:"6px 16px",cursor:"pointer"}}>Again?</button>}
+                            </div>
+                            <span onClick={endState === "win" ? () => onShowWinOptions?.() : openChat} style={{fontFamily:'"T-Star Mono",monospace',fontWeight:500,fontSize:16,color:"rgba(58,67,36,0.6)",textTransform:"uppercase",letterSpacing:"0.1em",cursor:"pointer"}}>Next →</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </Screen>
