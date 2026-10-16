@@ -2909,6 +2909,10 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .resume-node-btn.open:hover{background:#1B6EF3 !important;color:#fff !important}
         .gb-card-btn{transition:transform 300ms cubic-bezier(0.5,0,0.85,1),filter 300ms cubic-bezier(0.5,0,0.85,1)}
         .gb-card-btn:hover{transform:translateY(-16px)}
+        @media(max-width:720px){
+          .gb-screen-frame{padding:32px 48px!important}
+          .gb-screen-content{font-size:15px!important;line-height:1.5!important}
+        }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
         ${isBrutalist ? `

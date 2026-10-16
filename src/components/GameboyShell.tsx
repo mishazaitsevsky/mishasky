@@ -234,7 +234,7 @@ function Screen({ children, overlay }: { children: React.ReactNode; overlay?: Re
   return (
     <div style={{ position:"relative", flex:1, minHeight:300 }}>
       {/* Real content */}
-      <div style={{ ...screenStyle }}>
+      <div className="gb-screen-content" style={{ ...screenStyle }}>
         {children}
       </div>
       {/* Ghost: offset copy at 15% for glass thickness illusion */}
@@ -713,7 +713,7 @@ export default function GameboyShell({
                   padding:"64px 128px",
                   position:"relative",
                   overflow:"hidden",
-                }}>
+                }} className="gb-screen-frame">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/icons/gb_screen_BG.png" alt="" aria-hidden="true" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",mixBlendMode:"screen",opacity:0.15,pointerEvents:"none",zIndex:10}}/>
                   <div style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
