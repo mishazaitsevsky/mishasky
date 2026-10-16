@@ -2910,10 +2910,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .gb-card-btn{transition:transform 300ms cubic-bezier(0.5,0,0.85,1),filter 300ms cubic-bezier(0.5,0,0.85,1)}
         .gb-card-btn:hover{transform:translateY(-16px)}
         @media(max-width:720px){
-          .gb-outer{padding:16px 16px 32px!important}
           .gb-screen-frame{padding:36px 40px!important;border-radius:16px 16px 32px 16px!important}
           .gb-screen-content{font-size:15px!important;line-height:1.5!important;padding:16px!important}
+          .gb-screen-content .chat-quip{font-size:15px!important;line-height:1.4!important}
           .gb-nav-body{line-height:18px!important}
+          .gb-next-btn{height:24px!important;font-size:15px!important;padding:0 8px!important}
+          .gb-next-btn svg{width:11px!important;height:11px!important}
+          .gb-tree-reveal{transform:scale(0.5);transform-origin:top left}
           .gb-ribbon-bar{height:4px!important;border-radius:0!important}
           .gb-ribbon-bars{gap:4px!important}
           .gb-ribbon-title{font-size:15px!important}

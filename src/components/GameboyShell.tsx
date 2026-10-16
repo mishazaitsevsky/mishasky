@@ -106,6 +106,7 @@ function NextButton({ selected, onConfirm }: { selected: boolean; onConfirm: () 
       onClick={selected ? onConfirm : undefined}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="gb-next-btn"
       style={{
         background: (selected && hovered) ? "#3A4324" : "transparent",
         border: "1px solid #3A4324",
