@@ -731,7 +731,7 @@ export default function GameboyShell({
                           if (!lineText) return null;
                           const isSel = selected===i;
                           return (
-                            <div key={i} style={{cursor:"pointer",padding:"2px 0",color:isSel?"#1a1a1a":"#3A4324"}}
+                            <div key={i} className={isSel ? "gb-sel-opt" : ""} style={{cursor:"pointer",padding:"2px 0",color:isSel?"#1a1a1a":"#3A4324"}}
                               onClick={() => selectOption(i as 0|1|2)}>
                               {isSel?`> ${lineText}`:lineText}
                               {i+1===twTyped.length-1&&!twDone&&<span className="tw-cursor"/>}
