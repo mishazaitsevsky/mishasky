@@ -2992,6 +2992,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .done-ctas .go,.done-ctas a{height:64px!important;font-size:17px!important;border-radius:999px!important}
           .done-ctas .nav-btn{height:64px!important;font-size:17px!important;padding:0 20px!important}
           .std-tree-reveal{zoom:0.5}
+          .quiz-screen-img{height:auto!important;padding:16px!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
@@ -3287,8 +3288,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     </div>
                     {/* Processing input — stays inside card area in brutal too */}
                     {phase==="processing"&&(
-                      <div className="chat-input-row">
-                        <input className="chat-input" placeholder="octopus" aria-label="Free response" autoFocus/>
+                      <div className="chat-input-row" style={{opacity:0.3,pointerEvents:"none"}}>
+                        <input className="chat-input" placeholder="octopus" aria-label="Free response" readOnly tabIndex={-1}/>
                         <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
                       </div>
                     )}
@@ -3308,7 +3309,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                             chatButtons={{ selected, onSelect: selectOption, onConfirm: confirmSelection }}
                           />
                         ) : phase==="processing" ? (
-                          <div style={{display:"flex",alignItems:"center",gap:24,opacity:0.35,pointerEvents:"none"}}>
+                          <div style={{display:"flex",alignItems:"center",gap:24,opacity:0.15,pointerEvents:"none"}}>
                             {(['A','B','C'] as const).map(l=>(
                               <button key={l} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#e8e8e8",color:"#aaa",height:56,width:56,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:'"T-Star Mono",monospace',fontSize:28,fontWeight:300,cursor:"default"}}>{l}</button>
                             ))}
@@ -3381,7 +3382,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <div style={{width:72,height:20,border:"1px solid #000",borderRadius:100,boxShadow:"inset 4px 4px 8px rgba(0,0,0,0.1)"}}/>
                       </div>
                       <div className="bc-eyebrow">INTERACTIVE QUIZ</div>
-                      <div className="bc-image" style={{background:"#889D58",aspectRatio:"unset",height:280,padding:0,display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
+                      <div className="bc-image quiz-screen-img" style={{background:"#889D58",aspectRatio:"unset",height:280,padding:0,display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
                         <div style={{fontFamily:'"T-Star Mono",monospace',fontWeight:700,fontSize:30,lineHeight:1.3,color:"#000",margin:0,padding:0}}>Is 0→1 right for you? Take the quiz!<span className="cursor-block"/></div>
                       </div>
                       <div style={{display:"flex",borderBottom:"1px solid #000",boxSizing:"border-box",flexShrink:0}}>
@@ -4346,8 +4347,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       </div>
                       {phase !== "done" && (
                         phase === "processing" ? (
-                          <div className="chat-input-row">
-                            <input className="chat-input" placeholder="octopus" aria-label="Free response" autoFocus/>
+                          <div className="chat-input-row" style={{opacity:0.3,pointerEvents:"none"}}>
+                            <input className="chat-input" placeholder="octopus" aria-label="Free response" readOnly tabIndex={-1}/>
                             <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
                           </div>
                         ) : (
