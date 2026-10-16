@@ -707,7 +707,7 @@ export default function GameboyShell({
                   <div className="gb-led-container" style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <div className="gb-power-indicator" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
                       <div className="gb-led"><LED blinking={warnBlink}/></div>
-                      <span className="gb-power-label" style={{display:"none",fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:10,color:"rgba(58,67,36,0.5)",writingMode:"vertical-rl",letterSpacing:"0.15em",textTransform:"uppercase"}}>POWER</span>
+                      <span className="gb-power-label" style={{display:"none",fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:10,color:"rgba(0,0,0,0.5)",writingMode:"vertical-rl",letterSpacing:"0.15em",textTransform:"uppercase"}}>POWER</span>
                     </div>
                   </div>
                   <div className="gb-quiz-ribbon" style={{position:"absolute",top:0,left:0,right:0,height:64,display:"flex",alignItems:"center",gap:12}}>
