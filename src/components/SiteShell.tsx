@@ -2912,6 +2912,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         @media(max-width:720px){
           .gb-screen-frame{padding:32px 48px!important}
           .gb-screen-content{font-size:15px!important;line-height:1.5!important}
+          .gb-ribbon-bar{height:4px!important}
+          .gb-ribbon-bars{gap:4px!important}
+          .gb-ribbon-title{font-size:15px!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */

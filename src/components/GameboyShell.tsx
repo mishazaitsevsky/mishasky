@@ -720,14 +720,14 @@ export default function GameboyShell({
                     <LED blinking={warnBlink}/>
                   </div>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:64,display:"flex",alignItems:"center",gap:12}}>
-                    <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
-                      <div style={{height:12,background:"#AD5089",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
-                      <div style={{height:12,background:"#383C83",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                    <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
+                      <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                      <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                     </div>
-                    <span style={{fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:30,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"0.08em",whiteSpace:"nowrap"}}>MISHA</span>
-                    <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
-                      <div style={{height:12,background:"#AD5089",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
-                      <div style={{height:12,background:"#383C83",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                    <span className="gb-ribbon-title" style={{fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:30,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"0.08em",whiteSpace:"nowrap"}}>MISHA</span>
+                    <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
+                      <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                      <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:2,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                     </div>
                   </div>
                   <Screen overlay={phase==="question" ? <NextButton selected={selected!==null} onConfirm={confirmSelection}/> : undefined}>
@@ -821,16 +821,16 @@ export default function GameboyShell({
             <>
               {/* Header — Wordmark + Stripes */}
               <div style={{display:"flex",alignItems:"center",gap:16,padding:"32px 0 0"}}>
-                <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
-                  <div style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
-                  <div style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
+                  <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                  <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                 </div>
                 <div style={{padding:"0 16px",cursor:"pointer"}} onClick={() => setMode("home")}>
                   <WordmarkPlaceholder innerRef={wordmarkPlaceholderRef}/>
                 </div>
-                <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
-                  <div style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
-                  <div style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                <div className="gb-ribbon-bars" style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
+                  <div className="gb-ribbon-bar" style={{height:12,background:"#AD5089",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
+                  <div className="gb-ribbon-bar" style={{height:12,background:"#383C83",borderRadius:0,mixBlendMode:"multiply" as React.CSSProperties["mixBlendMode"]}}/>
                 </div>
               </div>
               {/* Content */}
@@ -838,18 +838,30 @@ export default function GameboyShell({
                 {/* Nav row */}
                 <div style={{display:"flex",alignItems:"flex-start",gap:16,flexWrap:"wrap"}}>
                   {/* Housing container for circle buttons — same conic-gradient style as ControlPill */}
-                  <div style={{
-                    background:"conic-gradient(from 315deg, rgba(0,0,0,0.15) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 30%, rgba(255,255,255,0.36) 42%, rgba(255,255,255,1) 55%, rgba(255,255,255,0) 69%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.15) 100%)",
-                    borderRadius:100, padding:1, display:"inline-flex",
-                  }}>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
                     <div style={{
-                      background:"linear-gradient(160deg, #D9D4CF 0%, #C4C0BB 100%)",
-                      borderRadius:99, padding:"8px 8px",
-                      display:"flex", alignItems:"center", gap:16, position:"relative",
+                      background:"conic-gradient(from 315deg, rgba(0,0,0,0.15) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 30%, rgba(255,255,255,0.36) 42%, rgba(255,255,255,1) 55%, rgba(255,255,255,0) 69%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.15) 100%)",
+                      borderRadius:100, padding:1, display:"inline-flex",
                     }}>
-                      <GameboyButton sublabel="Quiz" icon={<Icon name="quiz" size={24}/>} onClick={openChat}/>
-                      <GameboyButton sublabel="About" icon={<Icon name="about" size={22}/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")}/>
-                      <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size={22}/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")}/>
+                      <div style={{
+                        background:"linear-gradient(160deg, #D9D4CF 0%, #C4C0BB 100%)",
+                        borderRadius:99, padding:"8px 8px",
+                        display:"flex", alignItems:"center", gap:16, position:"relative",
+                      }}>
+                        <GameboyButton sublabel="Quiz" icon={<Icon name="quiz" size={24}/>} onClick={openChat} hideLabel/>
+                        <GameboyButton sublabel="About" icon={<Icon name="about" size={22}/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")} hideLabel/>
+                        <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size={22}/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")} hideLabel/>
+                      </div>
+                    </div>
+                    {/* Icons row below housing */}
+                    <div style={{display:"flex",gap:16,paddingLeft:9,paddingRight:9,marginTop:8}}>
+                      {[
+                        {icon:<Icon name="quiz" size={24}/>, label:"Quiz"},
+                        {icon:<Icon name="about" size={22}/>, label:"About"},
+                        {icon:<Icon name="chat" size={22}/>, label:"AI Chat"},
+                      ].map(({icon,label})=>(
+                        <div key={label} style={{width:64,display:"flex",justifyContent:"center",color:"#383C83"}}>{icon}</div>
+                      ))}
                     </div>
                   </div>
                   <div style={{marginTop:16}}><ControlPill sublabel="Theme" onClick={cycleTheme}/></div>
