@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Misha Zaitsevsky — Design Technologist",
-  description: "Portfolio of Misha Zaitsevsky — design systems, product design, and agentic work.",
+  title: "Misha Sky — 0→1 Product / Ai & I",
+  description: "Portfolio of Misha Sky — 0→1 product design, AI, and building.",
 };
 
 export const viewport: Viewport = {
