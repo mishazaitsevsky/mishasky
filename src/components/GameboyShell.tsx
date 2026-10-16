@@ -113,7 +113,7 @@ function NextButton({ selected, onConfirm }: { selected: boolean; onConfirm: () 
         fontFamily:'"T-Star Mono",monospace',
         fontSize:30, fontWeight:300,
         color: (selected && hovered) ? "#889D58" : "#3A4324",
-        opacity: selected ? 1 : 0.25,
+        opacity: selected ? 1 : 0.5,
         cursor: selected ? "pointer" : "default",
         height:48, lineHeight:"48px",
       padding:"0 16px",
@@ -704,7 +704,7 @@ export default function GameboyShell({
                   overflow:"hidden",
                 }} className="gb-screen-frame">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icons/gb_screen_BG.png" alt="" aria-hidden="true" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",mixBlendMode:"screen",opacity:0.15,pointerEvents:"none",zIndex:10}}/>
+                  <img src="/icons/gb_screen_BG.png" alt="" aria-hidden="true" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",mixBlendMode:"screen",opacity:0.11,pointerEvents:"none",zIndex:10}}/>
                   <div className="gb-led-container" style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <div className="gb-power-indicator" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
                       <div className="gb-led"><LED blinking={warnBlink}/></div>
