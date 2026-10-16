@@ -676,7 +676,7 @@ export default function GameboyShell({
   const isChat = mode === "chat";
 
   return (
-    <div style={{minHeight:"100vh",background: isChat ? "#E8E4DF" : "#fff",padding:"32px 36px 64px",boxSizing:"border-box",fontFamily:'"T-Star Mono",monospace'}}>
+    <div className="gb-outer" style={{minHeight:"100vh",background: isChat ? "#E8E4DF" : "#fff",padding:"32px 36px 64px",boxSizing:"border-box",fontFamily:'"T-Star Mono",monospace'}}>
       <div style={{maxWidth:1220,margin:"0 auto"}}>
         {/* drop-shadow wrapper traces the combined alpha of TopBar + body */}
         <div style={{filter:"drop-shadow(32px 32px 64px rgba(0,0,0,0.5))"}}>
@@ -707,7 +707,7 @@ export default function GameboyShell({
                   <div className="gb-led-container" style={{position:"absolute",left:0,top:0,bottom:0,width:128,display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <div className="gb-power-indicator" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
                       <div className="gb-led"><LED blinking={warnBlink}/></div>
-                      <span className="gb-power-label" style={{display:"none",fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:10,color:"rgba(0,0,0,0.5)",writingMode:"vertical-rl",letterSpacing:"0.15em",textTransform:"uppercase"}}>POWER</span>
+                      <span className="gb-power-label" style={{display:"none",fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:10,color:"rgba(255,255,255,0.6)",writingMode:"vertical-rl",letterSpacing:"0.15em",textTransform:"uppercase"}}>POWER</span>
                     </div>
                   </div>
                   <div className="gb-quiz-ribbon" style={{position:"absolute",top:0,left:0,right:0,height:64,display:"flex",alignItems:"center",gap:12}}>
@@ -859,7 +859,7 @@ export default function GameboyShell({
                   {/* Title + body lockup */}
                   <div style={{flex:1, display:"flex", flexDirection:"column", paddingLeft:8, minWidth:160}}>
                     <div style={{height:64, display:"flex", alignItems:"center", paddingTop:8}}>
-                      <p style={{fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:14,color:"#D9D4CF",lineHeight:1.4,margin:0,textShadow:"0.75px 0.75px 1.5px #fff, 0.75px 0.75px 1px rgba(0,0,0,0.26), -0.5px -0.5px 0.75px #000"}}>
+                      <p className="gb-nav-body" style={{fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:14,color:"#D9D4CF",lineHeight:1.4,margin:0,textShadow:"0.75px 0.75px 1.5px #fff, 0.75px 0.75px 1px rgba(0,0,0,0.26), -0.5px -0.5px 0.75px #000"}}>
                         Can Ai &amp; I replace a team? Learn{" "}
                         <button style={{color:"#D9D4CF",textDecoration:"underline",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:"inherit",fontWeight:"inherit",padding:0,textShadow:"inherit"}} onClick={() => {}}>how I built this site</button>
                         , and why Ai can have taste.
