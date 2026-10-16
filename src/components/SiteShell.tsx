@@ -2910,7 +2910,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .gb-card-btn{transition:transform 300ms cubic-bezier(0.5,0,0.85,1),filter 300ms cubic-bezier(0.5,0,0.85,1)}
         .gb-card-btn:hover{transform:translateY(-16px)}
         @media(max-width:720px){
-          .gb-screen-frame{padding:32px 48px!important}
+          .gb-screen-frame{padding:16px 48px!important;border-radius:16px 16px 16px 32px!important}
           .gb-screen-content{font-size:15px!important;line-height:1.5!important}
           .gb-ribbon-bar{height:4px!important;border-radius:0!important}
           .gb-ribbon-bars{gap:4px!important}
@@ -2920,7 +2920,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .gb-topbar-corner{height:40px!important;width:32px!important}
           .gb-topbar-pill{height:20px!important}
           .gb-led-container{width:48px!important}
-          .gb-quiz-ribbon{height:40px!important}
+          .gb-led{transform:scale(0.67);transform-origin:center}
+          .gb-power-label{display:block!important}
+          .gb-quiz-ribbon{height:36px!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
