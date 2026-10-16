@@ -1190,17 +1190,6 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
         scrollbarWidth:"thin",
         scrollbarColor:"rgba(0,0,0,0.2) transparent",
       }}>
-        {messages.length === 0 && !loading && (
-          /* Placeholder: MISHA logo as first response bubble */
-          <div style={{
-            background:"#fff", borderRadius:"0px 41px 41px 41px",
-            display:"flex", alignItems:"center", justifyContent:"center",
-            padding:"16px 24px", minHeight:80, alignSelf:"flex-start",
-            maxWidth:280,
-          }}>
-            <MishaSpinner running={false} color="#1B6EF3"/>
-          </div>
-        )}
         {loading && messages.length === 0 && (
           <div style={{
             background:"#fff", borderRadius:"0px 41px 41px 41px",
