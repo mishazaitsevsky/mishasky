@@ -2994,6 +2994,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .std-tree-reveal{zoom:0.5}
           .quiz-screen-img{height:auto!important;padding:16px!important}
           .bc-faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
+          .bc-cta{font-size:16px!important;font-weight:500!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
