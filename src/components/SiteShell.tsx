@@ -1719,7 +1719,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
             <div style={{flex:1, display:"flex", flexDirection:"column", justifyContent:"center",
               padding: open ? "12px 0 16px" : "0", gap:4,
               transition:"padding 250ms ease"}}>
-              <span style={{fontWeight:400}}>{q}</span>
+              <span className="bc-faq-q" style={{fontWeight:400}}>{q}</span>
               {/* Grid rows trick — smooth height without touching BrutalShadow transform */}
               <div style={{
                 display:"grid",
@@ -2993,6 +2993,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .done-ctas .nav-btn{height:64px!important;font-size:17px!important;padding:0 20px!important}
           .std-tree-reveal{zoom:0.5}
           .quiz-screen-img{height:auto!important;padding:16px!important}
+          .bc-faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
@@ -3286,13 +3287,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         )}
                       </div>
                     </div>
-                    {/* Processing input — stays inside card area in brutal too */}
-                    {phase==="processing"&&(
-                      <div className="chat-input-row" style={{opacity:0.3,pointerEvents:"none"}}>
-                        <input className="chat-input" placeholder="octopus" aria-label="Free response" readOnly tabIndex={-1}/>
-                        <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
-                      </div>
-                    )}
+                    {/* No decorative input during processing — keeps layout clean */}
                   </div>
                 </div>
 
@@ -4346,12 +4341,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         </div>
                       </div>
                       {phase !== "done" && (
-                        phase === "processing" ? (
-                          <div className="chat-input-row" style={{opacity:0.3,pointerEvents:"none"}}>
-                            <input className="chat-input" placeholder="octopus" aria-label="Free response" readOnly tabIndex={-1}/>
-                            <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
-                          </div>
-                        ) : (
+                        phase === "processing" ? null : (
                           <div className="btn-row">
                             {([0,1,2] as const).map(i => {
                               let c = "abc";
