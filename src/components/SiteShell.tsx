@@ -876,7 +876,7 @@ function AboutCard({ card, defaultOpen, onPlay }: { card: typeof ABOUT_CARDS[0];
     : "4px 4px 16px rgba(0,0,0,0.16)";
 
   return (
-    <div id={`about-card-${card.id}`} style={{
+    <div id={`about-card-${card.id}`} className="about-card-wrap" style={{
       background: card.bg,
       borderRadius: 24,
       padding: 32,
@@ -1355,14 +1355,15 @@ function ResumeInlineCard() {
         <div style={{ display:"flex", alignItems:"center", gap:16 }}>
           {/* See More pill */}
           <button onClick={() => setOpen(true)} style={{ display:"flex", alignItems:"center", gap:10, padding:"0 16px", height:40, borderRadius:100, background:"#FFD132", border:"1px solid #fff", boxShadow:shadow, cursor:"pointer", fontFamily:font, fontSize:15, fontWeight:700, color:"#000" }}>
-            See Resumé
+            Resumé
             <img src="/icons/resume-see-more-arrow.svg" width={15} height={13} alt="" style={{ display:"block" }}/>
           </button>
-          {/* Share icon — right-aligned */}
+          {/* Download icon — right-aligned */}
           <div style={{ flex:1, display:"flex", justifyContent:"flex-end" }}>
-            <button style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <img src="/icons/resume-download.svg" width={17} height={16} alt="Share" style={{ display:"block" }}/>
-            </button>
+            <a href="/misha-sky-resume.html" download="Misha-Sky-Resume.html"
+              style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none" }}>
+              <img src="/icons/resume-download.svg" width={17} height={16} alt="Download resume" style={{ display:"block" }}/>
+            </a>
           </div>
         </div>
       </div>
@@ -1449,10 +1450,10 @@ function ResumeInlineCard() {
           Close
           <img src="/icons/resume-close-arrow.svg" width={15} height={13} alt="" style={{ display:"block" }}/>
         </button>
-        <button style={{ display:"flex", alignItems:"center", gap:10, padding:"0 16px", height:40, borderRadius:100, background:"#fff", border:"1px solid #FFD132", boxShadow:shadow, cursor:"pointer", fontFamily:font, fontSize:15, fontWeight:700, color:"#000" }}>
-          Download
-          <img src="/icons/resume-download.svg" width={17} height={16} alt="" style={{ display:"block" }}/>
-        </button>
+        <a href="/misha-sky-resume.html" download="Misha-Sky-Resume.html"
+          style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none" }}>
+          <img src="/icons/resume-download.svg" width={17} height={16} alt="Download resume" style={{ display:"block" }}/>
+        </a>
       </div>
     </div>
   );
@@ -2995,6 +2996,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .quiz-screen-img{height:auto!important;padding:16px!important}
           .bc-faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
           .bc-cta{font-size:16px!important;font-weight:500!important}
+          .about-card-wrap{background:transparent!important;border:none!important;box-shadow:none!important;border-radius:0!important;padding:0 0 20px!important;margin-bottom:0!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
