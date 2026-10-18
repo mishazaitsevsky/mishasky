@@ -1360,7 +1360,7 @@ function ResumeInlineCard() {
           </button>
           {/* Download icon — right-aligned */}
           <div style={{ flex:1, display:"flex", justifyContent:"flex-end" }}>
-            <a href="/misha-sky-resume.html" download="Misha-Sky-Resume.html"
+            <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
               style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none" }}>
               <img src="/icons/resume-download.svg" width={17} height={16} alt="Download resume" style={{ display:"block" }}/>
             </a>
@@ -1450,7 +1450,7 @@ function ResumeInlineCard() {
           Close
           <img src="/icons/resume-close-arrow.svg" width={15} height={13} alt="" style={{ display:"block" }}/>
         </button>
-        <a href="/misha-sky-resume.html" download="Misha-Sky-Resume.html"
+        <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
           style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none" }}>
           <img src="/icons/resume-download.svg" width={17} height={16} alt="Download resume" style={{ display:"block" }}/>
         </a>
@@ -1946,7 +1946,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
 
 function AboutSection({ onClose, openChat, initialOpenId }: { onClose: () => void; openChat: () => void; initialOpenId?: string }) {
   return (
-    <div style={{ fontFamily:'"T-Star Mono",monospace', padding:"32px 32px 48px", position:"relative" }}>
+    <div className="about-section-body" style={{ fontFamily:'"T-Star Mono",monospace', padding:"32px 32px 48px", position:"relative" }}>
       {/* Close button — top right of card */}
       <button
         onClick={onClose}
@@ -1977,7 +1977,7 @@ function AboutSection({ onClose, openChat, initialOpenId }: { onClose: () => voi
         </div>
 
         {/* Photo — fixed size matching text block height */}
-        <div style={{flexShrink:0, width:100, height:100}}>
+        <div className="about-section-photo" style={{flexShrink:0, width:100, height:100}}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/About/mishasky.jpeg"
@@ -2176,7 +2176,7 @@ function ChatSection({ onClose, extMessages, setExtMessages, extLoading, setExtL
           </p>
         </div>
         {/* Photo */}
-        <div style={{flexShrink:0, width:100, height:100}}>
+        <div className="chat-section-photo" style={{flexShrink:0, width:100, height:100}}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/About/mishasky.jpeg" alt="Misha Sky"
             style={{width:"100%", height:"100%", borderRadius:"50%", objectFit:"cover", display:"block"}}
@@ -2996,9 +2996,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .quiz-screen-img{height:auto!important;padding:16px!important}
           .bc-faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
           .bc-cta{font-size:16px!important;font-weight:500!important}
-          .about-card-wrap{background:transparent!important;border:none!important;box-shadow:none!important;border-radius:0!important;padding:0 0 20px!important;margin-bottom:0!important}
           .faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
           .gb-about-slot{background:transparent!important;border-radius:0!important;overflow:visible!important}
+          .about-section-photo{display:none!important}
+          .chat-section-photo{display:none!important}
+          .about-section-body{padding-left:0!important;padding-right:0!important}
+          .about-section-body .proj-close-btn{display:none!important}
+          .about-section-body .proj-close-btn{display:none!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
@@ -3627,6 +3631,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 <nav className="nav-btns-right" aria-label="Site navigation">
                   <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={false} onAboutToggle={closeAbout}/>
                 </nav>
+                {mode !== "about" && !(isMobile && mode === "aichat") && (
                 <div className="hero-text">
                   <h1 className="headline">0→1 PRODUCT / Ai &amp; I</h1>
                   <p className="hero-body" style={{color:"#111"}}>
@@ -3637,6 +3642,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     , and why Ai can have taste.
                   </p>
                 </div>
+                )}
               </div>
             )}
           </div>
@@ -3648,7 +3654,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         <div className="w">
           <div
             className={`about${aboutClosing ? " proj-card-out" : " proj-card-in"}`}
-            style={isBrutalist ? {outline:"1px solid #000",boxSizing:"border-box"} : {borderRadius:32, background:"#f3f3f7", padding:0, overflow:"hidden"}}
+            style={isBrutalist ? {outline:"1px solid #000",boxSizing:"border-box"} : {background:"transparent", padding:0, margin:0}}
           >
             {isBrutalist
               ? <BrutalAboutSection onClose={closeAbout} openChat={openChat} initialOpenId={aboutInitialCard}/>
@@ -3669,6 +3675,22 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
               ? <BrutalChatSection onClose={closeAiChat} extMessages={aiChatMessages} setExtMessages={setAiChatMessages} extLoading={aiChatLoading} setExtLoading={setAiChatLoading} initialQ={aiChatInitialQ}/>
               : <ChatSection onClose={closeAiChat} extMessages={aiChatMessages} setExtMessages={setAiChatMessages} extLoading={aiChatLoading} setExtLoading={setAiChatLoading} initialQ={aiChatInitialQ}/>
             }
+          </div>
+        </div>
+      )}
+
+      {/* Page title swapped below chat on mobile */}
+      {isMobile && mode === "aichat" && !aiChatClosing && (
+        <div className="w">
+          <div className="hero-text">
+            <h1 className="headline">0→1 PRODUCT / Ai &amp; I</h1>
+            <p className="hero-body" style={{color:"#111"}}>
+              Can Ai &amp; I replace a team? Learn{" "}
+              <button className="hero-link" onClick={() => { setAboutInitialCard("zero-to-one"); setMode("about"); setTimeout(()=>document.getElementById("about-card-zero-to-one")?.scrollIntoView({behavior:"smooth",block:"start"}),350); }}>
+                how I built this site
+              </button>
+              , and why Ai can have taste.
+            </p>
           </div>
         </div>
       )}
