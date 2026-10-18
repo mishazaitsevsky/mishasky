@@ -1012,7 +1012,7 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
         boxShadow: shadow, cursor:"pointer",
         userSelect:"none",
       }} onClick={() => setOpen(o => !o)}>
-        <span style={{fontFamily:'"T-Star Mono",monospace', fontWeight:300, fontSize:30, lineHeight:"39px", color:"#000"}}>{q}</span>
+        <span className="faq-q" style={{fontFamily:'"T-Star Mono",monospace', fontWeight:300, fontSize:30, lineHeight:"39px", color:"#000"}}>{q}</span>
         <ChevronIcon open={open}/>
       </div>
     );
@@ -1032,7 +1032,7 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
       transition:"background 0.15s, border-radius 0.15s",
     }} onClick={() => setOpen(o => !o)}>
       <div style={{display:"flex", width:"100%", alignItems: open ? "flex-start" : "center", justifyContent:"space-between", gap:16}}>
-        <span style={{fontFamily:'"T-Star Mono",monospace', fontWeight:300, fontSize:30, lineHeight:"39px", color:"#000", flex:1}}>{q}</span>
+        <span className="faq-q" style={{fontFamily:'"T-Star Mono",monospace', fontWeight:300, fontSize:30, lineHeight:"39px", color:"#000", flex:1}}>{q}</span>
         <div style={{paddingTop: open ? 8 : 0, flexShrink:0}}><ChevronIcon open={open}/></div>
       </div>
       {open && (
@@ -2997,6 +2997,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .bc-faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
           .bc-cta{font-size:16px!important;font-weight:500!important}
           .about-card-wrap{background:transparent!important;border:none!important;box-shadow:none!important;border-radius:0!important;padding:0 0 20px!important;margin-bottom:0!important}
+          .faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
+          .gb-about-slot{background:transparent!important;border-radius:0!important;overflow:visible!important}
         }
 
         /* ── BRUTALIST PAGE LAYOUT ── same border rule as card ── */
@@ -3954,7 +3956,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           </button>
 
           {/* ── Row 2: Claude AI Chat ── */}
-          <button className="card" style={{background:"#f3f3f7",color:"#111"}}>
+          <div className="card" style={{background:"#f3f3f7",color:"#111"}}>
             <div className="card-top" style={{background:"#f3f3f7",color:"#111"}}>
               <span className="eyebrow" style={{color:"#111",borderBottomColor:"rgba(0,0,0,0.25)"}}>POWERED BY CLAUDE AI</span>
               <h2 className="headline">WWMD. What Would Misha Do (or say)?</h2>
@@ -3978,7 +3980,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 </button>
               </div>
             </div>
-          </button>
+          </div>
 
           {/* ── Row 2: Design · Prototype · Build ── */}
           <button className="card" onClick={()=>{setAboutInitialCard("zero-to-one");setMode("about");setTimeout(()=>document.getElementById("about-card-zero-to-one")?.scrollIntoView({behavior:"smooth",block:"start"}),350);}} style={{background:"#111",color:"#fff",position:"relative",overflow:"hidden"}}>

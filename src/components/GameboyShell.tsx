@@ -870,8 +870,12 @@ export default function GameboyShell({
                     </div>
                   </div>
                   <div style={{marginTop:16}}><ControlPill sublabel="Theme" onClick={cycleTheme}/></div>
-                  {/* Title + body lockup */}
-                  <div style={{flex:1, display:"flex", flexDirection:"column", paddingLeft:8, minWidth:160}}>
+                  {/* Title + body lockup — hidden when about is open */}
+                  <div style={{
+                    flex:1,
+                    display: mode === "about" ? "none" : "flex",
+                    flexDirection:"column", paddingLeft:8, minWidth:160,
+                  }}>
                     <div style={{height:64, display:"flex", alignItems:"center", paddingTop:8}}>
                       <p className="gb-nav-body" style={{fontFamily:'"T-Star Mono",monospace',fontWeight:300,fontSize:14,color:"#D9D4CF",lineHeight:1.4,margin:0,textShadow:"0.75px 0.75px 1.5px #fff, 0.75px 0.75px 1px rgba(0,0,0,0.26), -0.5px -0.5px 0.75px #000"}}>
                         Can Ai &amp; I replace a team? Learn{" "}
@@ -893,7 +897,7 @@ export default function GameboyShell({
                 )}
                 {/* About slot */}
                 {aboutSlot && (
-                  <div style={{background:"#f3f3f7", borderRadius:16, overflow:"hidden"}}>
+                  <div className="gb-about-slot" style={{background:"transparent", borderRadius:0, overflow:"visible"}}>
                     {aboutSlot}
                   </div>
                 )}
