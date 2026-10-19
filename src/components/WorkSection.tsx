@@ -201,7 +201,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
                     alt=""
                     fill
                     sizes="(max-width:756px) 100vw,(max-width:960px) 50vw,33vw"
-                    style={{ objectFit: "cover", objectPosition: "center top", opacity: 0.5 }}
+                    style={{ objectFit: "cover", objectPosition: "center top", opacity: 1 }}
                   />
                   <div style={{
                     position: "absolute", inset: 0, zIndex: 1,
@@ -253,12 +253,12 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
                 </>
               )}
               <div style={{ flex: 1, position: "relative", zIndex: 2, maxWidth: 750 }}>
-                <Eyebrow label={isAmazon ? "UNDER CONSTRUCTION" : p.category} tc={cfg.tc} />
-                <Headline tc={cfg.tc}>{isAmazon ? "AMAZON NOVA" : p.title}</Headline>
+                <Eyebrow label={p.category} tc={cfg.tc} />
+                <Headline tc={cfg.tc}>{p.title}</Headline>
                 <Body tc={cfg.tc}>
-                  {isAmazon ? "Chat, Reasoning, Nova Builder's Studio And More" : p.shortDesc}
+                  {p.shortDesc}
                 </Body>
-                {isAmazon || isIconAgent || p.slug === "shrapnel"
+                {isIconAgent || p.slug === "shrapnel"
                   ? <YellowBtn disabled>COMING SOON</YellowBtn>
                   : <YellowBtn onClick={() => openProject(p.slug)}>See More <ArrowRight size={14} /></YellowBtn>
                 }
@@ -267,7 +267,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
                 <div style={{
                   width: 200, height: 152, position: "relative", flexShrink: 0,
                   borderRadius: 16, overflow: "hidden",
-                  opacity: isAmazon ? 0.5 : 1,
+                  opacity: 1,
                 }}>
                   <Image src={thumb} alt={p.client} fill sizes="200px" style={{
                     objectFit: p.thumbContain ? "contain" : "cover",
@@ -421,7 +421,7 @@ export function BrutalProjectCards({ openProject }: { openProject: (slug: string
   return (
     <>
       {workProjects.map((p, i) => {
-        const isComingSoon = p.slug === "amazon" || p.slug === "icon-agent" || p.slug === "shrapnel";
+        const isComingSoon = p.slug === "icon-agent" || p.slug === "shrapnel";
         return (
           <React.Fragment key={p.slug}>
             {i > 0 && <div className="bc-spacer" />}
@@ -430,10 +430,10 @@ export function BrutalProjectCards({ openProject }: { openProject: (slug: string
                 <div className="bc-strip-l" />
                 <div className="bc-col">
                   <div className="bc-spacer" />
-                  <div className="bc-eyebrow">{p.slug === "amazon" ? "UNDER CONSTRUCTION" : p.category}</div>
-                  <div className="bc-title">{p.slug === "amazon" ? "AMAZON NOVA" : p.title}</div>
+                  <div className="bc-eyebrow">{p.category}</div>
+                  <div className="bc-title">{p.title}</div>
                   <div style={{ borderBottom: "1px solid #000", fontSize: 13, fontWeight: 300, lineHeight: 1.5, padding: "8px 0" }}>
-                    {p.slug === "amazon" ? "Chat, Reasoning, Nova Builder's Studio And More" : p.shortDesc}
+                    {p.shortDesc}
                   </div>
                   <div className="bc-spacer" />
                   <div className="bc-cta-wrap">
@@ -529,14 +529,14 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                     <div className="bc-strip-l" />
                     <div className="bc-col">
                       <div className="bc-spacer" />
-                      <div className="bc-eyebrow">{isAmazon ? "UNDER CONSTRUCTION" : p.category}</div>
-                      <div className="bc-title">{isAmazon ? "AMAZON NOVA" : p.title}</div>
+                      <div className="bc-eyebrow">{p.category}</div>
+                      <div className="bc-title">{p.title}</div>
                       <div style={{ borderBottom: "1px solid #000", fontSize: 13, fontWeight: 300, lineHeight: 1.5, padding: "8px 0" }}>
-                        {isAmazon ? "Chat, Reasoning, Nova Builder's Studio And More" : p.shortDesc}
+                        {p.shortDesc}
                       </div>
                       <div className="bc-spacer" />
                       <div className="bc-cta-wrap">
-                        {isAmazon ? (
+                        {p.slug === "icon-agent" || p.slug === "shrapnel" ? (
                           <div style={{ opacity: 0.5, cursor: "not-allowed" }}>
                             <BrutalShadow block>
                               <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",width:"100%" }}>COMING SOON</div>
@@ -795,7 +795,7 @@ export function WorkProjectCards({ openProject }: { openProject: (slug: string) 
               <>
                 <Image src="/images/amazon/nbs1.png" alt="" fill
                   sizes="(max-width:756px) 100vw,(max-width:960px) 50vw,33vw"
-                  style={{ objectFit:"cover", objectPosition:"center top", opacity:0.5 }}
+                    style={{ objectFit:"cover", objectPosition:"center top", opacity: 1 }}
                 />
                 <div style={{ position:"absolute", inset:0, zIndex:1,
                   background:"linear-gradient(to right, rgba(177,49,255,0.9) 0%, rgba(255,53,120,0.4) 100%)" }} />
@@ -827,12 +827,12 @@ export function WorkProjectCards({ openProject }: { openProject: (slug: string) 
               </>
             )}
             <div style={{ flex:1, position:"relative", zIndex:2, maxWidth:750 }}>
-              <Eyebrow label={isAmazon ? "UNDER CONSTRUCTION" : p.category} tc={cfg.tc} />
-              <Headline tc={cfg.tc}>{isAmazon ? "AMAZON NOVA" : p.title}</Headline>
+              <Eyebrow label={p.category} tc={cfg.tc} />
+              <Headline tc={cfg.tc}>{p.title}</Headline>
               <Body tc={cfg.tc}>
-                {isAmazon ? "Chat, Reasoning, Nova Builder's Studio And More" : p.shortDesc}
+                {p.shortDesc}
               </Body>
-              {isAmazon || isIconAgent || p.slug === "shrapnel"
+              {isIconAgent || p.slug === "shrapnel"
                 ? <YellowBtn disabled>COMING SOON</YellowBtn>
                 : <YellowBtn onClick={() => openProject(p.slug)}>See More <ArrowRight size={14} /></YellowBtn>
               }
