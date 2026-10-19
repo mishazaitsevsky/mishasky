@@ -4592,7 +4592,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 ) : (
                   // Default single card
                   <div className={`proj-card ${projectClosing ? "proj-card-out" : "proj-card-in"}`}
-                    style={{ background: dark ? "#111" : "#F7F7F7", display:"flex", flexDirection:"column", alignItems:"center" }}>
+                    style={{ background: "#F7F7F7", display:"flex", flexDirection:"column", alignItems:"center" }}>
                     <button className="proj-close-btn" onClick={closeProject} aria-label="Back to all work">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
@@ -4601,19 +4601,19 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     <div style={{ width:"100%", maxWidth:880, margin:"0 auto" }}>
                       <span style={{
                         fontSize:16,letterSpacing:".14em",textTransform:"uppercase",
-                        fontWeight:700,color:dark?"rgba(255,255,255,0.5)":"rgba(0,0,0,0.5)",
+                        fontWeight:700,color:"rgba(0,0,0,0.5)",
                         fontFamily:'"T-Star Mono",monospace',
-                        paddingBottom:6,borderBottom:`1px solid ${dark?"rgba(255,255,255,0.15)":"rgba(0,0,0,0.12)"}`,
+                        paddingBottom:6,borderBottom:"1px solid rgba(0,0,0,0.12)",
                         display:"inline-block",marginBottom:8,
                       }}>{p.category}</span>
                       <h1 style={{
                         fontSize:30,fontWeight:700,lineHeight:1.2,letterSpacing:"-.01em",
                         fontFamily:'"T-Star Mono",monospace',
-                        color:dark?"#fff":"#111",marginBottom:12,
+                        color:"#111",marginBottom:12,
                       }}>{p.title}</h1>
                       <p style={{
                         fontSize:16,lineHeight:1.8,
-                        color:dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.6)",
+                        color:"rgba(0,0,0,0.6)",
                         fontWeight:400,fontFamily:'"T-Star Mono",monospace',
                       }}>{p.shortDesc}</p>
                     </div>
