@@ -2993,7 +2993,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .done-ctas .go,.done-ctas a{height:64px!important;font-size:17px!important;border-radius:999px!important}
           .done-ctas .nav-btn{height:64px!important;font-size:17px!important;padding:0 20px!important}
           .std-tree-reveal{zoom:0.5}
-          .quiz-screen-img{height:auto!important;padding:16px!important}
+          .quiz-screen-img{min-height:240px!important;padding:16px!important}
           .bc-faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
           .bc-cta{font-size:16px!important;font-weight:500!important}
           .faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
@@ -3386,12 +3386,12 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <div style={{width:72,height:20,border:"1px solid #000",borderRadius:100,boxShadow:"inset 4px 4px 8px rgba(0,0,0,0.1)"}}/>
                       </div>
                       <div className="bc-eyebrow">INTERACTIVE QUIZ</div>
-                      <div className="bc-image quiz-screen-img" style={{background:"#889D58",aspectRatio:"unset",height:280,padding:0,display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
+                      <div className="bc-image quiz-screen-img" style={{background:"#889D58",aspectRatio:"1/1",padding:0,display:"flex",flexDirection:"column",justifyContent:"flex-start",borderBottom:"1px solid #000",boxSizing:"border-box"}}>
                         <div style={{fontFamily:'"T-Star Mono",monospace',fontWeight:700,fontSize:30,lineHeight:1.3,color:"#000",margin:0,padding:0}}>Is 0→1 right for you? Take the quiz!<span className="cursor-block"/></div>
                       </div>
                       <div style={{display:"flex",borderBottom:"1px solid #000",boxSizing:"border-box",flexShrink:0}}>
-                        <div style={{flex:1,padding:"0 24px",height:64,display:"flex",alignItems:"center",fontFamily:'"T-Star Mono",monospace',fontWeight:400,fontSize:32,color:"#000"}}>PLAY THIS</div>
-                        <div style={{width:64,borderLeft:"1px solid #000",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:'"T-Star Mono",monospace',fontWeight:400,fontSize:32,color:"#5E619B"}}>?</div>
+                        <div style={{flex:1,padding:"0 24px",height:64,display:"flex",alignItems:"center",fontFamily:'"T-Star Mono",monospace',fontWeight:400,fontSize:32,color:"#000"}}>QUIZ</div>
+                        <div style={{width:64,borderLeft:"1px solid #000",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:'"T-Star Mono",monospace',fontWeight:400,fontSize:32,color:"#000"}}>i</div>
                       </div>
                       <div style={{display:"flex",flexShrink:0,overflow:"visible",marginLeft:-16,paddingRight:16,marginTop:-16,gap:0}}>
                         <div style={{flex:1,overflow:"visible"}}><BrutalShadow block animateOnMount mountDelay={150}><div onClick={e=>{e.stopPropagation();window.scrollTo({top:0,behavior:"smooth"});openChat();}} className="bc-cta" style={{background:"#D9D4CF"}}><span/><span/></div></BrutalShadow></div>
@@ -3449,7 +3449,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       <div className="bc-eyebrow">POWERED BY CLAUDE AI</div>
                       <div className="bc-title" style={{flex:"0 0 auto"}}>WWMD. What Would Misha Do (or say)?</div>
                       <div style={{borderBottom:"1px solid #000",fontSize:14,fontWeight:300,padding:"8px 0",fontFamily:'"T-Star Mono",monospace',color:"#000",flexShrink:0}}>From Nirvana to the function of design. Ask anything.</div>
-                      <div style={{flex:1}}/>
+                      <div className="bc-image" style={{aspectRatio:"4/3",position:"relative",background:"#1a1a1a"}}>
+                        <Image src="/images/About/mishasky.jpeg" alt="" fill sizes="33vw" style={{objectFit:"cover",objectPosition:"center top",opacity:0.85}}/>
+                      </div>
                       <div className="bc-cta-wrap" style={{display:"flex",gap:0}} onClick={e=>e.stopPropagation()}>
                         <div style={{flex:1,overflow:"visible"}}>
                           <BrutalShadow block>
