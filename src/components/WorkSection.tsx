@@ -42,7 +42,7 @@ const THUMB: Record<string, string> = {
   "icon-agent": "/images/amazon/Contact_negative.png",
   shrapnel: "/images/shrapnel/Celestial-Laptop-Mockup.png",
   funko:    "/images/funko/Sailor_mood_desktop_hero.png",
-  amazon:   "/images/amazon/Nova_Nav.png",
+  amazon:   "/images/amazon/NBS_home.png",
   sony:     "/images/sony/vmwarethumb1.png",
 };
 
@@ -137,8 +137,8 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
 
         {/* ── WORK header (uncontained, same as About) ── */}
         <div style={{ marginBottom: 32 }}>
-          <Eyebrow label="WORK" />
-          <Headline>Product, Motion &amp; Strategy</Headline>
+          <Eyebrow label="PROJECTS" />
+          <Headline>My work. Commerce, frontier Ai, Gaming and more.</Headline>
           <Body>Learn more about the site&apos;s author below!</Body>
         </div>
 
@@ -197,7 +197,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
               {isAmazon && (
                 <>
                   <Image
-                    src="/images/amazon/nbs1.png"
+                    src="/images/amazon/NBS_home.png"
                     alt=""
                     fill
                     sizes="(max-width:756px) 100vw,(max-width:960px) 50vw,33vw"
@@ -509,8 +509,8 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
 
           {/* WORK header */}
           <div style={{ borderBottom: "1px solid #000" }}>
-            <div className="bc-eyebrow">WORK</div>
-            <div className="bc-title">Product, Motion &amp; Strategy</div>
+            <div className="bc-eyebrow">PROJECTS</div>
+            <div className="bc-title">My work. Commerce, frontier Ai, Gaming and more.</div>
             <div style={{ borderBottom: "1px solid #000", fontSize: 14, fontWeight: 300, lineHeight: 1.5, padding: "8px 0" }}>
               Learn more about the site&apos;s author below!
             </div>
@@ -793,7 +793,7 @@ export function WorkProjectCards({ openProject }: { openProject: (slug: string) 
             )}
             {isAmazon && (
               <>
-                <Image src="/images/amazon/nbs1.png" alt="" fill
+                <Image src="/images/amazon/NBS_home.png" alt="" fill
                   sizes="(max-width:756px) 100vw,(max-width:960px) 50vw,33vw"
                     style={{ objectFit:"cover", objectPosition:"center top", opacity: 1 }}
                 />

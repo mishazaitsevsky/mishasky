@@ -2328,6 +2328,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
     setTimeout(() => {
       setProjectSlug(null);
       setProjectClosing(false);
+      setMode("work");
       window.history.pushState(null, "", "/");
     }, T["1x"]);
   }
@@ -2943,6 +2944,44 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         .proj-card-wrap.proj-card-in{animation:${anim.pageIn}}
         .proj-card-wrap.proj-card-out{animation:pageOut ${T["1x"]}ms ${CURVE} both}
 
+        /* ── MOBILE: project becomes the full page ── */
+        @media(min-width:600px){
+          .pc-close-top{margin-bottom:300px!important}
+        }
+        @media(max-width:599px){
+          .proj-overlay{background:var(--proj-mob-bg,#F7F7F7)!important}
+          .proj-card{
+            border-radius:0!important;
+            margin-top:0!important;
+            margin-left:-36px!important;
+            margin-right:-36px!important;
+            background:transparent!important;
+            overflow:visible!important;
+            padding-left:36px!important;
+            padding-right:36px!important;
+          }
+          .proj-card-wrap{
+            margin-top:0!important;
+            margin-bottom:0!important;
+            margin-left:-36px!important;
+            margin-right:-36px!important;
+          }
+          .pc-top-half{
+            border-radius:0!important;
+            padding-top:0!important;
+            padding-left:36px!important;
+            padding-right:36px!important;
+          }
+          .pc-bot-half{
+            border-radius:0!important;
+            padding-left:36px!important;
+            padding-right:36px!important;
+          }
+          /* city image moves to overlay bg on mobile — hide internal copy */
+          .pc-top-half{background:transparent!important;overflow:visible!important}
+          .pc-bg-img{display:none!important}
+        }
+
         ${keyframes}
 
         /* ── ABOUT ── */
@@ -3181,8 +3220,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/></svg>
               </button>
               <div style={{marginBottom:32}}>
-                <div style={{fontSize:12, fontWeight:500, letterSpacing:"0.14em", textTransform:"uppercase", color:"#888", borderBottom:"1px solid var(--border)", paddingBottom:6, display:"inline-block", marginBottom:12}}>WORK</div>
-                <h1 style={{fontSize:30, fontWeight:500, lineHeight:1.2, margin:"0 0 8px", color:"#111"}}>Product, Motion &amp; Strategy</h1>
+                <div style={{fontSize:12, fontWeight:500, letterSpacing:"0.14em", textTransform:"uppercase", color:"#888", borderBottom:"1px solid var(--border)", paddingBottom:6, display:"inline-block", marginBottom:12}}>PROJECTS</div>
+                <h1 style={{fontSize:30, fontWeight:500, lineHeight:1.2, margin:"0 0 8px", color:"#111"}}>My work. Commerce, frontier Ai, Gaming and more.</h1>
                 <p style={{fontSize:15, fontWeight:300, color:"#555", margin:0, lineHeight:1.6}}>Learn more about the site&apos;s author below!</p>
               </div>
               <WorkProjectCards openProject={openProject}/>
@@ -3623,9 +3662,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={true} onAboutToggle={closeAbout}/>
                 </div>
                 <div className="powered-wrap">
-                  <BrutalShadow pressed>
-                    <span className="powered">Powered by Claude / AI interaction</span>
-                  </BrutalShadow>
                 </div>
               </nav>
             ) : (
@@ -4049,7 +4085,12 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         if (!p) return null;
         const dark = p.theme === "dark";
         return (
-          <div className="proj-overlay">
+          <div className="proj-overlay"
+            style={{"--proj-mob-bg": p.cardStyle === "split-gradient"
+              ? p.cardBgImage
+                ? `url(${p.cardBgImage}) top center / contain no-repeat, ${p.cardBg ?? "#F7F7F7"}`
+                : (p.cardBg ?? "#F7F7F7")
+              : "#F7F7F7"} as React.CSSProperties}>
             {isBrutalist ? (
               /* ── BRUTAL OVERLAY — full bp-outer layout matching home ── */
               <div className="bp-outer" style={{minHeight:"100vh"}}>
@@ -4097,9 +4138,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={true} onAboutToggle={closeAbout}/>
                       </div>
                       <div style={{marginLeft:"auto", marginRight:16, overflow:"visible"}}>
-                        <BrutalShadow pressed>
-                          <span className="powered">Powered by Claude / AI interaction</span>
-                        </BrutalShadow>
                       </div>
                     </nav>
                   </div>
@@ -4302,7 +4340,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={isBrutalist} onAboutToggle={closeAbout}/>
                     </div>
                     <div className="powered-wrap">
-                      <span className="powered">Powered by Claude / AI interaction</span>
                     </div>
                   </nav>
                 </div>
@@ -4390,17 +4427,17 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   // Two joined half-cards
                   <div className={`proj-card-wrap ${projectClosing ? "proj-card-out" : "proj-card-in"}`}>
                     {/* TOP half-card */}
-                    <div style={{
+                    <div className="pc-top-half" style={{
                       background: p.cardBg ?? "#f3f3f7",
                       borderRadius:"32px 32px 0 0",
-                      padding:"360px 32px 32px",
+                      padding:"0 32px 32px",
                       display:"flex", flexDirection:"column", alignItems:"center",
                       position:"relative",
                       overflow:"hidden",
                     }}>
                       {/* Background peek image */}
                       {p.cardBgImage && (
-                        <div style={{
+                        <div className="pc-bg-img" style={{
                           position:"absolute", top:0, left:0, right:0, bottom:0,
                           backgroundImage:`url(${p.cardBgImage})`,
                           backgroundSize:"contain",
@@ -4410,16 +4447,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                           zIndex:0,
                         }}/>
                       )}
-                      {/* ✓ close top — centered, not absolute */}
-                      <button onClick={closeProject} aria-label="Back to all work" style={{
-                        width:36,height:36,borderRadius:"50%",
-                        background:"#fff",border:"none",color:"#111",
-                        display:"flex",alignItems:"center",justifyContent:"center",
-                        cursor:"pointer",zIndex:2,alignSelf:"center",
-                        boxShadow:"0 2px 8px rgba(0,0,0,0.12)",
-                        marginBottom:16, position:"relative",
+                      {/* ✓ close — in flow, 32px below nav */}
+                      <button className="proj-close-btn pc-close-top" onClick={closeProject} aria-label="Back to all work" style={{
+                        position:"relative", top:"auto", right:"auto",
+                        alignSelf:"center", marginTop:20, marginBottom:12,
+                        width:56, height:56,
                       }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                           <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
                         </svg>
                       </button>
@@ -4432,7 +4466,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       </div>
                     </div>
                     {/* BOTTOM half-card */}
-                    <div style={{
+                    <div className="pc-bot-half" style={{
                       background: p.cardBg2 ?? "#f3f3f7",
                       borderRadius:"0 0 32px 32px",
                       padding:32,
@@ -4443,12 +4477,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         onOpen={(src,alt) => {/* lightbox */}}
                         filter={s => !!s.splitBottom}
                       />
-                      {/* ✓ close bottom */}
-                      <button className="proj-close-btn" onClick={closeProject} aria-label="Back to all work" style={{marginTop:32}}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
-                        </svg>
-                      </button>
                     </div>
                   </div>
                 ) : isBrutalist ? (
@@ -4601,20 +4629,21 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     <div style={{ width:"100%", maxWidth:880, margin:"0 auto" }}>
                       <span style={{
                         fontSize:16,letterSpacing:".14em",textTransform:"uppercase",
-                        fontWeight:700,color:"rgba(0,0,0,0.5)",
+                        fontWeight:500,color:"#111",
                         fontFamily:'"T-Star Mono",monospace',
-                        paddingBottom:6,borderBottom:"1px solid rgba(0,0,0,0.12)",
-                        display:"inline-block",marginBottom:8,
+                        paddingBottom:6,borderBottom:"1px solid rgba(0,0,0,0.25)",
+                        display:"inline-block",marginBottom:4,
                       }}>{p.category}</span>
                       <h1 style={{
-                        fontSize:30,fontWeight:700,lineHeight:1.2,letterSpacing:"-.01em",
+                        fontSize:30,fontWeight:500,lineHeight:1.2,letterSpacing:"-.01em",
                         fontFamily:'"T-Star Mono",monospace',
-                        color:"#111",marginBottom:12,
+                        color:"#111",marginTop:4,marginBottom:4,
                       }}>{p.title}</h1>
                       <p style={{
-                        fontSize:16,lineHeight:1.8,
-                        color:"rgba(0,0,0,0.6)",
-                        fontWeight:400,fontFamily:'"T-Star Mono",monospace',
+                        fontSize:14,lineHeight:1.5,
+                        color:"#111",
+                        fontWeight:300,fontFamily:'"T-Star Mono",monospace',
+                        marginTop:4,marginBottom:16,
                       }}>{p.shortDesc}</p>
                     </div>
                     <ProjectContent project={p} />

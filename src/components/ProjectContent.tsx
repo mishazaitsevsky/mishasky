@@ -64,15 +64,17 @@ function VimeoEmbed({ videoId, startTime = 0, radius = 0 }: {
 }
 
 // ── Image style ───────────────────────────────────────────────────────────────
-function imgStyle(radius?: number, stroke?: boolean, blend?: string): React.CSSProperties {
+function imgStyle(radius?: number, stroke?: boolean, blend?: string, shadow?: boolean): React.CSSProperties {
   return {
     display:"block", width:"100%", height:"auto",
     cursor:"zoom-in", transition:"opacity .15s",
-    borderRadius: radius ? `${radius}px` : 0,
+    // border-radius driven by CSS class .pcimg via --br variable (halved on mobile)
+    "--br": radius ? `${radius}px` : "0px",
     border: stroke ? "1px solid #000" : "none",
     boxSizing:"border-box",
+    boxShadow: shadow ? "4px 4px 16px 0 rgba(0,0,0,0.16)" : undefined,
     ...(blend ? { mixBlendMode: blend as React.CSSProperties["mixBlendMode"] } : {}),
-  };
+  } as React.CSSProperties;
 }
 
 // ── Column wrapper ────────────────────────────────────────────────────────────
@@ -81,7 +83,7 @@ function Col({ children, top = false, center = false }: {
 }) {
   return (
     <div style={{
-      width:"100%", maxWidth:880,
+      width:"100%", maxWidth:820,
       margin: top ? "0 auto" : "32px auto 0",
       textAlign: center ? "center" : "left",
     }}>
@@ -109,8 +111,19 @@ export function SectionsList({
     <>
       <style>{`
         .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-        @media(max-width:400px){.grid3{grid-template-columns:1fr}}
+        .pc-pair{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+        .pc-grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+        .pc-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+        .pcimg{border-radius:var(--br,0px)}
+        .pc-br-wrap{border-radius:var(--br,0px);overflow:hidden}
         img.pcimg:hover{opacity:.88}
+        @media(max-width:599px){
+          .grid3{grid-template-columns:repeat(2,1fr)}
+          .pc-pair{grid-template-columns:1fr}
+          .pc-grid4{grid-template-columns:repeat(2,1fr)}
+          .pcimg{border-radius:calc(var(--br,0px) / 2)}
+          .pc-br-wrap{border-radius:calc(var(--br,0px) / 2)}
+        }
       `}</style>
       {visible.map((sec, si) => {
         const center = !!sec.centerText;
@@ -139,7 +152,7 @@ export function SectionsList({
                     // eslint-disable-next-line @next/next/no-img-element
                     <img key={gi} src={gimg.src} alt={gimg.alt}
                       className="pcimg"
-                      style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                      style={imgStyle(gimg.radius, gimg.stroke, gimg.blend, gimg.shadow)}
                       onClick={() => onOpen(gimg.src, gimg.alt)}/>
                   ))}
                 </div>
@@ -151,20 +164,21 @@ export function SectionsList({
             const grid = sec.images.slice(i, i + 2);
             blocks.push(
               <Col key={`g2-${i}`}>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:32}}>
+                <div className="pc-grid2">
                   {grid.map((gimg, gi) => (
-                    img.blend ? (
-                      <div key={gi} style={{background:"#F7F7F7",borderRadius:gimg.radius?`${gimg.radius}px`:0,overflow:"hidden"}}>
+                    gimg.blend ? (
+                      <div key={gi} className="pc-br-wrap"
+                        style={{"--br": gimg.radius ? `${gimg.radius}px` : "0px", background:"#fff", padding:24, display:"flex", alignItems:"center", justifyContent:"center"} as React.CSSProperties}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={gimg.src} alt={gimg.alt} className="pcimg"
-                          style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                          style={{...imgStyle(0, gimg.stroke, gimg.blend, gimg.shadow), width:"100%", height:"auto"}}
                           onClick={() => onOpen(gimg.src, gimg.alt)}/>
                       </div>
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img key={gi} src={gimg.src} alt={gimg.alt}
                         className="pcimg"
-                        style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                        style={imgStyle(gimg.radius, gimg.stroke, gimg.blend, gimg.shadow)}
                         onClick={() => onOpen(gimg.src, gimg.alt)}/>
                     )
                   ))}
@@ -177,20 +191,21 @@ export function SectionsList({
             const grid = sec.images.slice(i, i + 4);
             blocks.push(
               <Col key={`g4-${i}`}>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:32}}>
+                <div className="pc-grid4">
                   {grid.map((gimg, gi) => (
                     gimg.blend ? (
-                      <div key={gi} style={{background:"#F7F7F7",borderRadius:gimg.radius?`${gimg.radius}px`:0,overflow:"hidden"}}>
+                      <div key={gi} className="pc-br-wrap"
+                        style={{"--br": gimg.radius ? `${gimg.radius}px` : "0px", background:"#fff", padding:24, display:"flex", alignItems:"center", justifyContent:"center"} as React.CSSProperties}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={gimg.src} alt={gimg.alt} className="pcimg"
-                          style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                          style={{...imgStyle(0, gimg.stroke, gimg.blend, gimg.shadow), width:"100%", height:"auto"}}
                           onClick={() => onOpen(gimg.src, gimg.alt)}/>
                       </div>
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img key={gi} src={gimg.src} alt={gimg.alt}
                         className="pcimg"
-                        style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                        style={imgStyle(gimg.radius, gimg.stroke, gimg.blend, gimg.shadow)}
                         onClick={() => onOpen(gimg.src, gimg.alt)}/>
                     )
                   ))}
@@ -202,14 +217,14 @@ export function SectionsList({
           } else if (img.layout === "pair-left" && next) {
             blocks.push(
               <Col key={`pair-${i}`}>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32}}>
+                <div className="pc-pair">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={img.src} alt={img.alt} className="pcimg"
-                    style={imgStyle(img.radius, img.stroke, img.blend)}
+                    style={imgStyle(img.radius, img.stroke, img.blend, img.shadow)}
                     onClick={() => onOpen(img.src, img.alt)}/>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={next.src} alt={next.alt} className="pcimg"
-                    style={imgStyle(next.radius, next.stroke, next.blend)}
+                    style={imgStyle(next.radius, next.stroke, next.blend, next.shadow)}
                     onClick={() => onOpen(next.src, next.alt)}/>
                 </div>
               </Col>
@@ -221,16 +236,17 @@ export function SectionsList({
               <Col key={`ed-${i}`}>
                 {img.blend ? (
                   // White container so multiply blend is visible against the bg
-                  <div style={{background:"#fff", borderRadius: img.radius ? `${img.radius}px` : 0, overflow:"hidden"}}>
+                  <div className="pc-br-wrap"
+                    style={{"--br": img.radius ? `${img.radius}px` : "0px", background:"#fff"} as React.CSSProperties}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={img.src} alt={img.alt} className="pcimg"
-                      style={imgStyle(img.radius, img.stroke, img.blend)}
+                      style={imgStyle(img.radius, img.stroke, img.blend, img.shadow)}
                       onClick={() => onOpen(img.src, img.alt)}/>
                   </div>
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={img.src} alt={img.alt} className="pcimg"
-                    style={imgStyle(img.radius, img.stroke, img.blend)}
+                    style={imgStyle(img.radius, img.stroke, img.blend, img.shadow)}
                     onClick={() => onOpen(img.src, img.alt)}/>
                 )}
               </Col>
@@ -243,7 +259,7 @@ export function SectionsList({
               <div key={`hero-${i}`} style={{marginTop:32}}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.src} alt={img.alt} className="pcimg"
-                  style={{...imgStyle(img.radius ?? 16, img.stroke, img.blend), width:"100%"}}
+                  style={{...imgStyle(img.radius ?? 16, img.stroke, img.blend, img.shadow), width:"100%"}}
                   onClick={() => onOpen(img.src, img.alt)}/>
               </div>
             );

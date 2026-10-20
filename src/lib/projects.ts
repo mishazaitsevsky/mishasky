@@ -5,6 +5,7 @@ export type ProjectImage = {
   layout?: "hero" | "editorial" | "pair-left" | "pair-right" | "grid3-start" | "grid2-start" | "grid4-start";
   radius?: number;
   stroke?: boolean;
+  shadow?: boolean;  // elevation-1: 4 4 16 0 rgba(0,0,0,0.16)
   blend?: string;    // CSS mix-blend-mode e.g. "multiply"
   vimeoId?: string;   // if set, renders a Vimeo embed instead of an image
   vimeoStart?: number; // start time in seconds
@@ -49,17 +50,129 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "icon-agent",
-    client: "Amazon Nova",
-    category: "AMAZON NOVA",
-    title: "Icon Agent / Kiro Power",
-    shortDesc: "You can't train taste into a model. But after 130 bespoke icons for Amazon's Frontier AI Playground, it turned out you could teach it.",
-    role: "Icon Design / AI",
-    year: "2025",
-    thumb: "/images/amazon/Contact.png",
-    thumbBg: "#F3F3F7",
-    theme: "light",
-    sections: [],
+    slug: "amazon",
+    client: "Amazon",
+    category: "AI TECH",
+    title: "AGI & Amazon Nova",
+    shortDesc: "Product design across Amazon's frontier AI platform — model catalog, icon system, Builder Studio, Content Partners, and Nova Sonic.",
+    role: "Product Design / AI Platform",
+    year: "2024–2025",
+    thumb: "/images/amazon/NBS_home.png",
+    thumbStandard: "/images/amazon/NBS_home.png",
+    thumbBg: "#B131FF",
+    cardBg: "linear-gradient(135deg, #B131FF 0%, #FF3578 100%)",
+    cardTextColor: "#ffffff",
+    theme: "dark",
+    sections: [
+      // ── 1. NBS Hero — under page title ──────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/NBS_New_hero.png", alt: "Nova Builder Studio hero", layout: "hero", radius: 16 },
+        ],
+      },
+      // ── 2. Nova Builder Studio + CMS ────────────────────────────────────
+      {
+        label: "AMAZON — AGI",
+        title: "Nova Builder Studio + CMS",
+        body: "Showcased at re:Invent 2025. NBS provided developers with feature-sets to onboard models, test ACT Browser automation, and showcase Amazon's latest frontier models.",
+        images: [],
+      },
+      // ── 3. NBS interface detail ──────────────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/NBSCMS1.png", alt: "NBS Model User Guide", layout: "hero", radius: 16, blend: "multiply" },
+        ],
+      },
+      // ── 4. Custom CMS: from Quip to web ─────────────────────────────────
+      {
+        label: "NOVA BUILDER STUDIO",
+        title: "Custom CMS: from Quip to web",
+        body: "Developers want things fast and easy. Internal teams at Amazon want to share knowledge, and external customers want to quickly consume AWS & Bedrock's vast documentation. I designed a ground-up CMS that converted Quip docs into Nova Design Library tokens.",
+        images: [
+          { src: "/images/amazon/CustomCMS_image1.png", alt: "Custom CMS interface", layout: "editorial", radius: 16 },
+        ],
+      },
+      // ── 5. CMS pair ──────────────────────────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/CustomCMS2.png", alt: "Custom CMS interface A", layout: "pair-left", radius: 32 },
+          { src: "/images/amazon/CustomCMS3.png", alt: "Custom CMS interface B", radius: 32 },
+        ],
+      },
+      // ── 6. MODULAR FLEXIBILITY — vertical stack ──────────────────────────
+      {
+        label: "NOVA BUILDER STUDIO",
+        title: "Modular Flexibility",
+        body: "How do you strike a balance between the variety creators need, consistency of design, and ease of publishing? By creating a modular system that has just the right amount of choice, while making the vast majority of content sing.",
+        images: [
+          { src: "/images/amazon/nova_content_b.png", alt: "Modular content B", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/nova_content_a.png", alt: "Modular content A", layout: "editorial", radius: 32 },
+        ],
+      },
+      // ── 7. NOVA DESIGN SYSTEM — Icon Library ────────────────────────────
+      {
+        label: "NOVA DESIGN SYSTEM",
+        title: "Shipped 130+ Icon Library",
+        body: "Before I created RUNE — a lightweight custom icon generator — I hand-drew hundreds of icons for Nova Playground in Figma. Every icon follows strict geometric constraints consistent with the Nova design language.",
+        images: [
+          { src: "/images/amazon/Type=Print, Size=Large.svg", alt: "Print icon", layout: "grid2-start", blend: "multiply", radius: 16 },
+          { src: "/images/amazon/Type=Thumbs Up, Size=Large.svg", alt: "Thumbs Up icon", blend: "multiply", radius: 16 },
+          { src: "/images/amazon/Type=Nova Cards Agent, Size=Large.svg", alt: "Nova Cards Agent icon", layout: "grid4-start", blend: "multiply", radius: 16 },
+          { src: "/images/amazon/Type=Folder, Size=Large.svg", alt: "Folder icon", blend: "multiply", radius: 16 },
+          { src: "/images/amazon/Type=Connect, Size=Large.svg", alt: "Connect icon", blend: "multiply", radius: 16 },
+          { src: "/images/amazon/Type=Attach, Size=Large.svg", alt: "Attach icon", blend: "multiply", radius: 16 },
+        ],
+      },
+      // ── 9. POST ICON BURNOUT — KIRO POWER ───────────────────────────────
+      {
+        label: "KIRO POWER",
+        title: "Post Icon Burnout...",
+        body: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
+        images: [
+          { src: "/images/amazon/PostIconBurnout1.png", alt: "Kiro Power icon agent", layout: "hero" },
+        ],
+      },
+      // ── 10. PROMPT: "Create 20 Icons" ───────────────────────────────────
+      {
+        label: "PROMPT:",
+        title: '"Create 20 Icons"',
+        body: "RUNE utilizes several steering text files, meticulously describing my exact idea of a great icon. Although this example focuses on NDS (Nova Design System) style, RUNE can be easily modified for any style of iconography.",
+        images: [],
+      },
+      // ── 11. RUNE output editorial ────────────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
+        ],
+      },
+      // ── 12. MOTION — SPECIFICATIONS & EXAMPLES ──────────────────────────
+      {
+        label: "MOTION",
+        title: "Specifications & Examples",
+        body: "These specs for standardizing Nova's motion patterns are built to last. From curve (timing) to duration, these rules and examples make it easy to make the right call for 'delight', every time.",
+        images: [
+          { src: "/images/amazon/nova_hero_4.png", alt: "Motion specifications", layout: "hero" },
+        ],
+      },
+      // ── 13. Motion spec (SpecificationsEx2) ─────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/SpecificationsEx2.png", alt: "Motion spec detail", layout: "editorial", radius: 32, blend: "multiply" },
+        ],
+      },
+      // ── 14. NEW FEATURE DISCOVERY ────────────────────────────────────────
+      {
+        label: "MOTION",
+        title: "New Feature Discovery",
+        body: "New technology requires context. When a new feature like Agent Deep Research comes along, customers need a little visual nudge to make announcements sticky.",
+        images: [
+          { src: "/images/amazon/NFD_DR1.gif",       alt: "Deep Research feature discovery",    layout: "editorial", radius: 24, shadow: true },
+          { src: "/images/amazon/NFD_NCA2_1x.gif",  alt: "Nova Cards Agent feature discovery",  layout: "pair-left", radius: 16, shadow: true },
+          { src: "/images/amazon/NFD_EH1_1x.gif",   alt: "Feature discovery animation",          radius: 16, shadow: true },
+        ],
+      },
+      // ── 15. Feature pair ─────────────────────────────────────────────────
+    ],
     images: [],
     body: "",
   },
@@ -78,52 +191,6 @@ export const projects: Project[] = [
     gbStyle: true,
     theme: "light",
     sections: [],
-    images: [],
-    body: "",
-  },
-  {
-    slug: "shrapnel",
-    client: "Shrapnel",
-    category: "GAMING",
-    title: "Shrapnel Design System",
-    shortDesc: "Full design system for a web3 FPS game — icons, components, inventory, and marketplace across all breakpoints.",
-    role: "Design Systems / Product Design",
-    year: "2024",
-    thumb: "/images/shrapnel/Shrapnel_thumb.png",
-    thumbStandard: "/images/shrapnel/Shrapnel_thumb.png",
-    thumbBg: "#FFCE00",
-    cardBg: "#FFCE00",
-    cardTextColor: "#000000",
-    theme: "dark",
-    sections: [
-      {
-        body: "Shrapnel is a web3 FPS game with a full in-game economy. The work covered the entire design system: a custom icon set of 60+ icons, component library, navigation patterns, inventory management, and marketplace — all documented across desktop, tablet, and mobile breakpoints.",
-        images: [],
-      },
-      {
-        label: "Process",
-        title: "Clever title for this section.",
-        body: "I wanted to make our modest team of 10 feel like 100. Efficient production and scalability was a top priority when establishing the framework for the web and supporting in-game screens. The developers were supplied with component library concepts early on, so we could road-map the releases in coordination with game features. These concept sketches gave the blockchain team an early understanding of potential dependencies on data-models and the subsequent APIs required to feed the marketplace and associated web experiences.",
-        twoCol: true,
-        images: [],
-      },
-      {
-        label: "Gaming",
-        title: "Typography Selection",
-        images: [
-          { src: "/images/shrapnel/TYPEREF.png",   alt: "Typography option A", layout: "pair-left" },
-          { src: "/images/shrapnel/TYPEREF-1.png",  alt: "Typography option B" },
-        ],
-      },
-      {
-        label: "Mock",
-        title: "Mission Rewards",
-        images: [
-          { src: "/images/shrapnel/Inventory_Lockup.png", alt: "Mission rewards screens", layout: "hero" },
-        ],
-      },
-    ],
-    // legacy
     images: [],
     body: "",
   },
@@ -152,7 +219,7 @@ export const projects: Project[] = [
         images: [
           { src: "/images/funko/cms/direct_to_consumer.png",     alt: "Direct to consumer",   layout: "grid3-start", radius: 32 },
           { src: "/images/funko/cms/Home_page.png",              alt: "Home page",                                   radius: 32 },
-          { src: "/images/funko/cms/search_filter_nav.png",      alt: "Search and filter",                          radius: 32, stroke: true },
+          { src: "/images/funko/cms/search_filter_nav.png",      alt: "Search and filter",                          radius: 32 },
           { src: "/images/funko/cms/Content_pipeline.png",       alt: "Content pipeline",                           radius: 32 },
           { src: "/images/funko/cms/Blog_media_module 1.png",    alt: "Blog and media",                             radius: 32 },
           { src: "/images/funko/cms/Design_system_module 1.png", alt: "Design system",                              radius: 32 },
@@ -250,141 +317,63 @@ export const projects: Project[] = [
     body: "",
   },
   {
-    slug: "amazon",
-    client: "Amazon",
-    category: "AI TECH",
-    title: "AGI & Amazon Nova",
-    shortDesc: "Product design across Amazon's frontier AI platform — model catalog, icon system, Builder Studio, Content Partners, and Nova Sonic.",
-    role: "Product Design / AI Platform",
-    year: "2024–2025",
-    thumb: "/images/amazon/Nova_Nav.png",
-    thumbStandard: "/images/amazon/Nova_Nav.png",
-    thumbBg: "#B131FF",
-    thumbContain: true,
-    cardBg: "linear-gradient(135deg, #B131FF 0%, #FF3578 100%)",
-    cardTextColor: "#ffffff",
+    slug: "icon-agent",
+    client: "Amazon Nova",
+    category: "AMAZON NOVA",
+    title: "Icon Agent / Kiro Power",
+    shortDesc: "You can't train taste into a model. But after 130 bespoke icons for Amazon's Frontier AI Playground, it turned out you could teach it.",
+    role: "Icon Design / AI",
+    year: "2025",
+    thumb: "/images/amazon/Contact.png",
+    thumbBg: "#F3F3F7",
+    theme: "light",
+    sections: [],
+    images: [],
+    body: "",
+  },
+  {
+    slug: "shrapnel",
+    client: "Shrapnel",
+    category: "GAMING",
+    title: "Shrapnel Design System",
+    shortDesc: "Full design system for a web3 FPS game — icons, components, inventory, and marketplace across all breakpoints.",
+    role: "Design Systems / Product Design",
+    year: "2024",
+    thumb: "/images/shrapnel/Shrapnel_thumb.png",
+    thumbStandard: "/images/shrapnel/Shrapnel_thumb.png",
+    thumbBg: "#FFCE00",
+    cardBg: "#FFCE00",
+    cardTextColor: "#000000",
     theme: "dark",
     sections: [
-      // ── 1. NBS Hero — under page title ──────────────────────────────────
       {
-        images: [
-          { src: "/images/amazon/NBS_Newhero.png", alt: "Nova Builder Studio hero", layout: "hero", radius: 16 },
-        ],
-      },
-      // ── 2. Nova Builder Studio + CMS ────────────────────────────────────
-      {
-        label: "AMAZON — AGI",
-        title: "Nova Builder Studio + CMS",
-        body: "Showcased at re:Invent 2025. NBS provided developers with feature-sets to onboard models, test ACT Browser automation, and showcase Amazon's latest frontier models.",
+        body: "Shrapnel is a web3 FPS game with a full in-game economy. The work covered the entire design system: a custom icon set of 60+ icons, component library, navigation patterns, inventory management, and marketplace — all documented across desktop, tablet, and mobile breakpoints.",
         images: [],
       },
-      // ── 3. NBS interface detail ──────────────────────────────────────────
       {
-        images: [
-          { src: "/images/amazon/NBSCMS1.png", alt: "NBS Model User Guide", layout: "editorial", radius: 32, blend: "multiply" },
-        ],
-      },
-      // ── 4. Custom CMS: from Quip to web ─────────────────────────────────
-      {
-        label: "NOVA BUILDER STUDIO",
-        title: "Custom CMS: from Quip to web",
-        body: "Developers want things fast and easy. Internal teams at Amazon want to share knowledge, and external customers want to quickly consume AWS & Bedrock's vast documentation. I designed a ground-up CMS that converted Quip docs into Nova Design Library tokens.",
+        label: "Process",
+        title: "Clever title for this section.",
+        body: "I wanted to make our modest team of 10 feel like 100. Efficient production and scalability was a top priority when establishing the framework for the web and supporting in-game screens. The developers were supplied with component library concepts early on, so we could road-map the releases in coordination with game features. These concept sketches gave the blockchain team an early understanding of potential dependencies on data-models and the subsequent APIs required to feed the marketplace and associated web experiences.",
+        twoCol: true,
         images: [],
       },
-      // ── 5. CMS pair ──────────────────────────────────────────────────────
       {
+        label: "Gaming",
+        title: "Typography Selection",
         images: [
-          { src: "/images/amazon/CustomCMS2.png", alt: "Custom CMS interface A", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/CustomCMS3.png", alt: "Custom CMS interface B", radius: 32 },
+          { src: "/images/shrapnel/TYPEREF.png",   alt: "Typography option A", layout: "pair-left" },
+          { src: "/images/shrapnel/TYPEREF-1.png",  alt: "Typography option B" },
         ],
       },
-      // ── 6. MODULAR FLEXIBILITY — vertical stack ──────────────────────────
       {
-        label: "NOVA BUILDER STUDIO",
-        title: "Modular Flexibility",
-        body: "How do you strike a balance between the variety creators need, consistency of design, and ease of publishing? By creating a modular system that has just the right amount of choice, while making the vast majority of content sing.",
+        label: "Mock",
+        title: "Mission Rewards",
         images: [
-          { src: "/images/amazon/nova_content_b.png", alt: "Modular content B", layout: "editorial", radius: 32 },
-          { src: "/images/amazon/nova_content_a.png", alt: "Modular content A", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 7. NOVA DESIGN SYSTEM — Icon Library ────────────────────────────
-      {
-        label: "NOVA DESIGN SYSTEM",
-        title: "Shipped 130+ Icon Library",
-        body: "Before I created RUNE — a lightweight custom icon generator — I hand-drew hundreds of icons for Nova Playground in Figma. Every icon follows strict geometric constraints consistent with the Nova design language.",
-        images: [
-          { src: "/images/amazon/Type=Print, Size=Large.svg", alt: "Print icon", layout: "grid2-start", blend: "multiply" },
-          { src: "/images/amazon/Type=Thumbs Up, Size=Large.svg", alt: "Thumbs Up icon", blend: "multiply" },
-          { src: "/images/amazon/Type=Nova Cards Agent, Size=Large.svg", alt: "Nova Cards Agent icon", layout: "grid4-start", blend: "multiply" },
-          { src: "/images/amazon/Type=Folder, Size=Large.svg", alt: "Folder icon", blend: "multiply" },
-          { src: "/images/amazon/Type=Connect, Size=Large.svg", alt: "Connect icon", blend: "multiply" },
-          { src: "/images/amazon/Type=Attach, Size=Large.svg", alt: "Attach icon", blend: "multiply" },
-        ],
-      },
-      // ── 8. Design system specs — light + dark pair ───────────────────────
-      {
-        images: [
-          { src: "/images/amazon/Screenshot 2026-10-12 at 4.45.23 PM.png", alt: "Nova Design System component spec light", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/Screenshot 2026-10-12 at 4.51.45 PM.png", alt: "Nova Design System component spec dark", radius: 32 },
-        ],
-      },
-      // ── 9. POST ICON BURNOUT — KIRO POWER ───────────────────────────────
-      {
-        label: "KIRO POWER",
-        title: "Post Icon Burnout...",
-        body: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
-        images: [
-          { src: "/images/amazon/PostIconBurnout1.png", alt: "Kiro Power icon agent", layout: "hero" },
-        ],
-      },
-      // ── 10. PROMPT: "Create 20 Icons" ───────────────────────────────────
-      {
-        label: "PROMPT:",
-        title: '"Create 20 Icons"',
-        body: "RUNE utilizes several steering text files, meticulously describing my exact idea of a great icon. Although this example focuses on NDS (Nova Design System) style, RUNE can be easily modified for any style of iconography.",
-        images: [
-          { src: "/images/amazon/Prompt Inspiration Cards.png", alt: "Prompt inspiration cards carousel", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 11. RUNE output editorial ────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 12. MOTION — SPECIFICATIONS & EXAMPLES ──────────────────────────
-      {
-        label: "MOTION",
-        title: "Specifications & Examples",
-        body: "These specs for standardizing Nova's motion patterns are built to last. From curve (timing) to duration, these rules and examples make it easy to make the right call for 'delight', every time.",
-        images: [
-          { src: "/images/amazon/nova_hero_4.png", alt: "Motion specifications", layout: "hero" },
-        ],
-      },
-      // ── 13. Motion spec (SpecificationsEx2) ─────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/SpecificationsEx2.png", alt: "Motion spec detail", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 14. NEW FEATURE DISCOVERY ────────────────────────────────────────
-      {
-        label: "MOTION",
-        title: "New Feature Discovery",
-        body: "New technology requires context. When a new feature like Agent Deep Research comes along, customers need a little visual nudge to make announcements sticky.",
-        images: [
-          { src: "/images/amazon/nova_nfd.png", alt: "New feature discovery", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 15. Feature pair ─────────────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/nova_feat_a.png", alt: "Feature detail A", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/nova_feat_b.png", alt: "Feature detail B", radius: 32 },
+          { src: "/images/shrapnel/Inventory_Lockup.png", alt: "Mission rewards screens", layout: "hero" },
         ],
       },
     ],
+    // legacy
     images: [],
     body: "",
   },
