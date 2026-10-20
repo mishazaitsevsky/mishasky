@@ -165,11 +165,12 @@ function FlagUS({ size = 22 }: { size?: number }) {
   );
 }
 
-function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, onAboutToggle }: {
+function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, onAboutToggle, onBack }: {
   mode: Mode; openChat:()=>void; setMode:(m:Mode)=>void; cycleTheme:()=>void;
   brutal?: boolean;
   chatButtons?: { selected: number|null; onSelect:(i:0|1|2)=>void; onConfirm:()=>void; };
   onAboutToggle?: () => void;
+  onBack?: () => void;
 }) {
   const [hovered, setHovered] = useState<string|null>(null);
 
@@ -252,6 +253,14 @@ function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, 
 
   return (
     <>
+      {onBack && (
+        <button className="nav-btn" onClick={onBack} aria-label="Back"
+          style={{ background:"#F3F3F7", color:"#111" }}>
+          <span style={{ display:"inline-flex", transform:"rotate(-90deg)" }}>
+            <Icon name="arrow-up" size={24}/>
+          </span>
+        </button>
+      )}
       {btn(false, openChat, "Quiz", <Icon name="quiz" size={24}/>, undefined, true, 25)}
       {btn(mode==="about", mode==="about" ? (onAboutToggle ?? (()=>setMode("home"))) : ()=>setMode("about"), "About", <Icon name="about" size={24}/>, undefined, true, 50)}
       {btn(mode==="aichat", ()=>setMode("aichat"), "AI Chat", <Icon name="chat"  size={24}/>, undefined, true, 75)}
@@ -2333,10 +2342,17 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
     }, T["1x"]);
   }
 
+  // Disable browser scroll restoration so our manual scrollTo calls are reliable
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+  }, []);
+
   // Lock body scroll when project overlay is open — prevents double scrollbar
   // Reset any pre-opened about card whenever we leave the about view
+  // Scroll to top when about opens
   useEffect(() => {
     if (mode !== "about") setAboutInitialCard(undefined);
+    if (mode === "about" || mode === "work") requestAnimationFrame(() => window.scrollTo(0, 0));
   }, [mode]);
 
   useEffect(() => {
@@ -3040,6 +3056,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .about-section-photo{display:none!important}
           .chat-section-photo{display:none!important}
           .about-section-body{padding-left:0!important;padding-right:0!important}
+          .work-section-body{padding-left:0!important;padding-right:0!important}
           .about-section-body .proj-close-btn{display:none!important}
           .about-section-body .proj-close-btn{display:none!important}
         }
@@ -3667,9 +3684,16 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             ) : (
               <div className="hero-nav-row">
                 <nav className="nav-btns-right" aria-label="Site navigation">
-                  <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={false} onAboutToggle={closeAbout}/>
+                  <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={false} onAboutToggle={closeAbout}
+                    onBack={isMobile && mode !== "home" && mode !== "chat" ? () => {
+                      if (mode === "about") closeAbout();
+                      else if (mode === "work") closeWork();
+                      else if (mode === "aichat") closeAiChat();
+                      else setMode("home");
+                    } : undefined}
+                  />
                 </nav>
-                {mode !== "about" && !(isMobile && mode === "aichat") && (
+                {mode !== "about" && !(isMobile && mode === "aichat") && !(isMobile && mode === "work") && (
                 <div className="hero-text">
                   <h1 className="headline">0→1 PRODUCT / Ai &amp; I</h1>
                   <p className="hero-body" style={{color:"#111"}}>
@@ -3738,7 +3762,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         <div className="w">
           <div
             className={`about${workClosing ? " proj-card-out" : " proj-card-in"}`}
-            style={{borderRadius:32, background:"#f3f3f7", padding:0, overflow:"hidden"}}
+            style={isBrutalist ? {borderRadius:32, background:"#f3f3f7", padding:0, overflow:"hidden"} : {background:"transparent", padding:0, margin:0}}
           >
             <WorkSection
               onClose={closeWork}

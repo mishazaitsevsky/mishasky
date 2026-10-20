@@ -129,11 +129,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
     <div style={{ fontFamily: font, position: "relative" }}>
 
       {/* ── Close ── */}
-      <button onClick={onClose} aria-label="Close work" className="proj-close-btn">
-        <Icon name="check" size={20} />
-      </button>
-
-      <div style={{ padding: "32px 32px 0" }}>
+      <div className="work-section-body" style={{ padding: "32px 32px 0" }}>
 
         {/* ── WORK header (uncontained, same as About) ── */}
         <div style={{ marginBottom: 32 }}>
