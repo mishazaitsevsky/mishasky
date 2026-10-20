@@ -238,12 +238,12 @@ export function SectionsList({
             i++;
 
           } else {
-            // hero — full card width, negative margin escapes card padding
+            // content-width — stays within card padding, full width of content area
             blocks.push(
-              <div key={`hero-${i}`} style={{marginTop:32,marginLeft:-32,marginRight:-32}}>
+              <div key={`hero-${i}`} style={{marginTop:32}}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.src} alt={img.alt} className="pcimg"
-                  style={{...imgStyle(img.radius, img.stroke, img.blend), width:"100%"}}
+                  style={{...imgStyle(img.radius ?? 16, img.stroke, img.blend), width:"100%"}}
                   onClick={() => onOpen(img.src, img.alt)}/>
               </div>
             );

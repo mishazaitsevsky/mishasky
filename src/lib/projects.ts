@@ -265,7 +265,12 @@ export const projects: Project[] = [
     cardTextColor: "#ffffff",
     theme: "dark",
     sections: [
-      // ── 1. Hero (image TBD) ─────────────────────────────────────────────
+      // ── 1. NBS Hero — under page title ──────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/NBS_Newhero.png", alt: "Nova Builder Studio hero", layout: "hero", radius: 16 },
+        ],
+      },
       // ── 2. Nova Builder Studio + CMS ────────────────────────────────────
       {
         label: "AMAZON — AGI",
