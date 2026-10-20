@@ -271,9 +271,7 @@ export const projects: Project[] = [
         label: "AMAZON — AGI",
         title: "Nova Builder Studio + CMS",
         body: "Showcased at re:Invent 2025. NBS provided developers with feature-sets to onboard models, test ACT Browser automation, and showcase Amazon's latest frontier models.",
-        images: [
-          { src: "/images/amazon/nova_hero_2.png", alt: "Nova Builder Studio", layout: "hero" },
-        ],
+        images: [],
       },
       // ── 3. NBS interface detail ──────────────────────────────────────────
       {
