@@ -278,7 +278,7 @@ export const projects: Project[] = [
       // ── 3. NBS interface detail ──────────────────────────────────────────
       {
         images: [
-          { src: "/images/amazon/nbs1.png", alt: "NBS Model User Guide", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/NBSCMS1.png", alt: "NBS Model User Guide", layout: "editorial", radius: 32 },
         ],
       },
       // ── 4. Custom CMS: from Quip to web ─────────────────────────────────
@@ -293,8 +293,8 @@ export const projects: Project[] = [
       // ── 5. CMS pair ──────────────────────────────────────────────────────
       {
         images: [
-          { src: "/images/amazon/nova_nbs_pair_a.png", alt: "NBS interface A", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/nova_content_a.png", alt: "NBS interface B", radius: 32 },
+          { src: "/images/amazon/CustomCMS2.png", alt: "Custom CMS interface A", layout: "pair-left", radius: 32 },
+          { src: "/images/amazon/CustomCMS3.png", alt: "Custom CMS interface B", radius: 32 },
         ],
       },
       // ── 6. MODULAR FLEXIBILITY — vertical stack ──────────────────────────
@@ -329,7 +329,7 @@ export const projects: Project[] = [
         title: "Post Icon Burnout...",
         body: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
         images: [
-          { src: "/images/amazon/nova_hero_3.png", alt: "Kiro Power icon agent", layout: "hero" },
+          { src: "/images/amazon/PostIconBurnout1.png", alt: "Kiro Power icon agent", layout: "hero" },
         ],
       },
       // ── 10. PROMPT: "Create 20 Icons" ───────────────────────────────────
@@ -359,7 +359,7 @@ export const projects: Project[] = [
       // ── 13. Motion spec editorial ────────────────────────────────────────
       {
         images: [
-          { src: "/images/amazon/nova_motion_spec.png", alt: "Motion spec detail", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/SpecificationsEx2.png", alt: "Motion spec detail", layout: "editorial", radius: 32 },
         ],
       },
       // ── 14. NEW FEATURE DISCOVERY ────────────────────────────────────────
