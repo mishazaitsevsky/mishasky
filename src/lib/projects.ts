@@ -265,187 +265,120 @@ export const projects: Project[] = [
     cardTextColor: "#ffffff",
     theme: "dark",
     sections: [
-      // ── 1. Intro ──────────────────────────────────────────────────────────
+      // ── 1. NOVA AI PLAYGROUND ───────────────────────────────────────────
       {
-        body: "Product design for Amazon Nova — Amazon's frontier AI platform.\n\nWork spans the Nova model catalog page (shipped to mainline), a 130+ icon library, Nova Builder Studio (CMS showcased at re:Invent), Content Partners platform, and Nova Sonic audio chat — each shipped through standard code review on a 70-developer codebase.",
+        label: "AMAZON — AGI",
+        title: "Nova AI Playground",
+        body: "UX, UI, Motion & Development for Amazon's frontier Agentic chat product.",
         images: [
-          { src: "/images/amazon/Nova_Nav.png", alt: "Nova model catalog", layout: "hero" },
+          { src: "/images/amazon/nova_hero_1.png", alt: "Nova AI Playground", layout: "hero" },
         ],
       },
-      // ── 2. Model Catalog ─────────────────────────────────────────────────
+      // ── 2. Nova Builder Studio + CMS ────────────────────────────────────
       {
-        label: "MODEL CATALOG",
-        title: "Nova Model Catalog",
-        body: "Designed and built with Kiro, then merged through standard code review. The catalog surfaces Nova's frontier AI models with filtering, hierarchy, and navigation — a production page on a 70-developer codebase.",
+        label: "AMAZON — AGI",
+        title: "Nova Builder Studio + CMS",
+        body: "Showcased at re:Invent 2025. NBS provided developers with feature-sets to onboard models, test ACT Browser automation, and showcase Amazon's latest frontier models.",
         images: [
-          { src: "/images/amazon/nbs1.png", alt: "Nova catalog interface", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/nova_hero_2.png", alt: "Nova Builder Studio", layout: "hero" },
         ],
       },
-      // ── 3. Catalog pair ───────────────────────────────────────────────────
+      // ── 3. Custom CMS: from Quip to web ─────────────────────────────────
       {
+        label: "NOVA BUILDER STUDIO",
+        title: "Custom CMS: from Quip to web",
+        body: "Developers want things fast and easy. Internal teams at Amazon want to share knowledge, and external customers want to quickly consume AWS & Bedrock's vast documentation. I designed a ground-up CMS that converted Quip docs into Nova Design Library tokens.",
         images: [
-          { src: "/images/amazon/NBS_home.png", alt: "Nova Builder Studio home", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/NBS_search1.png", alt: "Nova catalog search", radius: 32 },
+          { src: "/images/amazon/nova_cms_overview.png", alt: "CMS overview", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 4. Retina hero ────────────────────────────────────────────────────
+      // ── 4. NBS pair ──────────────────────────────────────────────────────
       {
         images: [
-          { src: "/images/amazon/NBS_retina1.png", alt: "Nova catalog retina view", layout: "hero" },
+          { src: "/images/amazon/nova_nbs_pair_a.png", alt: "NBS interface A", layout: "pair-left", radius: 32 },
+          { src: "/images/amazon/nova_content_a.png", alt: "NBS interface B", radius: 32 },
         ],
       },
-      // ── 5. Navigation iterations ──────────────────────────────────────────
+      // ── 5. MODULAR FLEXIBILITY ───────────────────────────────────────────
       {
-        label: "NAVIGATION",
-        title: "Multiple Nav Iterations",
-        body: "Designed multiple navigation iterations balancing model discovery, filtering, and Nova Design System hierarchy. Each pass tested against real usage patterns inside the platform.",
+        label: "NOVA BUILDER STUDIO",
+        title: "Modular Flexibility",
+        body: "How do you strike a balance between the variety creators need, consistency of design, and ease of publishing? By creating a modular system that has just the right amount of choice, while making the vast majority of content sing.",
         images: [
-          { src: "/images/amazon/Screenshot 2026-10-12 at 4.45.23 PM.png", alt: "Navigation iteration A", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/Screenshot 2026-10-12 at 4.51.45 PM.png", alt: "Navigation iteration B", radius: 32 },
+          { src: "/images/amazon/nova_content_b.png", alt: "Modular content B", layout: "pair-left", radius: 32 },
+          { src: "/images/amazon/nova_content_a.png", alt: "Modular content A", radius: 32 },
         ],
       },
-      // ── 6. Icon library intro + first grid ───────────────────────────────
+      // ── 6. SHIPPED 130+ ICON LIBRARY ────────────────────────────────────
       {
-        label: "ICON LIBRARY",
-        title: "Nova Icon Library",
-        body: "Created the Nova icon library — 130+ bespoke icons encoding design taste as model instructions (Kiro Power, patent pending). Each icon follows strict geometric constraints consistent with the Nova design language.",
-        images: [
-          { src: "/images/amazon/Type=Agent, Size=Large.svg", alt: "Agent icon", layout: "grid3-start" },
-          { src: "/images/amazon/Type=Attach, Size=Large.svg", alt: "Attach icon" },
-          { src: "/images/amazon/Type=Connect, Size=Large.svg", alt: "Connect icon" },
-          { src: "/images/amazon/Type=Deep Research, Size=Large.svg", alt: "Deep Research icon" },
-          { src: "/images/amazon/Type=Folder, Size=Large.svg", alt: "Folder icon" },
-          { src: "/images/amazon/Type=Nova Cards Agent, Size=Large.svg", alt: "Nova Cards Agent icon" },
-        ],
-      },
-      // ── 7. Second icon grid ───────────────────────────────────────────────
-      {
+        label: "NOVA DESIGN SYSTEM",
+        title: "Shipped 130+ Icon Library",
+        body: "Before I created RUNE — a lightweight custom icon generator — I hand-drew hundreds of icons for Nova Playground in Figma. Every icon follows strict geometric constraints consistent with the Nova design language.",
         images: [
           { src: "/images/amazon/Type=Print, Size=Large.svg", alt: "Print icon", layout: "grid3-start" },
-          { src: "/images/amazon/Type=Settings, Size=Large.svg", alt: "Settings icon" },
           { src: "/images/amazon/Type=Thumbs Up, Size=Large.svg", alt: "Thumbs Up icon" },
-          { src: "/images/amazon/Type=Incognito Active, Size=Large-1.svg", alt: "Incognito icon" },
-          { src: "/images/amazon/Contact.png", alt: "Contact icon" },
-          { src: "/images/amazon/Contact_negative.png", alt: "Contact negative icon" },
+          { src: "/images/amazon/Type=Nova Cards Agent, Size=Large.svg", alt: "Nova Cards Agent icon" },
+          { src: "/images/amazon/Type=Folder, Size=Large.svg", alt: "Folder icon" },
+          { src: "/images/amazon/Type=Connect, Size=Large.svg", alt: "Connect icon" },
+          { src: "/images/amazon/Type=Attach, Size=Large.svg", alt: "Attach icon" },
         ],
       },
-      // ── 8. Icon modules hero ──────────────────────────────────────────────
+      // ── 7. POST ICON BURNOUT — KIRO POWER ───────────────────────────────
       {
+        label: "KIRO POWER",
+        title: "Post Icon Burnout...",
+        body: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
         images: [
-          { src: "/images/amazon/modules!.png", alt: "Icon modules overview", layout: "hero" },
+          { src: "/images/amazon/nova_hero_3.png", alt: "Kiro Power icon agent", layout: "hero" },
         ],
       },
-      // ── 9. Motion ─────────────────────────────────────────────────────────
+      // ── 8. PROMPT: "Create 20 Icons" ────────────────────────────────────
+      {
+        label: "PROMPT:",
+        title: '"Create 20 Icons"',
+        body: "RUNE utilizes several steering text files, meticulously describing my exact idea of a great icon. Although this example focuses on NDS (Nova Design System) style, RUNE can be easily modified for any style of iconography.",
+        images: [
+          { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
+        ],
+      },
+      // ── 9. MOTION — SPECIFICATIONS & EXAMPLES ───────────────────────────
       {
         label: "MOTION",
-        title: "Nova Motion Guide",
-        body: "Motion principles and timing curves applied across Nova's AI interactions — loading states, model response flows, and navigation transitions. Curves & timing set then applied as a reusable template.",
+        title: "Specifications & Examples",
+        body: "These specs for standardizing Nova's motion patterns are built to last. From curve (timing) to duration, these rules and examples make it easy to make the right call for 'delight', every time.",
         images: [
-          { src: "/images/amazon/Nova Motion Guide.png", alt: "Nova motion guide", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/nova_hero_4.png", alt: "Motion specifications", layout: "hero" },
         ],
       },
-      // ── 10. Animation pair (GIFs, r16) ────────────────────────────────────
+      // ── 10. Motion spec editorial ────────────────────────────────────────
       {
-        label: "ANIMATION",
-        title: "Nova Catalog Animations",
-        body: "Key interaction moments for model discovery, response, and navigation — produced as production-ready assets.",
         images: [
-          { src: "/images/amazon/NFD_NCA1.gif", alt: "Nova catalog animation 1", layout: "pair-left", radius: 16 },
-          { src: "/images/amazon/NFD_NCA2_1x.gif", alt: "Nova catalog animation 2", radius: 16 },
+          { src: "/images/amazon/nova_motion_spec.png", alt: "Motion spec detail", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 11. Second animation pair (GIFs, r16) ─────────────────────────────
+      // ── 11. NEW FEATURE DISCOVERY ────────────────────────────────────────
       {
+        label: "MOTION",
+        title: "New Feature Discovery",
+        body: "New technology requires context. When a new feature like Agent Deep Research comes along, customers need a little visual nudge to make announcements sticky.",
         images: [
-          { src: "/images/amazon/NFD_EH1_1x.gif", alt: "Nova EH animation", layout: "pair-left", radius: 16 },
-          { src: "/images/amazon/NFD_DR1.gif", alt: "Nova deep research animation", radius: 16 },
+          { src: "/images/amazon/nova_nfd.png", alt: "New feature discovery", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 12. Builder Studio ────────────────────────────────────────────────
+      // ── 12. Feature pair ─────────────────────────────────────────────────
       {
-        label: "BUILDER STUDIO",
-        title: "Nova Builder Studio",
-        body: "A CMS converting Quip documents directly to Nova Design System specs — enabling content publishing without design handoff. Designed, prototyped, and showcased at re:Invent.",
         images: [
-          { src: "/images/amazon/Quip_CMS1.png", alt: "Quip CMS interface", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/nova_feat_a.png", alt: "Feature detail A", layout: "pair-left", radius: 32 },
+          { src: "/images/amazon/nova_feat_b.png", alt: "Feature detail B", radius: 32 },
         ],
       },
-      // ── 13. CMS hero ──────────────────────────────────────────────────────
+      // ── 13. NBS — ICON LIBRARY ───────────────────────────────────────────
       {
+        label: "NBS",
+        title: "Icon Library",
+        body: "Showcased at re:Invent 2025. NBS provided developers with tools to onboard models, test ACT Browser automation, and showcase Amazon's latest frontier models.",
         images: [
-          { src: "/images/amazon/CMS_comp1.png", alt: "CMS component overview", layout: "hero" },
-        ],
-      },
-      // ── 14. Template pair ─────────────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/1blank.png", alt: "Nova blank template", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/1blankb.png", alt: "Nova blank template B", radius: 32 },
-        ],
-      },
-      // ── 15. Content Partners ──────────────────────────────────────────────
-      {
-        label: "CONTENT PARTNERS",
-        title: "Amazon Content Partners",
-        body: "Inherited an unshipped project, reworked the UX end-to-end, shipped v1 as sole designer. The platform connects Amazon's content partners with Nova's design and publishing tools.",
-        images: [
-          { src: "/images/amazon/2upBlack.png", alt: "Content partners 2-up dark", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 16. Content Partners pair ─────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/2upL_Black.png", alt: "Content partners large dark A", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/2upLb_Black.png", alt: "Content partners large dark B", radius: 32 },
-        ],
-      },
-      // ── 17. Nova Sonic ────────────────────────────────────────────────────
-      {
-        label: "NOVA SONIC",
-        title: "Nova Sonic Audio Chat",
-        body: "Designed UI/UX for Nova Sonic — Amazon's audio chat model. Contributed to model onboarding patterns: list views, edit/view forms, and field schemas across the Nova platform.",
-        images: [
-          { src: "/images/amazon/PLO Illustrtration_BLANK.png", alt: "Nova Sonic PLO illustration", layout: "hero" },
-        ],
-      },
-      // ── 18. Alexa illustration pair ────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/Alexa_Faces_crooped.png", alt: "Alexa character illustration A", layout: "pair-left", radius: 32, blend: "multiply" },
-          { src: "/images/amazon/Alexa_Faces_crooped2.png", alt: "Alexa character illustration B", radius: 32, blend: "multiply" },
-        ],
-      },
-      // ── 19. Alexa KO editorial ────────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/Alexa_Faces_KO.png", alt: "Alexa faces knockout", layout: "editorial", radius: 32 },
-        ],
-      },
-      // ── 20. Prompt Inspiration ────────────────────────────────────────────
-      {
-        label: "PROMPT DESIGN",
-        title: "Prompt Inspiration Cards",
-        body: "Visual design for Nova's prompt inspiration system — cards guiding users toward effective model interactions. Shaped the overall look & feel of the Nova platform.",
-        images: [
-          { src: "/images/amazon/Prompt Inspiration Cards.png", alt: "Prompt inspiration cards", layout: "hero" },
-        ],
-      },
-      // ── 21. EH animation editorial (GIF, r16) ────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/NFD_EH12x.gif", alt: "Nova EH animation 2x", layout: "editorial", radius: 16 },
-        ],
-      },
-      // ── 22. Alexa hero ────────────────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/Alexa_Faces_crooped3.png", alt: "Alexa character illustration C", layout: "hero" },
-        ],
-      },
-      // ── 23. Final NCA animation (GIF, r16) ───────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/NFD_NCA2.gif", alt: "Nova catalog animation final", layout: "editorial", radius: 16 },
+          { src: "/images/amazon/Contact.png", alt: "Nova icon system", layout: "editorial", radius: 32 },
         ],
       },
     ],
