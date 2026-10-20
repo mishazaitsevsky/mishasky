@@ -2,7 +2,7 @@ export type ProjectImage = {
   src: string;
   alt: string;
   caption?: string;
-  layout?: "hero" | "editorial" | "pair-left" | "pair-right" | "grid3-start";
+  layout?: "hero" | "editorial" | "pair-left" | "pair-right" | "grid3-start" | "grid2-start" | "grid4-start";
   radius?: number;
   stroke?: boolean;
   blend?: string;    // CSS mix-blend-mode e.g. "multiply"
