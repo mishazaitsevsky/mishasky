@@ -344,7 +344,12 @@ export const projects: Project[] = [
           { src: "/images/amazon/Prompt Inspiration Cards.png", alt: "Prompt inspiration cards carousel", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 11. RUNE output (image TBD) ─────────────────────────────────────
+      // ── 11. RUNE output editorial ────────────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
+        ],
+      },
       // ── 12. MOTION — SPECIFICATIONS & EXAMPLES ──────────────────────────
       {
         label: "MOTION",
@@ -354,7 +359,7 @@ export const projects: Project[] = [
           { src: "/images/amazon/nova_hero_4.png", alt: "Motion specifications", layout: "hero" },
         ],
       },
-      // ── 13. Motion spec editorial ────────────────────────────────────────
+      // ── 13. Motion spec (SpecificationsEx2) ─────────────────────────────
       {
         images: [
           { src: "/images/amazon/SpecificationsEx2.png", alt: "Motion spec detail", layout: "editorial", radius: 32 },
