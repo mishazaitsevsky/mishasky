@@ -147,6 +147,58 @@ export function SectionsList({
             );
             i += grid.length;
 
+          } else if (img.layout === "grid2-start") {
+            const grid = sec.images.slice(i, i + 2);
+            blocks.push(
+              <Col key={`g2-${i}`}>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:32}}>
+                  {grid.map((gimg, gi) => (
+                    img.blend ? (
+                      <div key={gi} style={{background:"#F7F7F7",borderRadius:gimg.radius?`${gimg.radius}px`:0,overflow:"hidden"}}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={gimg.src} alt={gimg.alt} className="pcimg"
+                          style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                          onClick={() => onOpen(gimg.src, gimg.alt)}/>
+                      </div>
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img key={gi} src={gimg.src} alt={gimg.alt}
+                        className="pcimg"
+                        style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                        onClick={() => onOpen(gimg.src, gimg.alt)}/>
+                    )
+                  ))}
+                </div>
+              </Col>
+            );
+            i += grid.length;
+
+          } else if (img.layout === "grid4-start") {
+            const grid = sec.images.slice(i, i + 4);
+            blocks.push(
+              <Col key={`g4-${i}`}>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:32}}>
+                  {grid.map((gimg, gi) => (
+                    gimg.blend ? (
+                      <div key={gi} style={{background:"#F7F7F7",borderRadius:gimg.radius?`${gimg.radius}px`:0,overflow:"hidden"}}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={gimg.src} alt={gimg.alt} className="pcimg"
+                          style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                          onClick={() => onOpen(gimg.src, gimg.alt)}/>
+                      </div>
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img key={gi} src={gimg.src} alt={gimg.alt}
+                        className="pcimg"
+                        style={imgStyle(gimg.radius, gimg.stroke, gimg.blend)}
+                        onClick={() => onOpen(gimg.src, gimg.alt)}/>
+                    )
+                  ))}
+                </div>
+              </Col>
+            );
+            i += grid.length;
+
           } else if (img.layout === "pair-left" && next) {
             blocks.push(
               <Col key={`pair-${i}`}>
