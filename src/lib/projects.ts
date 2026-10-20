@@ -265,12 +265,7 @@ export const projects: Project[] = [
     cardTextColor: "#ffffff",
     theme: "dark",
     sections: [
-      // ── 1. Hero ─────────────────────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/nova_hero_1.png", alt: "Nova AI Playground", layout: "hero" },
-        ],
-      },
+      // ── 1. Hero (image TBD) ─────────────────────────────────────────────
       // ── 2. Nova Builder Studio + CMS ────────────────────────────────────
       {
         label: "AMAZON — AGI",
