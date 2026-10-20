@@ -310,9 +310,7 @@ export const projects: Project[] = [
         label: "NOVA DESIGN SYSTEM",
         title: "Shipped 130+ Icon Library",
         body: "Before I created RUNE — a lightweight custom icon generator — I hand-drew hundreds of icons for Nova Playground in Figma. Every icon follows strict geometric constraints consistent with the Nova design language.",
-        images: [
-          { src: "/images/amazon/modules!.png", alt: "Nova Web icons — Nova Monoline", layout: "editorial", radius: 32 },
-        ],
+        images: [],
       },
       // ── 8. Design system specs — light + dark pair ───────────────────────
       {
