@@ -344,12 +344,7 @@ export const projects: Project[] = [
           { src: "/images/amazon/Prompt Inspiration Cards.png", alt: "Prompt inspiration cards carousel", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 11. RUNE output editorial ────────────────────────────────────────
-      {
-        images: [
-          { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
-        ],
-      },
+      // ── 11. RUNE output (image TBD) ─────────────────────────────────────
       // ── 12. MOTION — SPECIFICATIONS & EXAMPLES ──────────────────────────
       {
         label: "MOTION",
