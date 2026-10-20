@@ -278,7 +278,7 @@ export const projects: Project[] = [
       // ── 3. NBS interface detail ──────────────────────────────────────────
       {
         images: [
-          { src: "/images/amazon/NBSCMS1.png", alt: "NBS Model User Guide", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/NBSCMS1.png", alt: "NBS Model User Guide", layout: "editorial", radius: 32, blend: "multiply" },
         ],
       },
       // ── 4. Custom CMS: from Quip to web ─────────────────────────────────
@@ -286,9 +286,7 @@ export const projects: Project[] = [
         label: "NOVA BUILDER STUDIO",
         title: "Custom CMS: from Quip to web",
         body: "Developers want things fast and easy. Internal teams at Amazon want to share knowledge, and external customers want to quickly consume AWS & Bedrock's vast documentation. I designed a ground-up CMS that converted Quip docs into Nova Design Library tokens.",
-        images: [
-          { src: "/images/amazon/nova_cms_overview.png", alt: "CMS overview", layout: "editorial", radius: 32 },
-        ],
+        images: [],
       },
       // ── 5. CMS pair ──────────────────────────────────────────────────────
       {
