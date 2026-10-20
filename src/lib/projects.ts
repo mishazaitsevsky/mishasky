@@ -265,11 +265,8 @@ export const projects: Project[] = [
     cardTextColor: "#ffffff",
     theme: "dark",
     sections: [
-      // ── 1. NOVA AI PLAYGROUND ───────────────────────────────────────────
+      // ── 1. Hero ─────────────────────────────────────────────────────────
       {
-        label: "AMAZON — AGI",
-        title: "Nova AI Playground",
-        body: "UX, UI, Motion & Development for Amazon's frontier Agentic chat product.",
         images: [
           { src: "/images/amazon/nova_hero_1.png", alt: "Nova AI Playground", layout: "hero" },
         ],
@@ -283,7 +280,13 @@ export const projects: Project[] = [
           { src: "/images/amazon/nova_hero_2.png", alt: "Nova Builder Studio", layout: "hero" },
         ],
       },
-      // ── 3. Custom CMS: from Quip to web ─────────────────────────────────
+      // ── 3. NBS interface detail ──────────────────────────────────────────
+      {
+        images: [
+          { src: "/images/amazon/nbs1.png", alt: "NBS Model User Guide", layout: "editorial", radius: 32 },
+        ],
+      },
+      // ── 4. Custom CMS: from Quip to web ─────────────────────────────────
       {
         label: "NOVA BUILDER STUDIO",
         title: "Custom CMS: from Quip to web",
@@ -292,38 +295,40 @@ export const projects: Project[] = [
           { src: "/images/amazon/nova_cms_overview.png", alt: "CMS overview", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 4. NBS pair ──────────────────────────────────────────────────────
+      // ── 5. CMS pair ──────────────────────────────────────────────────────
       {
         images: [
           { src: "/images/amazon/nova_nbs_pair_a.png", alt: "NBS interface A", layout: "pair-left", radius: 32 },
           { src: "/images/amazon/nova_content_a.png", alt: "NBS interface B", radius: 32 },
         ],
       },
-      // ── 5. MODULAR FLEXIBILITY ───────────────────────────────────────────
+      // ── 6. MODULAR FLEXIBILITY — vertical stack ──────────────────────────
       {
         label: "NOVA BUILDER STUDIO",
         title: "Modular Flexibility",
         body: "How do you strike a balance between the variety creators need, consistency of design, and ease of publishing? By creating a modular system that has just the right amount of choice, while making the vast majority of content sing.",
         images: [
-          { src: "/images/amazon/nova_content_b.png", alt: "Modular content B", layout: "pair-left", radius: 32 },
-          { src: "/images/amazon/nova_content_a.png", alt: "Modular content A", radius: 32 },
+          { src: "/images/amazon/nova_content_b.png", alt: "Modular content B", layout: "editorial", radius: 32 },
+          { src: "/images/amazon/nova_content_a.png", alt: "Modular content A", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 6. SHIPPED 130+ ICON LIBRARY ────────────────────────────────────
+      // ── 7. NOVA DESIGN SYSTEM — Icon Library ────────────────────────────
       {
         label: "NOVA DESIGN SYSTEM",
         title: "Shipped 130+ Icon Library",
         body: "Before I created RUNE — a lightweight custom icon generator — I hand-drew hundreds of icons for Nova Playground in Figma. Every icon follows strict geometric constraints consistent with the Nova design language.",
         images: [
-          { src: "/images/amazon/Type=Print, Size=Large.svg", alt: "Print icon", layout: "grid3-start" },
-          { src: "/images/amazon/Type=Thumbs Up, Size=Large.svg", alt: "Thumbs Up icon" },
-          { src: "/images/amazon/Type=Nova Cards Agent, Size=Large.svg", alt: "Nova Cards Agent icon" },
-          { src: "/images/amazon/Type=Folder, Size=Large.svg", alt: "Folder icon" },
-          { src: "/images/amazon/Type=Connect, Size=Large.svg", alt: "Connect icon" },
-          { src: "/images/amazon/Type=Attach, Size=Large.svg", alt: "Attach icon" },
+          { src: "/images/amazon/modules!.png", alt: "Nova Web icons — Nova Monoline", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 7. POST ICON BURNOUT — KIRO POWER ───────────────────────────────
+      // ── 8. Design system specs — light + dark pair ───────────────────────
+      {
+        images: [
+          { src: "/images/amazon/Screenshot 2026-10-12 at 4.45.23 PM.png", alt: "Nova Design System component spec light", layout: "pair-left", radius: 32 },
+          { src: "/images/amazon/Screenshot 2026-10-12 at 4.51.45 PM.png", alt: "Nova Design System component spec dark", radius: 32 },
+        ],
+      },
+      // ── 9. POST ICON BURNOUT — KIRO POWER ───────────────────────────────
       {
         label: "KIRO POWER",
         title: "Post Icon Burnout...",
@@ -332,16 +337,22 @@ export const projects: Project[] = [
           { src: "/images/amazon/nova_hero_3.png", alt: "Kiro Power icon agent", layout: "hero" },
         ],
       },
-      // ── 8. PROMPT: "Create 20 Icons" ────────────────────────────────────
+      // ── 10. PROMPT: "Create 20 Icons" ───────────────────────────────────
       {
         label: "PROMPT:",
         title: '"Create 20 Icons"',
         body: "RUNE utilizes several steering text files, meticulously describing my exact idea of a great icon. Although this example focuses on NDS (Nova Design System) style, RUNE can be easily modified for any style of iconography.",
         images: [
+          { src: "/images/amazon/Prompt Inspiration Cards.png", alt: "Prompt inspiration cards carousel", layout: "editorial", radius: 32 },
+        ],
+      },
+      // ── 11. RUNE output editorial ────────────────────────────────────────
+      {
+        images: [
           { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 9. MOTION — SPECIFICATIONS & EXAMPLES ───────────────────────────
+      // ── 12. MOTION — SPECIFICATIONS & EXAMPLES ──────────────────────────
       {
         label: "MOTION",
         title: "Specifications & Examples",
@@ -350,13 +361,13 @@ export const projects: Project[] = [
           { src: "/images/amazon/nova_hero_4.png", alt: "Motion specifications", layout: "hero" },
         ],
       },
-      // ── 10. Motion spec editorial ────────────────────────────────────────
+      // ── 13. Motion spec editorial ────────────────────────────────────────
       {
         images: [
           { src: "/images/amazon/nova_motion_spec.png", alt: "Motion spec detail", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 11. NEW FEATURE DISCOVERY ────────────────────────────────────────
+      // ── 14. NEW FEATURE DISCOVERY ────────────────────────────────────────
       {
         label: "MOTION",
         title: "New Feature Discovery",
@@ -365,20 +376,11 @@ export const projects: Project[] = [
           { src: "/images/amazon/nova_nfd.png", alt: "New feature discovery", layout: "editorial", radius: 32 },
         ],
       },
-      // ── 12. Feature pair ─────────────────────────────────────────────────
+      // ── 15. Feature pair ─────────────────────────────────────────────────
       {
         images: [
           { src: "/images/amazon/nova_feat_a.png", alt: "Feature detail A", layout: "pair-left", radius: 32 },
           { src: "/images/amazon/nova_feat_b.png", alt: "Feature detail B", radius: 32 },
-        ],
-      },
-      // ── 13. NBS — ICON LIBRARY ───────────────────────────────────────────
-      {
-        label: "NBS",
-        title: "Icon Library",
-        body: "Showcased at re:Invent 2025. NBS provided developers with tools to onboard models, test ACT Browser automation, and showcase Amazon's latest frontier models.",
-        images: [
-          { src: "/images/amazon/Contact.png", alt: "Nova icon system", layout: "editorial", radius: 32 },
         ],
       },
     ],
