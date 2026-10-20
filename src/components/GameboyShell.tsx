@@ -57,9 +57,9 @@ function LED({ blinking = false }: { blinking?: boolean }) {
 }
 
 // ── Round nav/ABC button — empty circle, icon/label below ────────────────────
-function GameboyButton({ sublabel, icon, active, dimmed, onClick, hideLabel }: {
+function GameboyButton({ sublabel, icon, active, dimmed, onClick, hideLabel, bg }: {
   sublabel: string; icon?: React.ReactNode;
-  active?: boolean; dimmed?: boolean; onClick?: () => void; hideLabel?: boolean;
+  active?: boolean; dimmed?: boolean; onClick?: () => void; hideLabel?: boolean; bg?: string;
 }) {
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,cursor:"pointer"}} onClick={onClick}>
@@ -67,7 +67,7 @@ function GameboyButton({ sublabel, icon, active, dimmed, onClick, hideLabel }: {
         width:64, height:64, borderRadius:"50%", position:"relative",
         background: active
           ? "linear-gradient(180deg, #7a1a3a 0%, #3a0a20 95%)"
-          : "linear-gradient(180deg, #A03469 0%, #622040 95%)",
+          : bg ?? "linear-gradient(180deg, #A03469 0%, #622040 95%)",
         boxShadow: active ? [
           "4px 4px 5px rgba(0,0,0,0.44)",
           "2px 2px 1px rgba(0,0,0,1.0)",
@@ -853,6 +853,14 @@ export default function GameboyShell({
                         borderRadius:99, padding:"8px 8px",
                         display:"flex", alignItems:"center", gap:16, position:"relative",
                       }}>
+                        {mode !== "home" && (
+                          <GameboyButton sublabel="Back"
+                            icon={<span style={{display:"inline-flex",transform:"rotate(-90deg)"}}><Icon name="arrow-up" size={24}/></span>}
+                            onClick={() => setMode("home")}
+                            hideLabel
+                            bg="linear-gradient(180deg, #54589F 0%, #383C83 95%)"
+                          />
+                        )}
                         <GameboyButton sublabel="Quiz" icon={<Icon name="quiz" size={24}/>} onClick={openChat} hideLabel/>
                         <GameboyButton sublabel="About" icon={<Icon name="about" size={22}/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")} hideLabel/>
                         <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size={22}/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")} hideLabel/>
@@ -860,6 +868,11 @@ export default function GameboyShell({
                     </div>
                     {/* Icons row below housing */}
                     <div style={{display:"flex",gap:16,paddingLeft:9,paddingRight:9,marginTop:8}}>
+                      {mode !== "home" && (
+                        <div style={{width:64,display:"flex",justifyContent:"center",color:"#54589F"}}>
+                          <span style={{display:"inline-flex",transform:"rotate(-90deg)"}}><Icon name="arrow-up" size={22}/></span>
+                        </div>
+                      )}
                       {[
                         {icon:<Icon name="quiz" size={24}/>, label:"Quiz"},
                         {icon:<Icon name="about" size={22}/>, label:"About"},
@@ -871,9 +884,9 @@ export default function GameboyShell({
                   </div>
                   <div style={{marginTop:16}}><ControlPill sublabel="Theme" onClick={cycleTheme}/></div>
                   {/* Title + body lockup — hidden when about is open */}
-                  <div style={{
+                  <div className="gb-nav-lockup" style={{
                     flex:1,
-                    display: mode === "about" ? "none" : "flex",
+                    display: mode !== "home" ? "none" : "flex",
                     flexDirection:"column", paddingLeft:8, minWidth:160,
                   }}>
                     <div style={{height:64, display:"flex", alignItems:"center", paddingTop:8}}>
@@ -902,11 +915,7 @@ export default function GameboyShell({
                   </div>
                 )}
                 {/* Work slot */}
-                {workSlot && (
-                  <div style={{background:"#f3f3f7", borderRadius:16, overflow:"hidden"}}>
-                    {workSlot}
-                  </div>
-                )}
+                {workSlot && <div>{workSlot}</div>}
                 {/* Card grid */}
                 <div className="gb-card-grid" style={{marginTop:8}}>
                   {GB_HOME_CARDS.map(card => {

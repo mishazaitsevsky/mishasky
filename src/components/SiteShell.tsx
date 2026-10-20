@@ -253,13 +253,18 @@ function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, 
 
   return (
     <>
-      {onBack && (
-        <button className="nav-btn" onClick={onBack} aria-label="Back"
-          style={{ background:"#F3F3F7", color:"#111" }}>
-          <span style={{ display:"inline-flex", transform:"rotate(-90deg)" }}>
-            <Icon name="arrow-up" size={24}/>
-          </span>
-        </button>
+      {onBack && (brutal
+        ? btn(false, onBack, "Back",
+            <span style={{display:"inline-flex",transform:"rotate(-90deg)"}}><Icon name="arrow-up" size={24}/></span>
+          )
+        : (
+          <button className="nav-btn" onClick={onBack} aria-label="Back"
+            style={{ background:"#F3F3F7", color:"#111" }}>
+            <span style={{ display:"inline-flex", transform:"rotate(-90deg)" }}>
+              <Icon name="arrow-up" size={24}/>
+            </span>
+          </button>
+        )
       )}
       {btn(false, openChat, "Quiz", <Icon name="quiz" size={24}/>, undefined, true, 25)}
       {btn(mode==="about", mode==="about" ? (onAboutToggle ?? (()=>setMode("home"))) : ()=>setMode("about"), "About", <Icon name="about" size={24}/>, undefined, true, 50)}
@@ -1641,16 +1646,18 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
             <BcText text={<><strong>Role Preference Guide (RPG)</strong> helps illustrate some common contradictions of hiring, and narrows down the two most important things: what you actually need, and whether it&apos;s attainable. My theory is if you know those two things, it&apos;s more likely you will succeed.</>}/>
           </div>
         </div>
-        {/* CTA row: LEARN MORE toggle + PLAY + share */}
+        {/* CTA row: INFO toggle + QUIZ */}
         <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
           <div style={{flex:1,overflow:"visible"}}>
             <BrutalShadow block>
               <div className="bc-cta" onClick={()=>setOpen(o=>!o)}
                 style={{background:"#3A4324",color:"#fff",borderColor:"#000",cursor:"pointer"}}>
-                <span>{open?"CLOSE":"LEARN MORE"}</span>
-                <span style={{transform:open?"rotate(-90deg)":"rotate(0deg)",display:"inline-block",transition:"transform 200ms ease"}}>
-                  <ArrowRight size={20}/>
-                </span>
+                <span>{open?"CLOSE":"INFO"}</span>
+                {open && (
+                  <span style={{transform:"rotate(-90deg)",display:"inline-block",transition:"transform 200ms ease"}}>
+                    <ArrowRight size={20}/>
+                  </span>
+                )}
               </div>
             </BrutalShadow>
           </div>
@@ -1658,17 +1665,26 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
             <BrutalShadow block>
               <div className="bc-cta" onClick={()=>{window.scrollTo({top:0,behavior:"smooth"});openChat();}}
                 style={{cursor:"pointer"}}>
-                <span>PLAY</span><ArrowRight size={20}/>
+                <span>QUIZ</span>
               </div>
             </BrutalShadow>
           </div>
-          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
-            <BrutalShadow block>
-              <div className="bc-cta" style={{justifyContent:"center",padding:0}}>
-                <Icon name="share" size={20}/>
-              </div>
-            </BrutalShadow>
-          </div>
+        </div>
+        {/* Share — stacked below like FAQ tile */}
+        <div className="bc-cta-wrap" style={{marginTop:-1}}>
+          <BrutalShadow block>
+            <div className="bc-cta" style={{cursor:"pointer",justifyContent:"space-between"}}
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({ title: "Fit RPG — Are We A Good Fit?", url: window.location.href });
+                } else {
+                  navigator.clipboard?.writeText(window.location.href);
+                }
+              }}>
+              <span>SHARE</span>
+              <Icon name="share" size={20}/>
+            </div>
+          </BrutalShadow>
         </div>
       </>
     );
@@ -1808,7 +1824,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
             </div>
             {/* Right column — fixed 100px photo, no top/right border (adjacent strokes) */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/About/mishasky.jpeg" alt="Misha Sky"
+            <img className="brutal-about-photo" src="/images/About/mishasky.jpeg" alt="Misha Sky"
               style={{width:100,height:100,objectFit:"cover",flexShrink:0,display:"block",
                 borderLeft:"1px solid #000", borderTop:"none", borderRight:"none", borderBottom:"none"}}/>
           </div>
@@ -1953,7 +1969,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
   );
 }
 
-function AboutSection({ onClose, openChat, initialOpenId }: { onClose: () => void; openChat: () => void; initialOpenId?: string }) {
+function AboutSection({ onClose, openChat, initialOpenId, hideTitle }: { onClose: () => void; openChat: () => void; initialOpenId?: string; hideTitle?: boolean }) {
   return (
     <div className="about-section-body" style={{ fontFamily:'"T-Star Mono",monospace', padding:"32px 32px 48px", position:"relative" }}>
       {/* Close button — top right of card */}
@@ -1967,7 +1983,8 @@ function AboutSection({ onClose, openChat, initialOpenId }: { onClose: () => voi
         </svg>
       </button>
 
-      {/* Header */}
+      {/* Header — hidden in GB where back button in nav handles navigation */}
+      {!hideTitle && (
       <div style={{display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:32}}>
         <div style={{flex:1, paddingRight:32}}>
           <div style={{
@@ -1995,6 +2012,7 @@ function AboutSection({ onClose, openChat, initialOpenId }: { onClose: () => voi
           />
         </div>
       </div>
+      )}
 
       {/* Cards */}
       {ABOUT_CARDS.map(card => (
@@ -2347,6 +2365,14 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
     if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
   }, []);
 
+  // Reset mode on bfcache restore (back-forward navigation) and on dev Fast Refresh
+  useEffect(() => {
+    setMode("home"); // always start clean — Fast Refresh / bfcache may carry stale mode
+    const onPageShow = (e: PageTransitionEvent) => { if (e.persisted) setMode("home"); };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
+
   // Lock body scroll when project overlay is open — prevents double scrollbar
   // Reset any pre-opened about card whenever we leave the about view
   // Scroll to top when about opens
@@ -2610,7 +2636,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           font-family:"T-Star Mono",monospace;font-size:16px;font-weight:500;
           transition:background .12s,color .12s;
         }
-        .nav-btn:hover,.nav-btn.on{background:#1B6EF3;color:#fff}
+        .nav-btn:hover,.nav-btn.on{background:#1B6EF3;color:#fff;border-radius:50%}
         .powered{
           font-size:16px;font-weight:300;letter-spacing:.04em;
           color:#1B6EF3;background:#f3f3f7;border-radius:999px;
@@ -3053,10 +3079,24 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           .bc-cta{font-size:16px!important;font-weight:500!important}
           .faq-q{font-size:16px!important;font-weight:500!important;line-height:1.5!important}
           .gb-about-slot{background:transparent!important;border-radius:0!important;overflow:visible!important}
+          @media(max-width:599px){.gb-nav-lockup{display:none!important}}
           .about-section-photo{display:none!important}
           .chat-section-photo{display:none!important}
           .about-section-body{padding-left:0!important;padding-right:0!important}
           .work-section-body{padding-left:0!important;padding-right:0!important}
+          @media(max-width:599px){
+            /* ⊓ page frame: top connects the bp-sl / bp-sr vertical lines */
+            .bp-col{border-top:1px solid #000}
+            /* Nav wraps: buttons on top, title below */
+            .bp-outer .nav-row{flex-wrap:wrap}
+            /* No border-bottom here — nav-btns has margin-left:-16px which would misalign the line by 16px */
+            .bp-outer .nav-btns{width:100%;flex-shrink:0}
+            /* Separator line lives on the title's top border — it starts at 0px (not -16px), correct horizontal position */
+            .bp-nav-title{width:100%;border-left:none!important;padding-left:0!important;border-top:1px solid #000;padding-top:16px}
+            /* Hide photo in about — causes layout issues on narrow screens */
+            .about-section-photo{display:none!important}
+            .brutal-about-photo{display:none!important}
+          }
           .about-section-body .proj-close-btn{display:none!important}
           .about-section-body .proj-close-btn{display:none!important}
         }
@@ -3229,20 +3269,10 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             <ChatSection onClose={closeAiChat} extMessages={aiChatMessages} setExtMessages={setAiChatMessages} extLoading={aiChatLoading} setExtLoading={setAiChatLoading} initialQ={aiChatInitialQ} compact/>
           ) : undefined}
           aboutSlot={(mode === "about" || aboutClosing) ? (
-            <AboutSection onClose={closeAbout} openChat={openChat} initialOpenId={aboutInitialCard}/>
+            <AboutSection onClose={closeAbout} openChat={openChat} initialOpenId={aboutInitialCard} hideTitle/>
           ) : undefined}
           workSlot={(mode === "work" || workClosing) ? (
-            <div style={{padding:"32px", fontFamily:'"T-Star Mono",monospace', background:"#f3f3f7", position:"relative"}}>
-              <button onClick={closeWork} className="proj-close-btn" aria-label="Close work">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/></svg>
-              </button>
-              <div style={{marginBottom:32}}>
-                <div style={{fontSize:12, fontWeight:500, letterSpacing:"0.14em", textTransform:"uppercase", color:"#888", borderBottom:"1px solid var(--border)", paddingBottom:6, display:"inline-block", marginBottom:12}}>PROJECTS</div>
-                <h1 style={{fontSize:30, fontWeight:500, lineHeight:1.2, margin:"0 0 8px", color:"#111"}}>My work. Commerce, frontier Ai, Gaming and more.</h1>
-                <p style={{fontSize:15, fontWeight:300, color:"#555", margin:0, lineHeight:1.6}}>Learn more about the site&apos;s author below!</p>
-              </div>
-              <WorkProjectCards openProject={openProject}/>
-            </div>
+            <WorkProjectCards openProject={openProject}/>
           ) : undefined}
           openAboutArticle={(cardId) => { setAboutInitialCard(cardId); setMode("about"); }}
         />
@@ -3279,10 +3309,17 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             {!isChat && (
               <div className="bp-row" style={{overflow:"visible", paddingBottom:0}}>
                 <nav className="nav-row" style={{alignItems:"flex-start", borderTop:"1px solid #000", overflow:"visible", marginTop:48}}>
-                  <div className="nav-btns" style={{overflow:"visible", gap:24, marginTop:-18}}>
-                    <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={true} onAboutToggle={closeAbout}/>
+                  <div className="nav-btns" style={{overflow:"visible", gap:12, marginTop:-18}}>
+                    <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={true} onAboutToggle={closeAbout}
+                      onBack={mode !== "home" ? () => {
+                        if (mode === "about") closeAbout();
+                        else if (mode === "work") closeWork();
+                        else if (mode === "aichat") closeAiChat();
+                        else setMode("home");
+                      } : undefined}
+                    />
                   </div>
-                  <div style={{flex:1, borderLeft:"1px solid #000", paddingLeft:16, display:"flex", flexDirection:"column"}}>
+                  <div className="bp-nav-title" style={{flex:1, borderLeft:"1px solid #000", paddingLeft:16, display:"flex", flexDirection:"column"}}>
                     <div style={{fontFamily:'"T-Star Mono",monospace', fontWeight:700, fontSize:30, lineHeight:1.0, borderBottom:"1px solid #000", paddingBottom:3}}>
                       0→1 PRODUCT / Ai &amp; I
                     </div>
@@ -3685,7 +3722,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
               <div className="hero-nav-row">
                 <nav className="nav-btns-right" aria-label="Site navigation">
                   <NavButtons mode={mode} openChat={openChat} setMode={setMode} cycleTheme={cycleTheme} brutal={false} onAboutToggle={closeAbout}
-                    onBack={isMobile && mode !== "home" && mode !== "chat" ? () => {
+                    onBack={isMobile && mode !== "home" ? () => {
                       if (mode === "about") closeAbout();
                       else if (mode === "work") closeWork();
                       else if (mode === "aichat") closeAiChat();
