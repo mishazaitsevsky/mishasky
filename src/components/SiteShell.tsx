@@ -2,14 +2,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import WordmarkFixed, { WordmarkPlaceholder, WordmarkSVG, THEME_FLIP_DELAY, TOTAL_JUMP_MS, type WordmarkFixedHandle } from "@/components/WordmarkFixed";
-import WordKeyboard from "@/components/WordKeyboard";
 import MishaSpinner from "@/components/MishaSpinner";
-import Link from "next/link";
-import WorkSection, { BrutalWorkSection, WorkProjectCards, BrutalProjectCards } from "@/components/WorkSection";
+import WorkSection, { BrutalWorkSection, BrutalProjectCards } from "@/components/WorkSection";
 import Image from "next/image";
 import { projects, getProject } from "@/lib/projects";
-import Icon from "@/components/Icon";
-import Pictogram from "@/components/Pictogram";
+import Icon, { type IconSize } from "@/components/Icon";
+import ShareButton from "@/components/ShareButton";
 import ProjectContent, { SectionsList } from "@/components/ProjectContent";
 import GameboyShell from "@/components/GameboyShell";
 import BrutalShadow from "@/components/BrutalShadow";
@@ -19,7 +17,6 @@ import {
   END_COPY,
   resolveEndState,
   resolveKillNode,
-  retryCopy,
   summarizePath,
   type AnswerTag,
   type EndState,
@@ -66,14 +63,8 @@ function Wordmark() {
   );
 }
 
-function ArrowRight({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      style={{ transform:"rotate(90deg)", flexShrink:0 }} aria-hidden="true">
-      <path d="M21.25 10.543L12.104 1.397C11.909 1.201 11.592 1.201 11.397 1.397L2.25 10.543M11.75 1.25V22.043"
-        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-    </svg>
-  );
+function ArrowRight({ size = "L" }: { size?: IconSize }) {
+  return <Icon name="arrow" dir="right" size={size}/>;
 }
 
 function Spinner() {
@@ -173,6 +164,8 @@ function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, 
   onBack?: () => void;
 }) {
   const [hovered, setHovered] = useState<string|null>(null);
+  // Nav icons are L in Standard and Brutalist (Gameboy uses XL)
+  const navIcon: IconSize = "L";
 
   const btn = (active: boolean, onClick: ()=>void, label: string, icon: React.ReactNode, overrideBg?:string, animateOnMount=false, mountDelay=0) => {
     const isHovered = brutal && hovered === label;
@@ -238,7 +231,7 @@ function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, 
               aria-label="Confirm"
               style={{ borderRadius:0, border:"1px solid #000", boxShadow:"none", background:arrowBg, color:"#000", cursor: hasSelection ? "pointer" : "default", width:"100%", fontFamily:'"T-Star Mono",monospace', fontSize:30, fontWeight:300 }}
             >
-              {hasSelection ? <ArrowRight size={22}/> : <ArrowRight size={22}/>}
+              <ArrowRight/>
             </button>
           );
           return (
@@ -254,22 +247,18 @@ function NavButtons({ mode, openChat, setMode, cycleTheme, brutal, chatButtons, 
   return (
     <>
       {onBack && (brutal
-        ? btn(false, onBack, "Back",
-            <span style={{display:"inline-flex",transform:"rotate(-90deg)"}}><Icon name="arrow-up" size={24}/></span>
-          )
+        ? btn(false, onBack, "Back", <Icon name="arrow" dir="left" size="L"/>, "#fff")
         : (
           <button className="nav-btn" onClick={onBack} aria-label="Back"
             style={{ background:"#F3F3F7", color:"#111" }}>
-            <span style={{ display:"inline-flex", transform:"rotate(-90deg)" }}>
-              <Icon name="arrow-up" size={24}/>
-            </span>
+            <Icon name="arrow" dir="left" size="L"/>
           </button>
         )
       )}
-      {btn(false, openChat, "Quiz", <Icon name="quiz" size={24}/>, undefined, true, 25)}
-      {btn(mode==="about", mode==="about" ? (onAboutToggle ?? (()=>setMode("home"))) : ()=>setMode("about"), "About", <Icon name="about" size={24}/>, undefined, true, 50)}
-      {btn(mode==="aichat", ()=>setMode("aichat"), "AI Chat", <Icon name="chat"  size={24}/>, undefined, true, 75)}
-      {btn(false, cycleTheme, "Theme", <Icon name="theme" size={22}/>, undefined, true, 100)}
+      {btn(false, openChat, "Quiz", <Icon name="knife" size={navIcon}/>, undefined, true, 25)}
+      {btn(mode==="about", mode==="about" ? (onAboutToggle ?? (()=>setMode("home"))) : ()=>setMode("about"), "About", <Icon name="about" size={navIcon}/>, undefined, true, 50)}
+      {btn(mode==="aichat", ()=>setMode("aichat"), "AI Chat", <Icon name="chat" size={navIcon}/>, undefined, true, 75)}
+      {btn(false, cycleTheme, "Theme", <Icon name="brush" size={navIcon}/>, undefined, true, 100)}
     </>
   );
 }
@@ -371,9 +360,6 @@ export function TreeReveal({
     };
   }
 
-  function boxPath(x: number, y: number): string {
-    return `M${x},${y} h${BOX} v${BOX} h-${BOX} Z`;
-  }
 
   const isWin  = endState === "win";
   const GB        = theme === "gameboy";
@@ -381,7 +367,6 @@ export function TreeReveal({
 
   // Connector color: GB always uses the dark pixel
   const connectorColor = GB ? GBdark : isWin ? "#000" : "#fff";
-  const flagFilter = GB ? undefined : isWin ? "invert(1)" : undefined;
 
   // Box colors
   // Default: chosen solid, unchosen outline, kill red
@@ -403,18 +388,15 @@ export function TreeReveal({
   for (let i = 0; i < visible.length; i += COLS_PER_ROW) {
     rows.push(visible.slice(i, i + COLS_PER_ROW));
   }
-  const isMultiRow = rows.length > 1;
 
   // Compact sizing when many columns — fits better on narrow screens
   const BOX     = totalCols > 6 ? 32 : 40;
-  const GAP     = 0;
   const COL_GAP = totalCols > 6 ? 20 : 32;
   const PAD_X   = 4;
   const PAD_Y   = 4;
   const ROWS    = 3;
 
   const colStep = BOX + COL_GAP;
-  const spineY  = PAD_Y + BOX + BOX / 2;
   const svgH    = PAD_Y * 2 + ROWS * BOX + 42;
 
   // Bookend geometry
@@ -453,7 +435,6 @@ export function TreeReveal({
         <g opacity="0.2">
           {visible.map((nk, col) => {
             if (hideStart && col === 0) return null;
-            const x = pathOffsetX + col * colStep;
             const chosenIdx = visitedMap.get(nk) ?? 1;
             const pts: [number,number][] = [];
             if (col === 0) {
@@ -512,18 +493,13 @@ export function TreeReveal({
         </g>
         )}{visible.map((nk, col) => {
           const x         = pathOffsetX + col * colStep;
-          const colAnimIdx = col + 1; // unused, kept for reference
           const chosenIdx = visitedMap.get(nk) ?? -1;
           const isKillCol  = nk === killNodeKey;
           const nodeData   = QUESTIONS.find(q => q.nodeKey === nk);
           // Also red if chosen answer has warn:true (first or second bad answer)
           const chosenIsWarn = chosenIdx >= 0 && !!nodeData?.answers[chosenIdx]?.warn;
           const rowCount  = nodeData?.answers.length ?? 3;
-          const hasNext   = col < visible.length - 1;
-          const nextChosenIdx = hasNext ? (visitedMap.get(visible[col + 1]) ?? -1) : -1;
 
-          const isFirst = col === 0;
-          const isLast  = col === visible.length - 1;
 
           return (
             <g key={nk}>
@@ -802,7 +778,7 @@ const ABOUT_CARDS: {
 
           {/* Section 2 */}
           <h3 style={h2}>2. AI + Human Colab. Reqs</h3>
-          <p style={body}>3 options per question, 7 rounds of questions. About 10 total. Goal 4–5 losses to complete. Game scope/size/length must be discovered through failure (no hints). Some questions are 'costume' (no weight to loss/completion). Some questions have more −1/−2 weights towards (sudden) loss. Game must feel harsh, but objectively fair. Must be 99% React/Typescript (avoid assets for buttons/cards etc).</p>
+          <p style={body}>3 options per question, 7 rounds of questions. About 10 total. Goal 4–5 losses to complete. Game scope/size/length must be discovered through failure (no hints). Some questions are &apos;costume&apos; (no weight to loss/completion). Some questions have more −1/−2 weights towards (sudden) loss. Game must feel harsh, but objectively fair. Must be 99% React/Typescript (avoid assets for buttons/cards etc).</p>
           {img("/images/About/node-wires.png","Model Node Wires",{margin:"0 0 24px"})}
 
           {/* Section 3 */}
@@ -816,7 +792,7 @@ const ABOUT_CARDS: {
 
           {/* Section 4 */}
           <h3 style={h2}>4. Building Local from Human Mocks</h3>
-          <p style={body}>Accounting for Responsive. Themes & Project Templates. Individual project layouts using template. For large, high content pages made of pre-composed parts a direct link to Figma w/ auth token works best. For pages that have complex components like cards, gameboy speaker grill I find screenshots of each individual part works best. For novel components (like gameboy speaker grill & cartridge) I found breaking them up into separate chunks (top, middle, bottom) using screenshots of 'exploded' breakouts works best. Personally I've found creative explanation to be more effective than Figma MCP or Kiro's Figma Power. For a site that has lots of content variation it's helpful to keep a steering file that urges (Kiro) to build anatomically, and avoid hard-coding.</p>
+          <p style={body}>Accounting for Responsive. Themes & Project Templates. Individual project layouts using template. For large, high content pages made of pre-composed parts a direct link to Figma w/ auth token works best. For pages that have complex components like cards, gameboy speaker grill I find screenshots of each individual part works best. For novel components (like gameboy speaker grill & cartridge) I found breaking them up into separate chunks (top, middle, bottom) using screenshots of &apos;exploded&apos; breakouts works best. Personally I&apos;ve found creative explanation to be more effective than Figma MCP or Kiro&apos;s Figma Power. For a site that has lots of content variation it&apos;s helpful to keep a steering file that urges (Kiro) to build anatomically, and avoid hard-coding.</p>
           <div style={{display:"flex",gap:32,margin:"0 0 32px",flexWrap:"wrap"}}>
             {img("/images/About/standard-theme-7c4db0.png","Standard Theme",{flex:1,minWidth:200})}
             {img("/images/About/brutalism-theme-6a2059.png","Brutalism Theme",{flex:1,minWidth:200})}
@@ -832,7 +808,7 @@ const ABOUT_CARDS: {
 
           {/* Section 5 */}
           <h3 style={h2}>5. Adding Motion</h3>
-          <p style={body}>Provide curve for 'universal' timing. Describe parameters for individual application. Find/Use Existing snippets for complex/tedious elements like the 'Blink' effect in the below example, and tune to taste. Note: Animations that have sequence & true/false dependencies are not trivial, but it's all worth it, right?!</p>
+          <p style={body}>Provide curve for &apos;universal&apos; timing. Describe parameters for individual application. Find/Use Existing snippets for complex/tedious elements like the &apos;Blink&apos; effect in the below example, and tune to taste. Note: Animations that have sequence & true/false dependencies are not trivial, but it&apos;s all worth it, right?!</p>
           <div style={{display:"flex",gap:32,margin:"0 0 32px",flexWrap:"wrap"}}>
             {img("/images/About/anim-1.png","3",{flex:1,minWidth:200,background:"#211C26"})}
             {img("/images/About/anim-2.png","3",{flex:1,minWidth:200})}
@@ -843,7 +819,7 @@ const ABOUT_CARDS: {
             <div style={{flex:1,minWidth:0,borderRadius:16,background:"#f3f3f7"}}/>
             <div style={{flex:1,minWidth:0,borderRadius:16,background:"#f3f3f7"}}/>
           </div>
-          <p style={body}>Physical simulation in code is deceptively token-heavy — lots of precise numbers, lots of small corrections, lots of "close but not quite." Logic is cheap. Craft is expensive.</p>
+          <p style={body}>Physical simulation in code is deceptively token-heavy — lots of precise numbers, lots of small corrections, lots of &quot;close but not quite.&quot; Logic is cheap. Craft is expensive.</p>
 
           {/* Section 6 */}
           <h3 style={h2}>6. Push w/ Git & Vercel</h3>
@@ -959,15 +935,7 @@ function AboutCard({ card, defaultOpen, onPlay }: { card: typeof ABOUT_CARDS[0];
           }}
         >
           {open ? "Less" : card.ctaLabel}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {open ? (
-              <path d="M10.75 19.457L1.604 10.311C1.409 10.115 1.409 9.799 1.604 9.603L10.75 0.457M2 9.957H22.793"
-                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-            ) : (
-              <path d="M13.25 0.457L22.396 9.603C22.591 9.799 22.591 10.115 22.396 10.311L13.25 19.457M22 9.957H1.207"
-                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-            )}
-          </svg>
+          <Icon name="arrow" dir={open ? "left" : "right"} size="M"/>
         </button>
         {/* Secondary CTA — Play (RPG card only) */}
         {onPlay && (
@@ -986,12 +954,13 @@ function AboutCard({ card, defaultOpen, onPlay }: { card: typeof ABOUT_CARDS[0];
             }}
           >
             Play
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M13.25 0.457L22.396 9.603C22.591 9.799 22.591 10.115 22.396 10.311L13.25 19.457M22 9.957H1.207"
-                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-            </svg>
+            <Icon name="arrow" dir="right" size="M"/>
           </button>
         )}
+        {/* Share — right-aligned, same treatment as the resume tile's download */}
+        <div style={{flex:1, display:"flex", justifyContent:"flex-end"}}>
+          <ShareButton url={`/?about=${card.id}`} title={card.title}/>
+        </div>
       </div>
     </div>
   );
@@ -1059,12 +1028,7 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
 }
 
 function ChevronIcon({ open }: { open: boolean }) {
-  return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" style={{flexShrink:0, transition:"transform 0.2s", transform: open ? "rotate(0deg)" : "rotate(180deg)"}}>
-      <path d="M12 22.043V1.25M2.25 10.543L11.397 1.397C11.592 1.201 11.909 1.201 12.104 1.397L21.25 10.543"
-        stroke="#000" strokeWidth="1.8" strokeLinecap="round"/>
-    </svg>
-  );
+  return <Icon name="arrow" dir={open ? "up" : "down"} size="L" style={{transition:"transform 0.2s"}}/>;
 }
 
 // ── AboutChat ────────────────────────────────────────────────────────────────
@@ -1156,16 +1120,14 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
     lineHeight:"30px", margin:0,
   };
 
-  const SendButton = () => (
+  const sendButton = (
     <div style={{
       width:36, height:36, borderRadius:"50%", flexShrink:0,
       background:"#007AD5", opacity: hasValue ? 1 : 0.5,
       display:"flex", alignItems:"center", justifyContent:"center",
       cursor: hasValue ? "pointer" : "default", transition:"opacity 0.12s",
     }} onClick={handleSubmit}>
-      <svg width="14" height="13" viewBox="0 0 14 13" fill="none">
-        <path d="M13 6.5L1 6.5M7.5 1L13 6.5L7.5 12" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
+      <Icon name="arrow" dir="right" size="M" style={{color:"#fff"}}/>
     </div>
   );
 
@@ -1196,7 +1158,7 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
           alignSelf:"center", padding:0,
         }}
       />
-      <SendButton/>
+      {sendButton}
     </div>
   );
 
@@ -1241,7 +1203,7 @@ function AboutChat({ extMessages, setExtMessages, extLoading, setExtLoading, ini
   );
 }
 
-function FaqSection({ openChat }: { openChat: () => void }) {
+function FaqSection() {
   return (
     <div style={{marginTop:0}}>
       {/* Title block — inline, not a card */}
@@ -1289,7 +1251,7 @@ function FaqSection({ openChat }: { openChat: () => void }) {
 const RESUME_JOBS = [
   {
     company: "Amazon",
-    role: "Product Designer, AI Platform, 2024–Present",
+    role: "Product Designer, AI Platform, Jan 2024–Present",
     bullets: [
       "Built a lean icon generation agent as a Kiro Power (patent pending) — encodes design taste as model instructions",
       "Shipped a production model catalog page to mainline — designed, built with Kiro, and merged through standard code review on a 70-developer codebase",
@@ -1304,39 +1266,66 @@ const RESUME_JOBS = [
   {
     company: "Neon Machine / Shrapnel",
     role: "Lead Product Designer, 2022–2024",
-    bullets: ["Product Owner & Creator, Online NFT marketplace for PC Extraction Shooter", "Created E2E browsing, promotion, search, payment, navigation, filtering, buy, sell, auction & accounts-management experiences", "Contributed to player-profile, transfers, leaderboard, questing, inventory & RNG item-recycling features", "Created SHRAPNEL Design System Figma library for game & web: UI, font ramp, iconography, Figma component library", "Wrote notification-system product doc for SHRAPNEL & Mercury Platform"],
-    description: "Responsibilities: conduct walkthroughs & reviews, write product definition docs, define data models, write QA test-scripts, define art needs, create mocks & wires, plan sprints, conduct competitive research & define OKRs & analytics needs for web. Daily collab with tech director, game UX director, EXP devs, CMO, producers, swim-lane leads & art director.",
+    bullets: [
+      "Product owner and creator of the SHRAPNEL NFT marketplace for a PC extraction shooter — end-to-end: browsing, search, promotion, buy/sell/auction, payment, and account management",
+      "Contributed to player-profile, leaderboard, questing, inventory, and RNG item-recycling features",
+      "Created the SHRAPNEL Design System: UI, type ramp, iconography, and Figma component library for game and web",
+      "Wrote product definition docs, QA test scripts, notification-system spec, and data models",
+      "Daily collaboration with tech director, game UX director, CMO, producers, and art director",
+    ],
   },
   {
     company: "Expedia",
     role: "Sr. Product Designer, 2021–2022",
-    bullets: ["Lead, Service Platform Design Team", "Envision & evangelize product strategy for post-pandemic service model", "Lead designer Expedia White Label Template (site builder automation)"],
-    description: "Responsibilities: facilitate org-level product strategy, concept company content service models, roadmap & sprint planning, Figma mocks & protos, use & contribute to token-based component system. Coordinate workshops, swarms, working sessions, presentations and form collaborative relationships.",
+    bullets: [
+      "Led Service Platform Design Team through post-pandemic service model strategy",
+      "Lead designer for Expedia White Label Template — a site-builder automation product",
+      "Roadmap and sprint planning, Figma mocks and prototypes, token-based component system",
+    ],
   },
   {
     company: "Walmart & Sam's Club",
     role: "Sr. UX Designer, 2020–2021",
-    bullets: ["Redesign Walmart & Sam's Club car-wash kiosk interface", "Flows, wires, protos, static & animated assets", "Coordinate with Walmart Fuel Team, hardware vendors and devs", "Lead design for internal Augmented Reality Inventory app"],
+    bullets: [
+      "Redesigned car-wash kiosk interface — flows, wires, prototypes, static and animated assets",
+      "Coordinated with Fuel Team, hardware vendors, and developers",
+      "Led design for internal Augmented Reality Inventory app",
+    ],
   },
   {
     company: "Funko",
     role: "Sr. UX Designer, 2019–2020",
-    bullets: ["Full site redesign focusing on e-commerce & standardization", "Provide style-guide with component & page templates", "Coordinate with CMO, spec & review features based on business goals", "Drive company focus to mobile, accessibility, data and automation"],
+    bullets: [
+      "Full e-commerce site redesign with style guide, component library, and page templates",
+      "Drove company-wide focus toward mobile, accessibility, data, and automation",
+      "Coordinated directly with CMO to scope and review features against business goals",
+    ],
   },
   {
     company: "Indigo Slate",
     role: "Sr. Designer, 2018–2019",
-    bullets: ["Lead design and illustrator for Dell Interactive Mural", "Drive dev, PM, SMI and animators time-lines", "Responsive design scale from installation to desktop & mobile", "Lead for Sony Alpha Universe managed service", "Create shoppable and marketing experiences on sonyalpha.com"],
+    bullets: [
+      "Lead designer and illustrator for Dell Interactive Mural — responsive from installation scale to desktop and mobile",
+      "Led Sony Alpha Universe managed service; created shoppable and marketing experiences on sonyalpha.com",
+    ],
   },
   {
     company: "Deloitte",
     role: "Sr. Designer, 2017",
-    bullets: ["Lead Deloitte Digital site redesign", "Created UI style-guide, page templates and development specs", "Lead points based Jira sprints & stakeholder reviews", "Guide team of off-shore developers and in-house designers"],
+    bullets: [
+      "Led Deloitte Digital site redesign — UI style guide, page templates, and development specs",
+      "Led Jira sprints and stakeholder reviews; guided offshore developers and in-house designers",
+    ],
   },
   {
     company: "Microsoft",
     role: "UX Designer, 2014–2017",
-    bullets: ["Style guide & specs for all-up Dynamics CRM product group", "Lead designer for CRM mobile and various web portals", "Feature owner of CRM Business Process & Help Portals", "UI redesign for CRM in Outlook for web", "Visual & UI design of Bing Mobile Image Search", "Design support for XBoxONE launch team — storyboard & animation for in-product teaser video"],
+    bullets: [
+      "Style guide and specs for Dynamics CRM product group; lead designer for CRM mobile and web portals",
+      "Feature owner for CRM Business Process and Help Portals; UI redesign for CRM in Outlook for web",
+      "Visual and UI design for Bing Mobile Image Search",
+      "Design support for Xbox One launch — storyboard and animation for in-product teaser video",
+    ],
   },
   {
     company: "BFA, Design",
@@ -1370,13 +1359,13 @@ function ResumeInlineCard() {
           {/* See More pill */}
           <button onClick={() => setOpen(true)} style={{ display:"flex", alignItems:"center", gap:10, padding:"0 16px", height:40, borderRadius:100, background:"#FFD132", border:"1px solid #fff", boxShadow:shadow, cursor:"pointer", fontFamily:font, fontSize:15, fontWeight:700, color:"#000" }}>
             Resumé
-            <img src="/icons/resume-see-more-arrow.svg" width={15} height={13} alt="" style={{ display:"block" }}/>
+            <Icon name="arrow" dir="right" size="M"/>
           </button>
           {/* Download icon — right-aligned */}
           <div style={{ flex:1, display:"flex", justifyContent:"flex-end" }}>
-            <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
-              style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none" }}>
-              <img src="/icons/resume-download.svg" width={17} height={16} alt="Download resume" style={{ display:"block" }}/>
+            <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf" aria-label="Download resume (PDF)"
+              style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none", color:"#000" }}>
+              <Icon name="download" size="L"/>
             </a>
           </div>
         </div>
@@ -1409,9 +1398,7 @@ function ResumeInlineCard() {
                   className={`resume-node-btn${isOpen ? " open" : ""}`}
                 >
                   {/* Arrow: down when open, right when closed */}
-                  <svg width="18" height="21" viewBox="0 0 18 21" fill="none" style={{ display:"block", transition:"transform 250ms cubic-bezier(0.4,0,0.2,1)", transform: isOpen ? "rotate(0deg)" : "rotate(-90deg)" }}>
-                    <path d="M0.768292 11.533L8.65842 20.0946C8.82686 20.2774 9.09996 20.2774 9.2684 20.0946L17.1585 11.533M8.96341 20.2317L8.96341 0.768292" stroke="currentColor" strokeWidth="1.53659" strokeLinecap="round"/>
-                  </svg>
+                  <Icon name="arrow" dir={isOpen ? "down" : "right"} size="L" style={{ transition:"transform 250ms cubic-bezier(0.4,0,0.2,1)" }}/>
                 </button>
                 {/* Connector — animates height via flex */}
                 {!isLast && (
@@ -1462,15 +1449,324 @@ function ResumeInlineCard() {
       <div style={{ display:"flex", gap:16, alignItems:"center", marginTop:8 }}>
         <button onClick={() => setOpen(false)} style={{ display:"flex", alignItems:"center", gap:10, padding:"0 16px", height:40, borderRadius:100, background:"#FFD132", border:"1px solid #fff", boxShadow:shadow, cursor:"pointer", fontFamily:font, fontSize:15, fontWeight:700, color:"#000" }}>
           Close
-          <img src="/icons/resume-close-arrow.svg" width={15} height={13} alt="" style={{ display:"block" }}/>
+          <Icon name="arrow" dir="left" size="M"/>
         </button>
-        <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
-          style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none" }}>
-          <img src="/icons/resume-download.svg" width={17} height={16} alt="Download resume" style={{ display:"block" }}/>
+        <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf" aria-label="Download resume (PDF)"
+          style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none", color:"#000" }}>
+          <Icon name="download" size="L"/>
         </a>
       </div>
     </div>
   );
+}
+
+// ── Brutalist About pieces ───────────────────────────────────────────────────
+// Module level (not inside BrutalAboutSection) so they keep their open/closed
+// state when the section re-renders, e.g. while typing in its chat box.
+const font = '"T-Star Mono",monospace';
+
+// Expandable body for BLOG / article cards — LEARN MORE wired externally
+// This component just renders the content with smooth grid-rows animation
+function BrutalResumeCard() {
+  const [open, setOpen] = useState(false);
+  const [openJob, setOpenJob] = useState(0); // Amazon open by default
+  return (
+    <>
+      {/* Whole timeline — smooth reveal */}
+      {open && <>
+        <div className="bc-eyebrow">RESUME</div>
+        <div style={{fontFamily:font,fontWeight:700,fontSize:30,lineHeight:1.2,borderBottom:"1px solid #000",boxSizing:"border-box",padding:"8px 0"}}>
+          10+ Years
+        </div>
+        {RESUME_JOBS.map((job, i) => {
+            const isOpen = openJob === i;
+            const hasBullets = "bullets" in job && (job as {bullets?: readonly string[]}).bullets;
+            return (
+              <div key={job.company} style={{borderBottom:"1px solid #000",boxSizing:"border-box"}}>
+                <div className="bc-cta-wrap" style={{marginTop:0,marginBottom:-1}}>
+                  <BrutalShadow block>
+                    <div onClick={()=>hasBullets?setOpenJob(j=>j===i?-1:i):undefined}
+                      className="bc-cta"
+                      style={{cursor:hasBullets?"pointer":"default",
+                        padding:0,gap:0,alignItems:"stretch"}}>
+                      <div style={{width:64,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        <span style={{display:"inline-block",transition:"transform 200ms ease",
+                          transform:isOpen?"rotate(90deg)":"rotate(0deg)"}}>
+                          <ArrowRight/>
+                        </span>
+                      </div>
+                      <div style={{flex:1,borderLeft:"1px solid #000",boxSizing:"border-box",
+                        display:"flex",flexDirection:"column",justifyContent:"center",
+                        padding:"8px 24px",gap:2,background:"#fff"}}>
+                        <div style={{fontFamily:font,fontWeight:700,fontSize:30,lineHeight:1.2}}>{job.company}</div>
+                        {job.role && <div style={{fontFamily:font,fontWeight:700,fontSize:15,lineHeight:1.6}}>{job.role}</div>}
+                      </div>
+                    </div>
+                  </BrutalShadow>
+                </div>
+                <div style={{display:"grid",gridTemplateRows:isOpen?"1fr":"0fr",transition:"grid-template-rows 300ms cubic-bezier(0.4,0,0.2,1)",overflow:"hidden"}}>
+                  <div style={{overflow:"hidden"}}>
+                    <div style={{display:"flex",gap:32,padding:"16px 24px 16px 88px",borderTop:"1px solid #000",boxSizing:"border-box"}}>
+                      <div style={{flex:1,display:"flex",flexDirection:"column",gap:4}}>
+                        {hasBullets && ((job as {bullets:readonly string[]}).bullets).map((b,bi)=>(
+                          <div key={bi} style={{fontFamily:font,fontWeight:300,fontSize:15,lineHeight:1.6}}>• {b}</div>
+                        ))}
+                        {"viewProject" in job && (job as {viewProject?:string}).viewProject && (
+                          <a href={(job as {viewProject:string}).viewProject}
+                            style={{fontFamily:font,fontWeight:700,fontSize:15,color:"#007AD5",marginTop:4}}>
+                            View Project
+                          </a>
+                        )}
+                      </div>
+                      {"description" in job && (job as {description?:string}).description && (
+                        <div style={{flex:1,fontFamily:font,fontWeight:300,fontSize:15,lineHeight:1.6}}>
+                          {(job as {description:string}).description}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );            })}
+        {/* No spacer above this CTA (last job row sits directly on it), so skip the
+            -16px shadow-room pull-up and use the 1px stroke overlap instead */}
+        <div className="bc-cta-wrap" style={{display:"flex",gap:0,marginTop:-1}}>
+          <div style={{flex:1,overflow:"visible"}}>
+            <BrutalShadow block>
+              <div className="bc-cta" onClick={()=>setOpen(false)} style={{cursor:"pointer"}}>
+                <span>CLOSE</span><ArrowRight/>
+              </div>
+            </BrutalShadow>
+          </div>
+          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+            <BrutalShadow block>
+              <a className="bc-cta" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
+                aria-label="Download resume (PDF)"
+                style={{justifyContent:"center",padding:0,cursor:"pointer",textDecoration:"none"}}>
+                <Icon name="download" size="XL"/>
+              </a>
+            </BrutalShadow>
+          </div>
+        </div>
+      </>}
+
+      {/* Resumé CTA — hidden when open */}
+      {!open && (
+        <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
+          <div style={{flex:1,overflow:"visible"}}>
+            <BrutalShadow block>
+              <div className="bc-cta" onClick={()=>setOpen(true)} style={{cursor:"pointer"}}>
+                <span>Resumé</span><ArrowRight/>
+              </div>
+            </BrutalShadow>
+          </div>
+          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+            <BrutalShadow block>
+              <a className="bc-cta" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
+                aria-label="Download resume (PDF)"
+                style={{justifyContent:"center",padding:0,cursor:"pointer",textDecoration:"none"}}>
+                <Icon name="download" size="XL"/>
+              </a>
+            </BrutalShadow>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+// Expandable card for non-who non-rpg cards (e.g. zero-to-one with article JSX)
+function BrutalArticleExpand({ card, defaultOpen, shareUrl }: { card: {id:string; article?: React.ReactNode}; defaultOpen?: boolean; shareUrl?: string }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <>
+      {open && card.article && (
+        <div style={{borderBottom:"1px solid #000",boxSizing:"border-box",padding:"16px 0"}}>
+          {card.article}
+        </div>
+      )}
+      <div style={{flex:1,borderBottom:"1px solid #000",boxSizing:"border-box"}}/>
+      <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
+        <div style={{flex:1,overflow:"visible"}}>
+          <BrutalShadow block>
+            <div className="bc-cta" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
+              <span>{open?"CLOSE":"LEARN MORE"}</span>
+              <span style={{transform:open?"rotate(-90deg)":"rotate(0deg)",display:"inline-block",transition:"transform 200ms ease"}}>
+                <ArrowRight/>
+              </span>
+            </div>
+          </BrutalShadow>
+        </div>
+        <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+          <BrutalShadow block>
+            <ShareButton variant="bare" className="bc-cta" url={shareUrl} iconSize="XL"
+              style={{justifyContent:"center",padding:0}}/>
+          </BrutalShadow>
+        </div>
+      </div>
+    </>
+  );
+}
+// Brutal text block: title-level or body-level, always border-bottom
+function BcText({ text, bold, bg }: { text: React.ReactNode; bold?: boolean; bg?: string }) {
+  return (
+    <div style={{fontFamily:font, fontWeight:bold?700:300, fontSize:bold?30:15,
+      lineHeight:bold?1.2:1.7, color:"#000", padding:"12px 0",
+      borderBottom:"1px solid #000", boxSizing:"border-box" as const,
+      background: bg ?? "transparent"}}>
+      {text}
+    </div>
+  );
+}
+function BrutalRpgExpand({ defaultOpen, openChat }: { defaultOpen?: boolean; openChat: () => void }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <>
+      <div style={{display:"grid", gridTemplateRows:open?"1fr":"0fr",
+        transition:"grid-template-rows 350ms cubic-bezier(0.4,0,0.2,1)", overflow:"hidden"}}>
+        <div style={{overflow:"hidden"}}>
+          {/* Intro — white bg */}
+          <BcText text={<>So why the quiz? Because <strong>I FRICKIN CAN NOW! AMIRIGHT! AI!</strong> It&apos;s true, a few years ago I&apos;d be looking at minimum $100k quotes. Things <strong>are</strong> different. But the real reason is super simple:</>}/>
+          {/* Section heading */}
+          <BcText text="Hiring a designer is hard. I need it to be easier. Even if that's not me." bold/>
+          <BcText text="We've all been there. Playing telephone on Microsoft's FaceBook, first point of contact is some outdated catch-all job description. Just to sort out what's actually important... and now with AI? Fuggetaboutit! The cold reality is that people are agreeable and adaptive by nature. It's easy to talk each other into a bad fit."/>
+          <BcText text="Six months later, they leave, you're looking to backfill ASAP and it's not looking like you'll get headcount until next year. Leadership wants answers. Everybody did their job."/>
+          <BcText text="So what happened? Was it comp? A bad JD? Rushed timeline? Culture fit? Are we not cool anymore? Is it AI? IT'S AI ISN'T IT?!!?!? (Possibly)"/>
+          <BcText text="So, how do you sort out these fashionable organizers? How do you convince them to pick YOU?"/>
+          {/* Section heading */}
+          <BcText text="Should we just go for the desperate ones?!" bold/>
+          <BcText text={<>&quot;There&apos;s a cork for every bottle&quot; my mom would say. Onward! Now you found them — but how will you know if they&apos;re the real deal? Have they actually helped anyone make anything useful? Is there a test? Who could grade such a test?</>}/>
+          <BcText text="A good designer isn't fooled by foosball or a walk-score. So how do you GET them?"/>
+          <BcText text={<><strong>Role Preference Guide (RPG)</strong> helps illustrate some common contradictions of hiring, and narrows down the two most important things: what you actually need, and whether it&apos;s attainable. My theory is if you know those two things, it&apos;s more likely you will succeed.</>}/>
+        </div>
+      </div>
+      {/* CTA row: INFO toggle + QUIZ */}
+      <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
+        <div style={{flex:1,overflow:"visible"}}>
+          <BrutalShadow block>
+            <div className="bc-cta" onClick={()=>setOpen(o=>!o)}
+              style={{background:"#3A4324",color:"#fff",borderColor:"#000",cursor:"pointer"}}>
+              <span>{open?"CLOSE":"INFO"}</span>
+              {open && (
+                <span style={{transform:"rotate(-90deg)",display:"inline-block",transition:"transform 200ms ease"}}>
+                  <ArrowRight/>
+                </span>
+              )}
+            </div>
+          </BrutalShadow>
+        </div>
+        <div style={{flex:1,overflow:"visible",marginLeft:-1}}>
+          <BrutalShadow block>
+            <div className="bc-cta" onClick={()=>{window.scrollTo({top:0,behavior:"smooth"});openChat();}}
+              style={{cursor:"pointer"}}>
+              <span>QUIZ</span>
+            </div>
+          </BrutalShadow>
+        </div>
+      </div>
+      {/* Share — stacked below like FAQ tile */}
+      <div className="bc-cta-wrap" style={{marginTop:-1}}>
+        <BrutalShadow block>
+          <ShareButton variant="bare" className="bc-cta" label="SHARE"
+            url="/?about=rpg"
+            title="Fit RPG — Are We A Good Fit?"
+            style={{justifyContent:"space-between"}}/>
+        </BrutalShadow>
+      </div>
+    </>
+  );
+}
+function BrutalExpandCard({ body, defaultOpen, shareUrl }: { body: string; defaultOpen?: boolean; shareUrl?: string }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <>
+      {/* Smooth expand */}
+      <div style={{
+        display:"grid",
+        gridTemplateRows: open ? "1fr" : "0fr",
+        transition:"grid-template-rows 350ms cubic-bezier(0.4,0,0.2,1)",
+        overflow:"hidden",
+        borderBottom: open ? "1px solid #000" : "none",
+        boxSizing:"border-box",
+      }}>
+        <div style={{overflow:"hidden"}}>
+          {body.split("\n\n").filter(p => p.trim()).map((para, i) => (
+            <p key={i} style={{fontFamily:font,fontWeight:300,fontSize:15,lineHeight:1.8,color:"#000",margin:"0 0 12px"}}>
+              {para.trim()}
+            </p>
+          ))}
+        </div>
+      </div>
+      {/* Toggle CTA — replaces the static LEARN MORE below when rendered */}
+      <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
+        <div style={{flex:1,overflow:"visible"}}>
+          <BrutalShadow block>
+            <div className="bc-cta" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
+              <span>{open ? "CLOSE" : "LEARN MORE"}</span>
+              <span style={{transform: open ? "rotate(-90deg)" : "rotate(0deg)", display:"inline-block", transition:"transform 200ms ease"}}>
+                <ArrowRight/>
+              </span>
+            </div>
+          </BrutalShadow>
+        </div>
+        <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+          <BrutalShadow block>
+            <ShareButton variant="bare" className="bc-cta" url={shareUrl} iconSize="XL"
+              style={{justifyContent:"center",padding:0}}/>
+          </BrutalShadow>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function BrutalFaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bc-cta-wrap" style={{marginTop:0, marginBottom:-1}}>
+      <BrutalShadow block>
+        <div onClick={()=>setOpen(o=>!o)} className="bc-cta"
+          style={{cursor:"pointer", height:"auto", minHeight:64, alignItems:"center", gap:12,
+            background: open ? "#fff" : "#FFCE00"}}>
+          <div style={{flex:1, display:"flex", flexDirection:"column", justifyContent:"center",
+            padding: open ? "12px 0 16px" : "0", gap:4,
+            transition:"padding 250ms ease"}}>
+            <span className="bc-faq-q" style={{fontWeight:400}}>{q}</span>
+            {/* Grid rows trick — smooth height without touching BrutalShadow transform */}
+            <div style={{
+              display:"grid",
+              gridTemplateRows: open ? "1fr" : "0fr",
+              transition:"grid-template-rows 250ms ease",
+              overflow:"hidden",
+            }}>
+              <div style={{overflow:"hidden"}}>
+                <span style={{fontSize:15, fontWeight:300, lineHeight:1.6, display:"block"}}>{a}</span>
+              </div>
+            </div>
+          </div>
+          <span style={{transform: open ? "rotate(-90deg)" : "rotate(90deg)", display:"inline-block", flexShrink:0, transition:"transform 200ms ease"}}>
+            <ArrowRight/>
+          </span>
+        </div>
+      </BrutalShadow>
+    </div>
+  );
+}
+
+function LearnMoreCta({ onLearnMore }: { onLearnMore?: () => void }) {
+  return <>
+    <div style={{flex:1,overflow:"visible"}}>
+      <BrutalShadow block>
+        <div className="bc-cta" onClick={onLearnMore} style={{cursor:onLearnMore?"pointer":"default"}}>
+          <span>LEARN MORE</span><ArrowRight/>
+        </div>
+      </BrutalShadow>
+    </div>
+    <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+      <BrutalShadow block>
+        <ShareButton variant="bare" className="bc-cta" iconSize="XL" style={{justifyContent:"center",padding:0}}/>
+      </BrutalShadow>
+    </div>
+  </>;
 }
 
 // ── BrutalAboutSection ────────────────────────────────────────────────────────
@@ -1478,313 +1774,6 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
   const font = '"T-Star Mono",monospace';
   const [chatInput, setChatInput] = useState("");
 
-  // Expandable body for BLOG / article cards — LEARN MORE wired externally
-  // This component just renders the content with smooth grid-rows animation
-  function BrutalResumeCard() {
-    const [open, setOpen] = useState(false);
-    const [openJob, setOpenJob] = useState(0); // Amazon open by default
-    return (
-      <>
-        {/* Whole timeline — smooth reveal */}
-        {open && <>
-          <div className="bc-eyebrow">RESUME</div>
-          <div style={{fontFamily:font,fontWeight:700,fontSize:30,lineHeight:1.2,borderBottom:"1px solid #000",boxSizing:"border-box",padding:"8px 0"}}>
-            10+ Years
-          </div>
-          {RESUME_JOBS.map((job, i) => {
-              const isOpen = openJob === i;
-              const hasBullets = "bullets" in job && (job as {bullets?: readonly string[]}).bullets;
-              return (
-                <div key={job.company} style={{borderBottom:"1px solid #000",boxSizing:"border-box"}}>
-                  <div className="bc-cta-wrap" style={{marginTop:0,marginBottom:-1}}>
-                    <BrutalShadow block>
-                      <div onClick={()=>hasBullets?setOpenJob(j=>j===i?-1:i):undefined}
-                        className="bc-cta"
-                        style={{cursor:hasBullets?"pointer":"default",
-                          padding:0,gap:0,alignItems:"stretch"}}>
-                        <div style={{width:64,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          <span style={{display:"inline-block",transition:"transform 200ms ease",
-                            transform:isOpen?"rotate(90deg)":"rotate(0deg)"}}>
-                            <ArrowRight size={20}/>
-                          </span>
-                        </div>
-                        <div style={{flex:1,borderLeft:"1px solid #000",boxSizing:"border-box",
-                          display:"flex",flexDirection:"column",justifyContent:"center",
-                          padding:"8px 24px",gap:2,background:"#fff"}}>
-                          <div style={{fontFamily:font,fontWeight:700,fontSize:30,lineHeight:1.2}}>{job.company}</div>
-                          {job.role && <div style={{fontFamily:font,fontWeight:700,fontSize:15,lineHeight:1.6}}>{job.role}</div>}
-                        </div>
-                      </div>
-                    </BrutalShadow>
-                  </div>
-                  <div style={{display:"grid",gridTemplateRows:isOpen?"1fr":"0fr",transition:"grid-template-rows 300ms cubic-bezier(0.4,0,0.2,1)",overflow:"hidden"}}>
-                    <div style={{overflow:"hidden"}}>
-                      <div style={{display:"flex",gap:32,padding:"16px 24px 16px 88px",borderTop:"1px solid #000",boxSizing:"border-box"}}>
-                        <div style={{flex:1,display:"flex",flexDirection:"column",gap:4}}>
-                          {hasBullets && ((job as {bullets:readonly string[]}).bullets).map((b,bi)=>(
-                            <div key={bi} style={{fontFamily:font,fontWeight:300,fontSize:15,lineHeight:1.6}}>• {b}</div>
-                          ))}
-                          {"viewProject" in job && (job as {viewProject?:string}).viewProject && (
-                            <a href={(job as {viewProject:string}).viewProject}
-                              style={{fontFamily:font,fontWeight:700,fontSize:15,color:"#007AD5",marginTop:4}}>
-                              View Project
-                            </a>
-                          )}
-                        </div>
-                        {"description" in job && (job as {description?:string}).description && (
-                          <div style={{flex:1,fontFamily:font,fontWeight:300,fontSize:15,lineHeight:1.6}}>
-                            {(job as {description:string}).description}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );            })}
-          <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
-            <div style={{flex:1,overflow:"visible"}}>
-              <BrutalShadow block>
-                <div className="bc-cta" onClick={()=>setOpen(false)} style={{cursor:"pointer"}}>
-                  <span>CLOSE</span><ArrowRight size={20}/>
-                </div>
-              </BrutalShadow>
-            </div>
-            <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
-              <BrutalShadow block>
-                <div className="bc-cta" style={{justifyContent:"center",padding:0}}>
-                  <Icon name="share" size={20}/>
-                </div>
-              </BrutalShadow>
-            </div>
-          </div>
-        </>}
-
-        {/* Resumé CTA — hidden when open */}
-        {!open && (
-          <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
-            <div style={{flex:1,overflow:"visible"}}>
-              <BrutalShadow block>
-                <div className="bc-cta" onClick={()=>setOpen(true)} style={{cursor:"pointer"}}>
-                  <span>Resumé</span><ArrowRight size={20}/>
-                </div>
-              </BrutalShadow>
-            </div>
-            <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
-              <BrutalShadow block>
-                <div className="bc-cta" style={{justifyContent:"center",padding:0}}>
-                  <Icon name="share" size={20}/>
-                </div>
-              </BrutalShadow>
-            </div>
-          </div>
-        )}
-      </>
-    );
-  }
-  // Expandable card for non-who non-rpg cards (e.g. zero-to-one with article JSX)
-  function BrutalArticleExpand({ card, defaultOpen }: { card: {id:string; article?: React.ReactNode}; defaultOpen?: boolean }) {
-    const [open, setOpen] = useState(!!defaultOpen);
-    return (
-      <>
-        {open && card.article && (
-          <div style={{borderBottom:"1px solid #000",boxSizing:"border-box",padding:"16px 0"}}>
-            {card.article}
-          </div>
-        )}
-        <div style={{flex:1,borderBottom:"1px solid #000",boxSizing:"border-box"}}/>
-        <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
-          <div style={{flex:1,overflow:"visible"}}>
-            <BrutalShadow block>
-              <div className="bc-cta" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
-                <span>{open?"CLOSE":"LEARN MORE"}</span>
-                <span style={{transform:open?"rotate(-90deg)":"rotate(0deg)",display:"inline-block",transition:"transform 200ms ease"}}>
-                  <ArrowRight size={20}/>
-                </span>
-              </div>
-            </BrutalShadow>
-          </div>
-          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
-            <BrutalShadow block>
-              <div className="bc-cta" style={{justifyContent:"center",padding:0}}>
-                <Icon name="share" size={20}/>
-              </div>
-            </BrutalShadow>
-          </div>
-        </div>
-      </>
-    );
-  }
-  function BrutalRpgExpand({ defaultOpen }: { defaultOpen?: boolean }) {
-    const [open, setOpen] = useState(!!defaultOpen);
-    const gc = "#3A4324";
-    // Brutal text block: title-level or body-level, always border-bottom
-    const BcText = ({ text, bold, bg }: { text: React.ReactNode; bold?: boolean; bg?: string }) => (
-      <div style={{fontFamily:font, fontWeight:bold?700:300, fontSize:bold?30:15,
-        lineHeight:bold?1.2:1.7, color:"#000", padding:"12px 0",
-        borderBottom:"1px solid #000", boxSizing:"border-box" as const,
-        background: bg ?? "transparent"}}>
-        {text}
-      </div>
-    );
-    return (
-      <>
-        <div style={{display:"grid", gridTemplateRows:open?"1fr":"0fr",
-          transition:"grid-template-rows 350ms cubic-bezier(0.4,0,0.2,1)", overflow:"hidden"}}>
-          <div style={{overflow:"hidden"}}>
-            {/* Intro — white bg */}
-            <BcText text={<>So why the quiz? Because <strong>I FRICKIN CAN NOW! AMIRIGHT! AI!</strong> It&apos;s true, a few years ago I&apos;d be looking at minimum $100k quotes. Things <strong>are</strong> different. But the real reason is super simple:</>}/>
-            {/* Section heading */}
-            <BcText text="Hiring a designer is hard. I need it to be easier. Even if that's not me." bold/>
-            <BcText text="We've all been there. Playing telephone on Microsoft's FaceBook, first point of contact is some outdated catch-all job description. Just to sort out what's actually important... and now with AI? Fuggetaboutit! The cold reality is that people are agreeable and adaptive by nature. It's easy to talk each other into a bad fit."/>
-            <BcText text="Six months later, they leave, you're looking to backfill ASAP and it's not looking like you'll get headcount until next year. Leadership wants answers. Everybody did their job."/>
-            <BcText text="So what happened? Was it comp? A bad JD? Rushed timeline? Culture fit? Are we not cool anymore? Is it AI? IT'S AI ISN'T IT?!!?!? (Possibly)"/>
-            <BcText text="So, how do you sort out these fashionable organizers? How do you convince them to pick YOU?"/>
-            {/* Section heading */}
-            <BcText text="Should we just go for the desperate ones?!" bold/>
-            <BcText text={<>&quot;There&apos;s a cork for every bottle&quot; my mom would say. Onward! Now you found them — but how will you know if they&apos;re the real deal? Have they actually helped anyone make anything useful? Is there a test? Who could grade such a test?</>}/>
-            <BcText text="A good designer isn't fooled by foosball or a walk-score. So how do you GET them?"/>
-            <BcText text={<><strong>Role Preference Guide (RPG)</strong> helps illustrate some common contradictions of hiring, and narrows down the two most important things: what you actually need, and whether it&apos;s attainable. My theory is if you know those two things, it&apos;s more likely you will succeed.</>}/>
-          </div>
-        </div>
-        {/* CTA row: INFO toggle + QUIZ */}
-        <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
-          <div style={{flex:1,overflow:"visible"}}>
-            <BrutalShadow block>
-              <div className="bc-cta" onClick={()=>setOpen(o=>!o)}
-                style={{background:"#3A4324",color:"#fff",borderColor:"#000",cursor:"pointer"}}>
-                <span>{open?"CLOSE":"INFO"}</span>
-                {open && (
-                  <span style={{transform:"rotate(-90deg)",display:"inline-block",transition:"transform 200ms ease"}}>
-                    <ArrowRight size={20}/>
-                  </span>
-                )}
-              </div>
-            </BrutalShadow>
-          </div>
-          <div style={{flex:1,overflow:"visible",marginLeft:-1}}>
-            <BrutalShadow block>
-              <div className="bc-cta" onClick={()=>{window.scrollTo({top:0,behavior:"smooth"});openChat();}}
-                style={{cursor:"pointer"}}>
-                <span>QUIZ</span>
-              </div>
-            </BrutalShadow>
-          </div>
-        </div>
-        {/* Share — stacked below like FAQ tile */}
-        <div className="bc-cta-wrap" style={{marginTop:-1}}>
-          <BrutalShadow block>
-            <div className="bc-cta" style={{cursor:"pointer",justifyContent:"space-between"}}
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({ title: "Fit RPG — Are We A Good Fit?", url: window.location.href });
-                } else {
-                  navigator.clipboard?.writeText(window.location.href);
-                }
-              }}>
-              <span>SHARE</span>
-              <Icon name="share" size={20}/>
-            </div>
-          </BrutalShadow>
-        </div>
-      </>
-    );
-  }
-  function BrutalExpandCard({ body, defaultOpen }: { body: string; defaultOpen?: boolean }) {
-    const [open, setOpen] = useState(!!defaultOpen);
-    return (
-      <>
-        {/* Smooth expand */}
-        <div style={{
-          display:"grid",
-          gridTemplateRows: open ? "1fr" : "0fr",
-          transition:"grid-template-rows 350ms cubic-bezier(0.4,0,0.2,1)",
-          overflow:"hidden",
-          borderBottom: open ? "1px solid #000" : "none",
-          boxSizing:"border-box",
-        }}>
-          <div style={{overflow:"hidden"}}>
-            {body.split("\n\n").filter(p => p.trim()).map((para, i) => (
-              <p key={i} style={{fontFamily:font,fontWeight:300,fontSize:15,lineHeight:1.8,color:"#000",margin:"0 0 12px"}}>
-                {para.trim()}
-              </p>
-            ))}
-          </div>
-        </div>
-        {/* Toggle CTA — replaces the static LEARN MORE below when rendered */}
-        <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
-          <div style={{flex:1,overflow:"visible"}}>
-            <BrutalShadow block>
-              <div className="bc-cta" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
-                <span>{open ? "CLOSE" : "LEARN MORE"}</span>
-                <span style={{transform: open ? "rotate(-90deg)" : "rotate(0deg)", display:"inline-block", transition:"transform 200ms ease"}}>
-                  <ArrowRight size={20}/>
-                </span>
-              </div>
-            </BrutalShadow>
-          </div>
-          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
-            <BrutalShadow block>
-              <div className="bc-cta" style={{justifyContent:"center",padding:0}}>
-                <Icon name="share" size={20}/>
-              </div>
-            </BrutalShadow>
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  function BrutalFaqItem({ q, a }: { q: string; a: string }) {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="bc-cta-wrap" style={{marginTop:0, marginBottom:-1}}>
-        <BrutalShadow block>
-          <div onClick={()=>setOpen(o=>!o)} className="bc-cta"
-            style={{cursor:"pointer", height:"auto", minHeight:64, alignItems:"center", gap:12,
-              background: open ? "#fff" : "#FFCE00"}}>
-            <div style={{flex:1, display:"flex", flexDirection:"column", justifyContent:"center",
-              padding: open ? "12px 0 16px" : "0", gap:4,
-              transition:"padding 250ms ease"}}>
-              <span className="bc-faq-q" style={{fontWeight:400}}>{q}</span>
-              {/* Grid rows trick — smooth height without touching BrutalShadow transform */}
-              <div style={{
-                display:"grid",
-                gridTemplateRows: open ? "1fr" : "0fr",
-                transition:"grid-template-rows 250ms ease",
-                overflow:"hidden",
-              }}>
-                <div style={{overflow:"hidden"}}>
-                  <span style={{fontSize:15, fontWeight:300, lineHeight:1.6, display:"block"}}>{a}</span>
-                </div>
-              </div>
-            </div>
-            <span style={{transform: open ? "rotate(-90deg)" : "rotate(90deg)", display:"inline-block", flexShrink:0, transition:"transform 200ms ease"}}>
-              <ArrowRight size={20}/>
-            </span>
-          </div>
-        </BrutalShadow>
-      </div>
-    );
-  }
-
-  function LearnMoreCta({ onLearnMore }: { onLearnMore?: () => void }) {
-    return <>
-      <div style={{flex:1,overflow:"visible"}}>
-        <BrutalShadow block>
-          <div className="bc-cta" onClick={onLearnMore} style={{cursor:onLearnMore?"pointer":"default"}}>
-            <span>LEARN MORE</span><ArrowRight size={20}/>
-          </div>
-        </BrutalShadow>
-      </div>
-      <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
-        <BrutalShadow block>
-          <div className="bc-cta" style={{justifyContent:"center",padding:0}}>
-            <Icon name="share" size={20}/>
-          </div>
-        </BrutalShadow>
-      </div>
-    </>;
-  }
 
   return (
     <div style={{fontFamily:font}}>
@@ -1844,7 +1833,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
                 </div>
                 <div style={{flex:1,borderBottom:"1px solid #000",boxSizing:"border-box"}}/>
                 {/* CTAs + expandable content */}
-                <BrutalRpgExpand defaultOpen={initialOpenId === "rpg"}/>
+                <BrutalRpgExpand defaultOpen={initialOpenId === "rpg"} openChat={openChat}/>
                 <div className="bc-spacer-last"/>
               </div>
               <div className="bc-strip-r"/>
@@ -1872,10 +1861,10 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
                   )}
                   {/* Expanded body — grid-rows smooth height, LEARN MORE toggles */}
                   {card.id === "who" && card.expandedBody && (
-                    <BrutalExpandCard body={card.expandedBody} defaultOpen={initialOpenId === "who"}/>
+                    <BrutalExpandCard body={card.expandedBody} defaultOpen={initialOpenId === "who"} shareUrl="/?about=who"/>
                   )}
                   {card.id !== "who" && (
-                    <BrutalArticleExpand card={card} defaultOpen={initialOpenId === card.id}/>
+                    <BrutalArticleExpand card={card} defaultOpen={initialOpenId === card.id} shareUrl={`/?about=${card.id}`}/>
                   )}
                   <div className="bc-spacer-last"/>
                 </div>
@@ -1942,7 +1931,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
                       <div className="bc-cta" style={{background:"#fff"}}>
                         <input value={chatInput} onChange={e=>setChatInput(e.target.value)}
                           placeholder="Ask anything..."
-                          style={{flex:1,border:"none",outline:"none",fontFamily:font,fontSize:15,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
+                          style={{flex:1,border:"none",outline:"none",fontFamily:font,fontSize:16,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
                         />
                       </div>
                     </BrutalShadow>
@@ -1950,7 +1939,7 @@ function BrutalAboutSection({ onClose, openChat, initialOpenId }: { onClose: () 
                   <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
                     <BrutalShadow block>
                       <div className="bc-cta" onClick={()=>{onClose();openChat();}} style={{justifyContent:"center",padding:0,cursor:"pointer"}}>
-                        <ArrowRight size={20}/>
+                        <ArrowRight size="XL"/>
                       </div>
                     </BrutalShadow>
                   </div>
@@ -1978,9 +1967,7 @@ function AboutSection({ onClose, openChat, initialOpenId, hideTitle }: { onClose
         aria-label="Close about"
         className="proj-close-btn"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
-        </svg>
+        <Icon name="check" size="L"/>
       </button>
 
       {/* Header — hidden in GB where back button in nav handles navigation */}
@@ -2028,7 +2015,7 @@ function AboutSection({ onClose, openChat, initialOpenId, hideTitle }: { onClose
       <ResumeInlineCard/>
 
       {/* FAQ */}
-      <FaqSection openChat={openChat}/>
+      <FaqSection/>
     </div>
   );
 }
@@ -2132,7 +2119,7 @@ function BrutalChatSection({ onClose, extMessages, setExtMessages, extLoading, s
                   <input value={chatInput} onChange={e=>setChatInput(e.target.value)}
                     onKeyDown={e=>e.key==="Enter"&&handleSubmit()}
                     placeholder="Ask anything..."
-                    style={{flex:1,border:"none",outline:"none",fontFamily:font,fontSize:15,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
+                    style={{flex:1,border:"none",outline:"none",fontFamily:font,fontSize:16,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
                   />
                 </div>
               </BrutalShadow>
@@ -2140,7 +2127,7 @@ function BrutalChatSection({ onClose, extMessages, setExtMessages, extLoading, s
             <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
               <BrutalShadow block>
                 <div className="bc-cta" onClick={handleSubmit} style={{justifyContent:"center",padding:0,cursor:"pointer"}}>
-                  <ArrowRight size={20}/>
+                  <ArrowRight size="XL"/>
                 </div>
               </BrutalShadow>
             </div>
@@ -2169,7 +2156,7 @@ function ChatSection({ onClose, extMessages, setExtMessages, extLoading, setExtL
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
           <span style={{fontSize:11,fontWeight:500,letterSpacing:"0.14em",textTransform:"uppercase" as const,color:"#888"}}>WWMD — AI Chat</span>
           <button onClick={onClose} aria-label="Close chat" style={{background:"none",border:"none",cursor:"pointer",padding:4,color:"#555",lineHeight:1}}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/></svg>
+            <Icon name="check" size="M"/>
           </button>
         </div>
         <AboutChat extMessages={extMessages} setExtMessages={setExtMessages} extLoading={extLoading} setExtLoading={setExtLoading} initialQ={initialQ}/>
@@ -2180,9 +2167,7 @@ function ChatSection({ onClose, extMessages, setExtMessages, extLoading, setExtL
     <div style={{ fontFamily:'"T-Star Mono",monospace', padding:"32px 32px 48px", position:"relative" }}>
       {/* Close button */}
       <button onClick={onClose} aria-label="Close chat" className="proj-close-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
-        </svg>
+        <Icon name="check" size="L"/>
       </button>
 
       {/* Header */}
@@ -2232,10 +2217,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
 
   function toggleLocale() { setLocale(l => l === "en" ? "ja" : "en"); }
 
-  // Localised string lookup — falls back to English key if JA missing
-  function t(enStr: string, jaKey: keyof typeof JA): string {
-    return locale === "ja" ? (JA[jaKey] ?? enStr) : enStr;
-  }
 
   function handleFreeformSubmit() {
     if (!freeformInput.trim() || !endState) return;
@@ -2363,6 +2344,14 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
   // Disable browser scroll restoration so our manual scrollTo calls are reliable
   useEffect(() => {
     if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+    // Deep-link: ?about=cardId → open about section at that card
+    const params = new URLSearchParams(window.location.search);
+    const aboutCard = params.get("about");
+    if (aboutCard) {
+      setAboutInitialCard(aboutCard);
+      setMode("about");
+      window.history.replaceState(null, "", "/");
+    }
   }, []);
 
   // Reset mode on bfcache restore (back-forward navigation) and on dev Fast Refresh
@@ -2585,7 +2574,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
   ];
 
   // Typewriter — resets on each new step
-  const qKey = currentQ?.nodeKey as keyof typeof JA | undefined;
   const qText = currentQ
     ? (locale === "ja" ? (JA[`q_${currentQ.nodeKey}` as keyof typeof JA] ?? currentQ.text) : currentQ.text)
     : "";
@@ -2598,10 +2586,6 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
     : [];
   const { typed: twTyped, done: twDone } = useTypewriter(twLines, phase === "question", chatKey * 100 + step);
 
-  // Cross-reference text
-  const crossRefText = currentQ?.crossRef?.condition(tags, fitScore)
-    ? currentQ.crossRef.text
-    : null;
 
   return (
     <div style={{ background: isGameboy ? "#E8E4DF" : "#fff", color:"#111", minHeight:"100vh", fontFamily:'"T-Star Mono",monospace' }}>
@@ -3272,7 +3256,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             <AboutSection onClose={closeAbout} openChat={openChat} initialOpenId={aboutInitialCard} hideTitle/>
           ) : undefined}
           workSlot={(mode === "work" || workClosing) ? (
-            <WorkProjectCards openProject={openProject}/>
+            <WorkSection onClose={closeWork} openChat={openChat} openProject={openProject} theme={theme} onSelectTheme={selectTheme} hideTitle/>
           ) : undefined}
           openAboutArticle={(cardId) => { setAboutInitialCard(cardId); setMode("about"); }}
         />
@@ -3342,7 +3326,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 <div className="bp-row" style={{overflow:"visible"}}>
                   <div className="chat-outer" style={{padding:0}}>
                     <div className={`chat-card`} style={{background:cardBg,color:cardColor}}>
-                      <button className="chat-close" onClick={closeChat} aria-label="Close"><Icon name="close" size={14}/></button>
+                      <button className="chat-close" onClick={closeChat} aria-label="Close"><Icon name="close" size="L"/></button>
                       <div className="chat-body">
                         <div className={`chat-indicator${(phase==="processing"||warnBlink)?" active":""}`}>
                           {phase==="processing" ? <Spinner/> : warnBlink ? <WarnBlink/> : null}
@@ -3376,7 +3360,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                             {showFreeform?(
                               <div style={{paddingBottom:8}}>
                                 <AboutChat/>
-                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0,display:"inline-flex",alignItems:"center",gap:4}}><Icon name="arrow" dir="left" size="S"/>back</button>
                               </div>
                             ):(
                               <>
@@ -3467,7 +3451,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <Image src="/images/About/work_thumb.gif" alt="" fill unoptimized sizes="33vw" style={{objectFit:"cover",opacity:1}}/>
                       </div>
                       <div className="bc-cta-wrap"><BrutalShadow block animateOnMount mountDelay={125}>
-                        <div className="bc-cta"><span>View</span><ArrowRight size={20}/></div>
+                        <div className="bc-cta"><span>View</span><ArrowRight/></div>
                       </BrutalShadow></div>
                       <div className="bc-spacer-last"/>
                     </div><div className="bc-strip-r"/></div>
@@ -3503,7 +3487,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <Image src="/images/amazon/PLO Illustrtration_BLANK.png" alt="" fill sizes="33vw" style={{objectFit:"contain",objectPosition:"center bottom",opacity:1}}/>
                       </div>
                       <div className="bc-cta-wrap"><BrutalShadow block animateOnMount mountDelay={175}>
-                        <div className="bc-cta"><span>View</span><ArrowRight size={20}/></div>
+                        <div className="bc-cta"><span>View</span><ArrowRight/></div>
                       </BrutalShadow></div>
                       <div className="bc-spacer-last"/>
                     </div><div className="bc-strip-r"/></div>
@@ -3530,7 +3514,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <Image src="/images/About/opinion.png" alt="" fill sizes="33vw" style={{objectFit:"cover",objectPosition:"top"}}/>
                       </div>
                       <div className="bc-cta-wrap"><BrutalShadow block animateOnMount mountDelay={225}>
-                        <div className="bc-cta"><span>Read</span><ArrowRight size={20}/></div>
+                        <div className="bc-cta"><span>Read</span><ArrowRight/></div>
                       </BrutalShadow></div>
                       <div className="bc-spacer-last"/>
                     </div><div className="bc-strip-r"/></div>
@@ -3554,7 +3538,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                 onChange={e=>setBrutalHomeAiChatInput(e.target.value)}
                                 onKeyDown={e=>{if(e.key==="Enter"){e.stopPropagation();setAiChatMessages([]);setAiChatInitialQ(brutalHomeAiChatInput.trim()||undefined);setBrutalHomeAiChatInput("");window.scrollTo({top:0,behavior:"smooth"});setMode("aichat");}}}
                                 placeholder="Ask anything..."
-                                style={{flex:1,border:"none",outline:"none",fontFamily:'"T-Star Mono",monospace',fontSize:15,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
+                                style={{flex:1,border:"none",outline:"none",fontFamily:'"T-Star Mono",monospace',fontSize:16,fontWeight:300,background:"transparent",color:"#000",width:"100%"}}
                               />
                             </div>
                           </BrutalShadow>
@@ -3562,7 +3546,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
                           <BrutalShadow block>
                             <div className="bc-cta" onClick={e=>{e.stopPropagation();setAiChatMessages([]);setAiChatInitialQ(brutalHomeAiChatInput.trim()||undefined);setBrutalHomeAiChatInput("");window.scrollTo({top:0,behavior:"smooth"});setMode("aichat");}} style={{justifyContent:"center",padding:0,cursor:"pointer"}}>
-                              <ArrowRight size={20}/>
+                              <ArrowRight size="XL"/>
                             </div>
                           </BrutalShadow>
                         </div>
@@ -3581,7 +3565,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         <Image src="/images/About/anim-1.png" alt="" fill sizes="33vw" style={{objectFit:"cover",objectPosition:"center",opacity:1}}/>
                       </div>
                       <div className="bc-cta-wrap"><BrutalShadow block animateOnMount mountDelay={275}>
-                        <div className="bc-cta"><span>View</span><ArrowRight size={20}/></div>
+                        <div className="bc-cta"><span>View</span><ArrowRight/></div>
                       </BrutalShadow></div>
                       <div className="bc-spacer-last"/>
                     </div><div className="bc-strip-r"/></div>
@@ -3623,15 +3607,15 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                 <BrutalShadow block>
                                   <div onClick={e=>{e.stopPropagation();window.scrollTo({top:0,behavior:"smooth"});openChat();}}
                                     className="bc-cta" style={{background:"#D9D4CF"}}>
-                                    <span>PLAY</span><ArrowRight size={20}/>
+                                    <span>PLAY</span><ArrowRight/>
                                   </div>
                                 </BrutalShadow>
                               </div>
                               <div style={{width:81,overflow:"visible",flexShrink:0,marginLeft:-1}}>
                                 <BrutalShadow block>
-                                  <div onClick={e=>{e.stopPropagation();openProject("rpg");}}
+                                  <div onClick={e=>{e.stopPropagation();setAboutInitialCard("rpg");window.scrollTo({top:0,behavior:"smooth"});setMode("about");}}
                                     className="bc-cta" style={{background:"#B1588E",color:"#fff",borderColor:"#000",justifyContent:"center"}}>
-                                    <span>?</span>
+                                    <Icon name="help" size="XL"/>
                                   </div>
                                 </BrutalShadow>
                               </div>
@@ -3647,7 +3631,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                               <BrutalShadow block>
                                 {p.slug === "shrapnel"
                                   ? <div className="bc-cta" style={{opacity:0.5,cursor:"not-allowed"}}><span>COMING SOON</span></div>
-                                  : <div className="bc-cta"><span>View</span><ArrowRight size={20}/></div>
+                                  : <div className="bc-cta"><span>View</span><ArrowRight/></div>
                                 }
                               </BrutalShadow>
                             </div>
@@ -3821,7 +3805,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
               style={{ background: cardBg, color: cardColor }}
             >
               <button className="chat-close" onClick={closeChat} aria-label="Close">
-                <Icon name="close" size={14}/>
+                <Icon name="close" size="L"/>
               </button>
 
               <div className="chat-body">
@@ -3885,7 +3869,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     {showFreeform ? (
                       <div style={{paddingBottom:8}}>
                         <AboutChat/>
-                        <button onClick={()=>{setShowFreeform(false);setFreeformResponse(null);}} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                        <button onClick={()=>{setShowFreeform(false);setFreeformResponse(null);}} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0,display:"inline-flex",alignItems:"center",gap:4}}><Icon name="arrow" dir="left" size="S"/>back</button>
                       </div>
                     ) : (
                       <>
@@ -3919,7 +3903,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     className={`go${phase === "processing" ? " proc" : selected !== null ? " ready" : ""}`}
                     onClick={selected !== null && phase === "question" ? confirmSelection : undefined}
                     aria-label="Confirm">
-                    <ArrowRight size={22}/>
+                    <ArrowRight/>
                   </button>
                 </>
               ) : !showFreeform && endState ? (
@@ -3958,8 +3942,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
         </div>
       )}
 
-      {/* ════════ HOME CARDS + WORK ════════ */}
+      {/* ════════ HOME CARDS — hidden in Work, About and AI Chat (matches Brutalist) ════════ */}
 
+      {mode !== "work" && mode !== "about" && mode !== "aichat" && (
       <div className="w">
         {/* ── Row 1 + Divider + Row 2 ── */}
         <main className="grid" style={{marginTop: isChat ? 32 : 0}}>
@@ -3988,7 +3973,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             <div className="card-img" style={{background:"transparent",position:"relative",zIndex:2}}>
               <div className="view-cta" style={{color:"#111"}}>
                 <span style={{fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>View</span>
-                <ArrowRight size={18}/>
+                <ArrowRight/>
               </div>
             </div>
           </button>
@@ -4039,7 +4024,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
               </div>
               <div className="view-cta" style={{color:"#111"}}>
                 <span style={{fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>View</span>
-                <ArrowRight size={18}/>
+                <ArrowRight/>
               </div>
             </div>
           </button>
@@ -4071,7 +4056,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             <div className="card-img" style={{background:"transparent",position:"relative",zIndex:2}}>
               <div className="view-cta" style={{color:"#111"}}>
                 <span style={{fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Read</span>
-                <ArrowRight size={18}/>
+                <ArrowRight/>
               </div>
             </div>
           </button>
@@ -4097,7 +4082,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                 />
                 <button className="chat-input-send" aria-label="Open chat"
                   onClick={e=>{e.stopPropagation();setAiChatMessages([]);setAiChatInitialQ(homeAiChatInput.trim()||undefined);setHomeAiChatInput("");window.scrollTo({top:0,behavior:"smooth"});setMode("aichat");}}>
-                  <ArrowRight size={20}/>
+                  <ArrowRight/>
                 </button>
               </div>
             </div>
@@ -4121,30 +4106,21 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
             <div className="card-img" style={{background:"transparent",position:"relative",zIndex:1}}>
               <div className="view-cta">
                 <span style={{fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>View</span>
-                <ArrowRight size={18}/>
+                <ArrowRight/>
               </div>
             </div>
           </button>
 
         </main>
 
-        {/* ── Work — all projects a level down ── */}
-        <section id="work" style={{paddingTop:48,paddingBottom:48}}>
-          <div style={{marginBottom:32}}>
-            <span className="eyebrow">PROJECTS</span>
-            <h2 className="headline" style={{marginTop:4}}>My work. Commerce, frontier Ai, Gaming and more.</h2>
-          </div>
-          <WorkProjectCards openProject={openProject} />
-        </section>
-
       </div>
+      )}
         </> 
       )} {/* end non-brutal ternary */}
 
       {projectSlug && (() => {
         const p = getProject(projectSlug);
         if (!p) return null;
-        const dark = p.theme === "dark";
         return (
           <div className="proj-overlay"
             style={{"--proj-mob-bg": p.cardStyle === "split-gradient"
@@ -4210,7 +4186,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       <div className="bp-row" style={{overflow:"visible"}}>
                         <div className="chat-outer" style={{padding:0}}>
                           <div className={`chat-card`} style={{background:cardBg,color:cardColor}}>
-                            <button className="chat-close" onClick={closeChat} aria-label="Close"><Icon name="close" size={14}/></button>
+                            <button className="chat-close" onClick={closeChat} aria-label="Close"><Icon name="close" size="L"/></button>
                             <div className="chat-body">
                               <div className={`chat-indicator${(phase==="processing"||warnBlink)?" active":""}`}>
                                 {phase==="processing" ? <Spinner/> : warnBlink ? <WarnBlink/> : null}
@@ -4245,9 +4221,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                     <div style={{opacity:0.6,fontSize:16,marginBottom:12,fontFamily:'"T-Star Mono",monospace'}}>{ locale === 'ja' ? JA.cta_more : 'Anything further to add?' }</div>
                                     <div className="chat-input-row" style={{margin:0}}>
                                       <input className="chat-input" placeholder="..." aria-label="Open message" autoFocus/>
-                                      <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
+                                      <button className="chat-input-send" aria-label="Send"><ArrowRight/></button>
                                     </div>
-                                    <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                                    <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0,display:"inline-flex",alignItems:"center",gap:4}}><Icon name="arrow" dir="left" size="S"/>back</button>
                                   </div>):(
                                     <>
                                       <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
@@ -4364,10 +4340,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       <div className="brutal-btn-wrap" style={{position:"relative",overflow:"visible",display:"inline-flex"}}>
                         <BrutalShadow>
                           <button className="nav-btn" onClick={closeProject} aria-label="Back"
-                            style={{borderRadius:0,border:"1px solid #000",background:"#FFCE00",color:"#000",boxShadow:"none"}}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                              <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
+                            style={{borderRadius:0,border:"1px solid #000",background:"#fff",color:"#000",boxShadow:"none"}}>
+                            <Icon name="arrow" dir="left" size="L"/>
                           </button>
                         </BrutalShadow>
                       </div>
@@ -4411,7 +4385,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   <div className="chat-outer">
                     <div className="chat-card-wrap">
                       <div className={`chat-card`} style={{ background: cardBg, color: cardColor }}>
-                        <button className="chat-close" onClick={closeChat} aria-label="Close"><Icon name="close" size={14}/></button>
+                        <button className="chat-close" onClick={closeChat} aria-label="Close"><Icon name="close" size="L"/></button>
                         <div className="chat-body">
                           <div className={`chat-indicator${(phase === "processing" || warnBlink) ? " active" : ""}`}>
                             {phase === "processing" ? <Spinner/> : warnBlink ? <WarnBlink/> : null}
@@ -4453,9 +4427,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                                 <div style={{opacity:0.6,fontSize:16,marginBottom:12,fontFamily:'"T-Star Mono",monospace'}}>{ locale === 'ja' ? JA.cta_more : 'Anything further to add?' }</div>
                                 <div className="chat-input-row" style={{margin:0}}>
                                   <input className="chat-input" placeholder="..." aria-label="Open message" autoFocus/>
-                                  <button className="chat-input-send" aria-label="Send"><ArrowRight size={20}/></button>
+                                  <button className="chat-input-send" aria-label="Send"><ArrowRight/></button>
                                 </div>
-                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0}}>← back</button>
+                                <button onClick={()=>setShowFreeform(false)} style={{marginTop:12,background:"none",border:"none",color:"rgba(0,0,0,0.5)",fontFamily:'"T-Star Mono",monospace',fontSize:13,cursor:"pointer",padding:0,display:"inline-flex",alignItems:"center",gap:4}}><Icon name="arrow" dir="left" size="S"/>back</button>
                               </div>) : (
                                 <>
                                   <div className="end-headline">{END_COPY[endState].headline(character, endState==="win"&&tags.includes("pressure")&&!tags.includes("open"))}</div>
@@ -4475,7 +4449,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                               if (selected !== null) c += selected === i ? " on" : " dim";
                               return <button key={i} className={c} onClick={() => selectOption(i)} aria-label={`Option ${String.fromCharCode(65+i)}`}>{String.fromCharCode(65+i)}</button>;
                             })}
-                            <button className={`go${selected !== null ? " ready" : ""}`} onClick={selected !== null ? confirmSelection : undefined} aria-label="Confirm"><ArrowRight size={22}/></button>
+                            <button className={`go${selected !== null ? " ready" : ""}`} onClick={selected !== null ? confirmSelection : undefined} aria-label="Confirm"><ArrowRight/></button>
                           </div>
                         )
                       )}
@@ -4514,14 +4488,12 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                         alignSelf:"center", marginTop:20, marginBottom:12,
                         width:56, height:56,
                       }}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
-                        </svg>
+                        <Icon name="check" size="L"/>
                       </button>
                       <div style={{position:"relative",zIndex:1,width:"100%"}}>
                         <SectionsList
                           sections={p.sections}
-                          onOpen={(src,alt) => {/* lightbox not accessible here — handled in ProjectContent */}}
+                          onOpen={() => {/* lightbox not accessible here — handled in ProjectContent */}}
                           filter={s => !s.splitBottom}
                         />
                       </div>
@@ -4535,7 +4507,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                     }}>
                       <SectionsList
                         sections={p.sections}
-                        onOpen={(src,alt) => {/* lightbox */}}
+                        onOpen={() => {/* lightbox */}}
                         filter={s => !!s.splitBottom}
                       />
                     </div>
@@ -4553,10 +4525,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                             <div className="brutal-btn-wrap" style={{position:"relative",overflow:"visible",display:"inline-flex"}}>
                               <BrutalShadow>
                                 <button className="nav-btn" onClick={closeProject} aria-label="Back"
-                                  style={{borderRadius:0,border:"1px solid #000",background:"#FFCE00",color:"#000",boxShadow:"none"}}>
-                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                  </svg>
+                                  style={{borderRadius:0,border:"1px solid #000",background:"#fff",color:"#000",boxShadow:"none"}}>
+                                  <Icon name="arrow" dir="left" size="L"/>
                                 </button>
                               </BrutalShadow>
                             </div>
@@ -4663,10 +4633,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                             <div className="brutal-btn-wrap" style={{position:"relative",overflow:"visible",display:"inline-flex"}}>
                               <BrutalShadow>
                                 <button className="nav-btn" onClick={closeProject} aria-label="Back"
-                                  style={{borderRadius:0,border:"1px solid #000",background:"#FFCE00",color:"#000",boxShadow:"none"}}>
-                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                  </svg>
+                                  style={{borderRadius:0,border:"1px solid #000",background:"#fff",color:"#000",boxShadow:"none"}}>
+                                  <Icon name="arrow" dir="left" size="L"/>
                                 </button>
                               </BrutalShadow>
                             </div>
@@ -4683,11 +4651,9 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                   <div className={`proj-card ${projectClosing ? "proj-card-out" : "proj-card-in"}`}
                     style={{ background: "#F7F7F7", display:"flex", flexDirection:"column", alignItems:"center" }}>
                     <button className="proj-close-btn" onClick={closeProject} aria-label="Back to all work">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M21.4727 5.4668C21.767 5.1757 22.2419 5.1785 22.5332 5.47266C22.8243 5.76698 22.8215 6.24185 22.5274 6.5332L9.7549 19.1846C9.26773 19.6671 8.4823 19.6671 7.99513 19.1846L1.47267 12.7236C1.1785 12.4323 1.17569 11.9574 1.46681 11.6631C1.75816 11.3689 2.23303 11.3662 2.52736 11.6572L8.87404 17.9434L21.4727 5.4668Z" fill="currentColor"/>
-                      </svg>
+                      <Icon name="check" size="L"/>
                     </button>
-                    <div style={{ width:"100%", maxWidth:880, margin:"0 auto" }}>
+                    <div style={{ width:"100%", maxWidth:820, margin:"0 auto" }}>
                       <span style={{
                         fontSize:16,letterSpacing:".14em",textTransform:"uppercase",
                         fontWeight:500,color:"#111",

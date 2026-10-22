@@ -338,7 +338,7 @@ export function summarizePath(tags: AnswerTag[], endState: EndState): string {
   return "The signals are mixed. Intent and motivation are there; environment and compensation need more definition.";
 }
 // Returns the nodeKey where the kill was sealed
-export function resolveKillNode(endState: EndState, tags: AnswerTag[]): string | null {
+export function resolveKillNode(endState: EndState, _tags: AnswerTag[]): string | null {
   switch (endState) {
     case "kill-pricing":      return "pay";        // confirmed at N7
     case "kill-contradiction": return "env";        // confirmed at N6
@@ -349,8 +349,7 @@ export function resolveKillNode(endState: EndState, tags: AnswerTag[]): string |
 }
 
 // ── Retry copy ────────────────────────────────────────────────────────────────
-export function retryCopy(endState: EndState): string {
-  const isKill = endState.startsWith("kill") || endState === "soft" || endState === "borderline";
+export function retryCopy(_endState: EndState): string {
   return "Try again?";
 }
 

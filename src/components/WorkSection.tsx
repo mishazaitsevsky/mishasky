@@ -1,18 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { projects } from "@/lib/projects";
+import { projects, UNPUBLISHED } from "@/lib/projects";
 import BrutalShadow from "@/components/BrutalShadow";
-import Icon from "@/components/Icon";
+import Icon, { type IconSize } from "@/components/Icon";
+import ShareButton from "@/components/ShareButton";
 
-function ArrowRight({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden="true">
-      <path d="M5 12h14M12 5l7 7-7 7"/>
-    </svg>
-  );
+function ArrowRight({ size = "L" }: { size?: IconSize }) {
+  return <Icon name="arrow" dir="right" size={size}/>;
 }
 
 export type Theme = "default" | "brutalist" | "pixel" | "rounded" | "gameboy";
@@ -120,7 +115,7 @@ function YellowBtn({ onClick, children, disabled }: {
 // ─────────────────────────────────────────────────────────────────────────────
 // DEFAULT THEME
 // ─────────────────────────────────────────────────────────────────────────────
-export default function WorkSection({ onClose, openChat, openProject, theme, onSelectTheme }: WorkSectionProps) {
+export default function WorkSection({ onClose, openChat, openProject, theme, onSelectTheme, hideTitle }: WorkSectionProps & { hideTitle?: boolean }) {
   const [chatVal, setChatVal] = useState("");
   const [hoveredTheme, setHoveredTheme] = useState<Theme | null>(null);
   const goChat = () => { onClose(); openChat(); };
@@ -132,11 +127,13 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
       <div className="work-section-body" style={{ padding: "32px 32px 0" }}>
 
         {/* ── WORK header (uncontained, same as About) ── */}
+        {!hideTitle && (
         <div style={{ marginBottom: 32 }}>
           <Eyebrow label="PROJECTS" />
           <Headline>My work. Commerce, frontier Ai, Gaming and more.</Headline>
           <Body>Learn more about the site&apos;s author below!</Body>
         </div>
+        )}
 
         {/* ── Editorial project list ── */}
         {workProjects.map(p => {
@@ -254,11 +251,16 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
                 <Body tc={cfg.tc}>
                   {p.shortDesc}
                 </Body>
-                {isIconAgent || p.slug === "shrapnel"
+                {UNPUBLISHED.has(p.slug)
                   ? <YellowBtn disabled>COMING SOON</YellowBtn>
-                  : <YellowBtn onClick={() => openProject(p.slug)}>See More <ArrowRight size={14} /></YellowBtn>
+                  : <YellowBtn onClick={() => openProject(p.slug)}>See More <ArrowRight size="M"/></YellowBtn>
                 }
               </div>
+              {/* Resume-tile treatment: share at the card's far right, on the See More row */}
+              {!UNPUBLISHED.has(p.slug) && (
+                <ShareButton url={`/${p.slug}`} title={p.title}
+                  style={{ position: "absolute", right: 32, bottom: 32, zIndex: 3 }} />
+              )}
               {thumb && !isFullBleed && (
                 <div style={{
                   width: 200, height: 152, position: "relative", flexShrink: 0,
@@ -293,7 +295,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
             <Headline tc="#fff">Are We A Good Fit? Take The Quiz!</Headline>
             <Body tc="#fff">Learn If Your Organization Is A Good Fit For 0→1 Product Design.</Body>
             <YellowBtn onClick={goChat}>
-              Take Quiz <span style={{ fontSize: 18, lineHeight: 1 }}>○</span>
+              Take Quiz <Icon name="knife" size="M"/>
             </YellowBtn>
           </div>
           <div style={{
@@ -330,7 +332,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
                 display: "inline-flex", alignItems: "center", gap: 8,
                 alignSelf: "flex-start",
               }}>
-                READ ARTICLE <ArrowRight size={14} />
+                READ ARTICLE <ArrowRight size="M"/>
               </button>
             </div>
           </div>
@@ -400,7 +402,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
               onKeyDown={e => e.key === "Enter" && goChat()}
             />
             <button className="chat-input-send" aria-label="Chat" onClick={goChat}>
-              <ArrowRight size={20} />
+              <ArrowRight/>
             </button>
           </div>
         </div>
@@ -417,7 +419,7 @@ export function BrutalProjectCards({ openProject }: { openProject: (slug: string
   return (
     <>
       {workProjects.map((p, i) => {
-        const isComingSoon = p.slug === "icon-agent" || p.slug === "shrapnel";
+        const isComingSoon = UNPUBLISHED.has(p.slug);
         return (
           <React.Fragment key={p.slug}>
             {i > 0 && <div className="bc-spacer" />}
@@ -444,15 +446,14 @@ export function BrutalProjectCards({ openProject }: { openProject: (slug: string
                         <div style={{ flex: 1 }}>
                           <BrutalShadow block>
                             <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={() => openProject(p.slug)}>
-                              SEE MORE <ArrowRight size={16} />
+                              SEE MORE <ArrowRight size="M"/>
                             </div>
                           </BrutalShadow>
                         </div>
                         <div style={{ width: 40, marginLeft: -1 }}>
                           <BrutalShadow block>
-                            <div style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,cursor:"pointer" }}>
-                              <Icon name="share" />
-                            </div>
+                            <ShareButton variant="bare" url={`/${p.slug}`} title={p.title} iconSize="L"
+                              style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box",color:"#000",padding:0 }}/>
                           </BrutalShadow>
                         </div>
                       </div>
@@ -516,7 +517,6 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
 
           {/* Project items */}
           {workProjects.map((p, i) => {
-            const isAmazon = p.slug === "amazon";
             return (
               <React.Fragment key={p.slug}>
                 {i > 0 && <div className="bc-spacer" />}
@@ -532,7 +532,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                       </div>
                       <div className="bc-spacer" />
                       <div className="bc-cta-wrap">
-                        {p.slug === "icon-agent" || p.slug === "shrapnel" ? (
+                        {UNPUBLISHED.has(p.slug) ? (
                           <div style={{ opacity: 0.5, cursor: "not-allowed" }}>
                             <BrutalShadow block>
                               <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",width:"100%" }}>COMING SOON</div>
@@ -543,15 +543,14 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                             <div style={{ flex: 1 }}>
                               <BrutalShadow block>
                                 <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={() => openProject(p.slug)}>
-                                  SEE MORE <ArrowRight size={16} />
+                                  SEE MORE <ArrowRight size="M"/>
                                 </div>
                               </BrutalShadow>
                             </div>
                             <div style={{ width: 40, marginLeft: -1 }}>
                               <BrutalShadow block>
-                                <div style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,cursor:"pointer" }}>
-                                  <Icon name="share" />
-                                </div>
+                                <ShareButton variant="bare" url={`/${p.slug}`} title={p.title} iconSize="L"
+                                  style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box",color:"#000",padding:0 }}/>
                               </BrutalShadow>
                             </div>
                           </div>
@@ -594,7 +593,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                 <div className="bc-cta-wrap">
                   <BrutalShadow block>
                     <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={goChat}>
-                      TAKE QUIZ <ArrowRight size={16} />
+                      TAKE QUIZ <ArrowRight size="M"/>
                     </div>
                   </BrutalShadow>
                 </div>
@@ -624,7 +623,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                   <div className="bc-cta-wrap" style={{ overflow: "visible" }}>
                     <BrutalShadow block shadowColor="#fff">
                       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #fff",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }}>
-                        READ ARTICLE <ArrowRight size={16} />
+                        READ ARTICLE <ArrowRight size="M"/>
                       </div>
                     </BrutalShadow>
                   </div>
@@ -671,7 +670,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                                 onClick={() => onSelectTheme(t)}
                               >
                                 {THEME_LABELS[t]}
-                                {isActive && <Icon name="check" size={14} />}
+                                {isActive && <Icon name="check" size="M" />}
                               </div>
                             </BrutalShadow>
                           </div>
@@ -724,7 +723,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                     <div style={{ width: 40, marginLeft: -1 }}>
                       <BrutalShadow block>
                         <div style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,cursor:"pointer" }} onClick={goChat}>
-                          <ArrowRight size={16} />
+                          <ArrowRight/>
                         </div>
                       </BrutalShadow>
                     </div>
@@ -828,12 +827,17 @@ export function WorkProjectCards({ openProject }: { openProject: (slug: string) 
               <Body tc={cfg.tc}>
                 {p.shortDesc}
               </Body>
-              {isIconAgent || p.slug === "shrapnel"
+              {UNPUBLISHED.has(p.slug)
                 ? <YellowBtn disabled>COMING SOON</YellowBtn>
-                : <YellowBtn onClick={() => openProject(p.slug)}>See More <ArrowRight size={14} /></YellowBtn>
+                : <YellowBtn onClick={() => openProject(p.slug)}>See More <ArrowRight size="M"/></YellowBtn>
               }
             </div>
-            {thumb && !isFullBleed && (
+            {/* Resume-tile treatment: share at the card's far right, on the See More row */}
+              {!UNPUBLISHED.has(p.slug) && (
+                <ShareButton url={`/${p.slug}`} title={p.title}
+                  style={{ position: "absolute", right: 32, bottom: 32, zIndex: 3 }} />
+              )}
+              {thumb && !isFullBleed && (
               <div style={{ width:200, height:152, position:"relative", flexShrink:0,
                 borderRadius:16, overflow:"hidden" }}>
                 <Image src={thumb} alt={p.client} fill sizes="200px" style={{

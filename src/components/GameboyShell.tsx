@@ -1,5 +1,5 @@
 "use client";
-import Icon from "@/components/Icon";
+import Icon, { type IconSize } from "@/components/Icon";
 import React from "react";
 import Image from "next/image";
 import type { Project } from "@/lib/projects";
@@ -8,14 +8,8 @@ import { TreeReveal, QuipTyper } from "@/components/SiteShell";
 import JA from "@/lib/ja";
 import { WordmarkPlaceholder } from "@/components/WordmarkFixed";
 
-function ArrowRight({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      style={{ transform:"rotate(90deg)", flexShrink:0 }} aria-hidden="true">
-      <path d="M21.25 10.543L12.104 1.397C11.909 1.201 11.592 1.201 11.397 1.397L2.25 10.543M11.75 1.25V22.043"
-        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-    </svg>
-  );
+function ArrowRight({ size = "L" }: { size?: IconSize }) {
+  return <Icon name="arrow" dir="right" size={size}/>;
 }
 
 const BODY_BG = "linear-gradient(160deg, #D9D4CF 0%, #D9D4CF 70%, #C4C0BB 88%, #B4BABB 100%)";
@@ -120,7 +114,7 @@ function NextButton({ selected, onConfirm }: { selected: boolean; onConfirm: () 
         transition:"background 0.12s, color 0.12s",
       }}
     >
-      <ArrowRight size={22}/>
+      <ArrowRight/>
     </button>
   );
 }
@@ -324,7 +318,7 @@ function GameboyCard({ project, onClick }: { project: Project; onClick: () => vo
                 <div style={{position:"absolute",inset:0,padding:"12px 14px",display:"flex",flexDirection:"column",gap:4}}>
                   {project.gbStyle && !project.thumb && (
                     <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",height:"100%",color:"#3A4324",filter:"drop-shadow(2px 2px 1px rgba(58,67,36,0.15))"}}>
-                      <Icon name="quiz" size={150}/>
+                      <Icon name="knife" px={150}/>
                     </div>
                   )}
                 </div>
@@ -394,26 +388,29 @@ function GameboyCard({ project, onClick }: { project: Project; onClick: () => vo
   );
 }
 
+// 3 pills side by side: 3×12 + 2×8 = 52px wide, 48px tall
+function DPadPillGroup() {
+  return (
+  <div style={{
+    display: "flex", flexDirection: "row", gap: 8, alignItems: "center",
+  }}>
+    {[0,1,2].map(i => (
+      <div key={i} style={{
+        width: 12, height: 48, borderRadius: 6, flexShrink: 0,
+        background: "#222222",
+        boxShadow: "inset 2px 2px 3px rgba(255,255,255,0.12), inset -2px -2px 3px rgba(0,0,0,0.8)",
+      }}/>
+    ))}
+  </div>
+  );
+}
+
 // ── D-Pad ─────────────────────────────────────────────────────────────────────
 // Base: PNG cross shape (d_pad_base), 200×200, fill #2F3030, 8px radius corners
 // 4px outer stroke (dark), 2 inset shadows (bright TL + dark BR bevel)
 // Left arm + right arm: each 3 pills 48h×12w, gap 8, vertically centered
 // Center: 55px sphere
 function DPad() {
-  // 3 pills side by side: 3×12 + 2×8 = 52px wide, 48px tall
-  const PillGroup = () => (
-    <div style={{
-      display: "flex", flexDirection: "row", gap: 8, alignItems: "center",
-    }}>
-      {[0,1,2].map(i => (
-        <div key={i} style={{
-          width: 12, height: 48, borderRadius: 6, flexShrink: 0,
-          background: "#222222",
-          boxShadow: "inset 2px 2px 3px rgba(255,255,255,0.12), inset -2px -2px 3px rgba(0,0,0,0.8)",
-        }}/>
-      ))}
-    </div>
-  );
 
   return (
     <div style={{ position: "relative", width: 200, height: 200, flexShrink: 0 }}>
@@ -432,7 +429,7 @@ function DPad() {
         top: "50%", left: 16,
         transform: "translateY(-50%)",
       }}>
-        <PillGroup />
+        <DPadPillGroup />
       </div>
 
       {/* Right pill group */}
@@ -441,7 +438,7 @@ function DPad() {
         top: "50%", right: 16,
         transform: "translateY(-50%)",
       }}>
-        <PillGroup />
+        <DPadPillGroup />
       </div>
 
       {/* Center sphere — 55px */}
@@ -672,10 +669,10 @@ const GB_HOME_CARDS: Project[] = [
 
 // ── Shell ─────────────────────────────────────────────────────────────────────
 export default function GameboyShell({
-  projects, mode, openProject, openChat, closeChat,
+  mode, openChat, closeChat,
   cycleTheme, setMode, phase, twTyped, twDone,
   selected, selectOption, confirmSelection,
-  endState, tags = [], pathHistory = [], killNode = null, character = "default", treeKey = 0, warnBlink = false, quip = null, showQuip = false, locale = "en", toggleLocale, wordmarkPlaceholderRef, aiChatSlot, aboutSlot, workSlot, openAboutArticle, hideStart = false, showWinOptions = false, onShowWinOptions,
+  endState, tags = [], pathHistory = [], killNode = null, character = "default", treeKey = 0, warnBlink = false, quip = null, showQuip = false, locale = "en", wordmarkPlaceholderRef, aiChatSlot, aboutSlot, workSlot, openAboutArticle, hideStart = false, showWinOptions = false, onShowWinOptions,
 }: GameboyShellProps) {
   const isChat = mode === "chat";
 
@@ -855,28 +852,28 @@ export default function GameboyShell({
                       }}>
                         {mode !== "home" && (
                           <GameboyButton sublabel="Back"
-                            icon={<span style={{display:"inline-flex",transform:"rotate(-90deg)"}}><Icon name="arrow-up" size={24}/></span>}
+                            icon={<Icon name="arrow" dir="left" size="XL"/>}
                             onClick={() => setMode("home")}
                             hideLabel
                             bg="linear-gradient(180deg, #54589F 0%, #383C83 95%)"
                           />
                         )}
-                        <GameboyButton sublabel="Quiz" icon={<Icon name="quiz" size={24}/>} onClick={openChat} hideLabel/>
-                        <GameboyButton sublabel="About" icon={<Icon name="about" size={22}/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")} hideLabel/>
-                        <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size={22}/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")} hideLabel/>
+                        <GameboyButton sublabel="Quiz" icon={<Icon name="knife" size="XL"/>} onClick={openChat} hideLabel/>
+                        <GameboyButton sublabel="About" icon={<Icon name="about" size="XL"/>} active={mode==="about"} onClick={() => setMode(mode==="about"?"home":"about")} hideLabel/>
+                        <GameboyButton sublabel="AI Chat" icon={<Icon name="chat" size="XL"/>} active={mode==="aichat"} onClick={() => setMode(mode==="aichat"?"home":"aichat")} hideLabel/>
                       </div>
                     </div>
                     {/* Icons row below housing */}
                     <div style={{display:"flex",gap:16,paddingLeft:9,paddingRight:9,marginTop:8}}>
                       {mode !== "home" && (
                         <div style={{width:64,display:"flex",justifyContent:"center",color:"#54589F"}}>
-                          <span style={{display:"inline-flex",transform:"rotate(-90deg)"}}><Icon name="arrow-up" size={22}/></span>
+                          <Icon name="arrow" dir="left" size="XL"/>
                         </div>
                       )}
                       {[
-                        {icon:<Icon name="quiz" size={24}/>, label:"Quiz"},
-                        {icon:<Icon name="about" size={22}/>, label:"About"},
-                        {icon:<Icon name="chat" size={22}/>, label:"AI Chat"},
+                        {icon:<Icon name="knife" size="XL"/>, label:"Quiz"},
+                        {icon:<Icon name="about" size="XL"/>, label:"About"},
+                        {icon:<Icon name="chat" size="XL"/>, label:"AI Chat"},
                       ].map(({icon,label})=>(
                         <div key={label} style={{width:64,display:"flex",justifyContent:"center",color:"#383C83"}}>{icon}</div>
                       ))}
@@ -916,7 +913,8 @@ export default function GameboyShell({
                 )}
                 {/* Work slot */}
                 {workSlot && <div>{workSlot}</div>}
-                {/* Card grid */}
+                {/* Card grid — hidden in Work, About and AI Chat (matches Brutalist) */}
+                {!workSlot && !aboutSlot && !aiChatSlot && (
                 <div className="gb-card-grid" style={{marginTop:8}}>
                   {GB_HOME_CARDS.map(card => {
                     const onClick =
@@ -929,6 +927,7 @@ export default function GameboyShell({
                     return <GameboyCard key={card.slug} project={card} onClick={onClick}/>;
                   })}
                 </div>
+                )}
                 {/* D-pad + speaker */}
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingTop:8}}>
                   <DPad/><SpeakerGrill/>

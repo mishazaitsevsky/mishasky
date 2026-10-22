@@ -43,6 +43,10 @@ export type Project = {
   cardTextColor?: string; // override text color on standard card
   gbStyle?: boolean; // apply gameboy inner shadow + styling
   ctaLabel?: string; // override "View" CTA text
+  // Browser tab, search results and link previews. On-page title stays `title`.
+  seoTitle?: string;
+  seoDescription?: string;
+  shareImage?: string; // link-preview image; defaults to `thumb`
   sections: ProjectSection[];
   images?: { src: string; alt: string; caption?: string }[];
   body?: string;
@@ -63,6 +67,9 @@ export const projects: Project[] = [
     cardBg: "linear-gradient(135deg, #B131FF 0%, #FF3578 100%)",
     cardTextColor: "#ffffff",
     theme: "dark",
+    seoTitle: "Amazon Nova — AI Platform Design | Misha Sky",
+    seoDescription: "Product design across Amazon's frontier AI platform — model catalog, icons, design system, Builder Studio, Content Partners, Nova Sonic and more.",
+    shareImage: "/images/Preview/NBS_home_Preview.png",
     sections: [
       // ── 1. NBS Hero — under page title ──────────────────────────────────
       {
@@ -206,6 +213,7 @@ export const projects: Project[] = [
     thumbBg: "#F3F3F7",
     thumbContain: false,
     theme: "light",
+    seoTitle: "Funko — DTC E-Commerce Redesign | Misha Sky",
     sections: [
       {
         // intro body + hero image — no label/title (shown in card header above)
@@ -302,6 +310,7 @@ export const projects: Project[] = [
     cardBg: "#ABCEE8",
     cardBg2: "linear-gradient(180deg, #ABCEE8 29%, #6590BC 100%)",
     cardBgImage: "/images/sony/Headercrop1.png",
+    seoTitle: "VMware — Interactive Digital Wall | Misha Sky",
     sections: [
       { label: "VMWare / Sony", title: "City of the Future", body: "An IoT utopia to pitch to whales", centerText: true, images: [{ src: "/images/sony/CMS/Desktop.png", alt: "Sony desktop hero", layout: "editorial", radius: 32 }] },
       { images: [{ src: "/images/sony/CMS/AnimatedScenarios.png", alt: "Animated scenarios", layout: "grid3-start" }, { src: "/images/sony/CMS/ScalableStyle.png", alt: "Scalable style" }, { src: "/images/sony/CMS/ResponsiveDesign.png", alt: "Responsive design" }] },
@@ -327,7 +336,30 @@ export const projects: Project[] = [
     thumb: "/images/amazon/Contact.png",
     thumbBg: "#F3F3F7",
     theme: "light",
-    sections: [],
+    seoTitle: "RUNE — Icon Generation Agent | Misha Sky",
+    seoDescription: "RUNE is a 64kb steering-based Kiro Power that encodes one designer's icon taste as instructions a model can follow.",
+    // Duplicated from the Amazon Nova case study (RUNE sections) as a starting point
+    sections: [
+      {
+        label: "KIRO POWER",
+        title: "Post Icon Burnout...",
+        body: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
+        images: [
+          { src: "/images/amazon/PostIconBurnout1.png", alt: "Kiro Power icon agent", layout: "hero" },
+        ],
+      },
+      {
+        label: "PROMPT:",
+        title: '"Create 20 Icons"',
+        body: "RUNE utilizes several steering text files, meticulously describing my exact idea of a great icon. Although this example focuses on NDS (Nova Design System) style, RUNE can be easily modified for any style of iconography.",
+        images: [],
+      },
+      {
+        images: [
+          { src: "/images/amazon/nova_rune.png", alt: "Rune icon output", layout: "editorial", radius: 32 },
+        ],
+      },
+    ],
     images: [],
     body: "",
   },
@@ -378,6 +410,16 @@ export const projects: Project[] = [
     body: "",
   },
 ];
+
+// ── Publishing state ─────────────────────────────────────────────────────────
+// UNPUBLISHED: card shows "Coming Soon" and the URL returns 404
+//   (shrapnel: content not ready; rpg: the quiz is a site feature and its
+//   write-up lives in the About article).
+// DRAFT: page builds so it can be reviewed, but it's kept out of the sitemap
+//   and marked noindex until its card goes live.
+export const UNPUBLISHED = new Set(["shrapnel", "rpg"]);
+export const DRAFT = new Set<string>([]);
+export const publishedProjects = projects.filter(p => !UNPUBLISHED.has(p.slug));
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
