@@ -328,9 +328,9 @@ export const projects: Project[] = [
   {
     slug: "icon-agent",
     client: "Amazon Nova",
-    category: "AMAZON NOVA",
+    category: "ASSET AUTOMATION",
     title: "Icon Agent / Kiro Power",
-    shortDesc: "You can't train taste into a model. But after 130 bespoke icons for Amazon's Frontier AI Playground, it turned out you could teach it.",
+    shortDesc: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
     role: "Icon Design / AI",
     year: "2025",
     thumb: "/images/amazon/Contact.png",
@@ -341,9 +341,6 @@ export const projects: Project[] = [
     // Duplicated from the Amazon Nova case study (RUNE sections) as a starting point
     sections: [
       {
-        label: "KIRO POWER",
-        title: "Post Icon Burnout...",
-        body: "Can you encode the taste of one designer into a lightweight steering file for any LLM to use? Turns out you can. RUNE is a 64kb steering-based agent that makes icons exactly as I would.",
         images: [
           { src: "/images/amazon/PostIconBurnout1.png", alt: "Kiro Power icon agent", layout: "hero" },
         ],
