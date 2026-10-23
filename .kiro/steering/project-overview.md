@@ -1,7 +1,7 @@
 # mishasky.net — Project Overview
 
 ## What this is
-A portfolio site for Misha Zaitsevsky (mishasky.net), a design technologist. Built in Next.js 16 (App Router), TypeScript, Tailwind. No component library — everything is hand-coded inline styles or global CSS in SiteShell.tsx.
+A portfolio site for Misha A. Sky (mishasky.net), a design technologist. Built in Next.js 16 (App Router), TypeScript, Tailwind. No component library — everything is hand-coded inline styles or global CSS in SiteShell.tsx.
 
 ## Three themes
 - **Standard** — rounded, clean, card-based grid

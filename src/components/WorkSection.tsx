@@ -95,7 +95,7 @@ function YellowBtn({ onClick, children, disabled }: {
   onClick?: () => void; children: React.ReactNode; disabled?: boolean;
 }) {
   return (
-    <button onClick={disabled ? undefined : onClick} style={{
+    <button onClick={disabled ? undefined : onClick} className={disabled ? undefined : "hover-blue"} style={{
       marginTop: 16,
       background: disabled ? "rgba(255,255,255,0.15)" : "#FFD000",
       border: `1px solid ${disabled ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.9)"}`,
@@ -331,7 +331,7 @@ export default function WorkSection({ onClose, openChat, openProject, theme, onS
                 fontFamily: font, fontSize: 14, fontWeight: 500, color: "#000",
                 display: "inline-flex", alignItems: "center", gap: 8,
                 alignSelf: "flex-start",
-              }}>
+              }} className="hover-blue">
                 READ ARTICLE <ArrowRight size="M"/>
               </button>
             </div>
@@ -445,7 +445,7 @@ export function BrutalProjectCards({ openProject }: { openProject: (slug: string
                       <div style={{ display: "flex" }}>
                         <div style={{ flex: 1 }}>
                           <BrutalShadow block>
-                            <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={() => openProject(p.slug)}>
+                            <div className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={() => openProject(p.slug)}>
                               SEE MORE <ArrowRight size="M"/>
                             </div>
                           </BrutalShadow>
@@ -453,7 +453,7 @@ export function BrutalProjectCards({ openProject }: { openProject: (slug: string
                         <div style={{ width: 40, marginLeft: -1 }}>
                           <BrutalShadow block>
                             <ShareButton variant="bare" url={`/${p.slug}`} title={p.title} iconSize="L"
-                              style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box",color:"#000",padding:0 }}/>
+                              className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box",color:"#000",padding:0 }}/>
                           </BrutalShadow>
                         </div>
                       </div>
@@ -542,7 +542,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                           <div style={{ display: "flex" }}>
                             <div style={{ flex: 1 }}>
                               <BrutalShadow block>
-                                <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={() => openProject(p.slug)}>
+                                <div className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={() => openProject(p.slug)}>
                                   SEE MORE <ArrowRight size="M"/>
                                 </div>
                               </BrutalShadow>
@@ -550,7 +550,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                             <div style={{ width: 40, marginLeft: -1 }}>
                               <BrutalShadow block>
                                 <ShareButton variant="bare" url={`/${p.slug}`} title={p.title} iconSize="L"
-                                  style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box",color:"#000",padding:0 }}/>
+                                  className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box",color:"#000",padding:0 }}/>
                               </BrutalShadow>
                             </div>
                           </div>
@@ -592,7 +592,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                 <div className="bc-spacer" />
                 <div className="bc-cta-wrap">
                   <BrutalShadow block>
-                    <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={goChat}>
+                    <div className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }} onClick={goChat}>
                       TAKE QUIZ <ArrowRight size="M"/>
                     </div>
                   </BrutalShadow>
@@ -622,7 +622,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                   <div style={{ flex: 1 }} />
                   <div className="bc-cta-wrap" style={{ overflow: "visible" }}>
                     <BrutalShadow block shadowColor="#fff">
-                      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #fff",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }}>
+                      <div className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",height:40,background:"#FFCE00",border:"1px solid #fff",boxSizing:"border-box" as const,fontFamily:font,fontSize:16,fontWeight:700,color:"#000",cursor:"pointer",width:"100%" }}>
                         READ ARTICLE <ArrowRight size="M"/>
                       </div>
                     </BrutalShadow>
@@ -722,7 +722,7 @@ export function BrutalWorkSection({ onClose, openChat, openProject, theme, onSel
                     </div>
                     <div style={{ width: 40, marginLeft: -1 }}>
                       <BrutalShadow block>
-                        <div style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,cursor:"pointer" }} onClick={goChat}>
+                        <div className="hover-blue-b" style={{ display:"flex",alignItems:"center",justifyContent:"center",height:40,width:40,background:"#FFCE00",border:"1px solid #000",boxSizing:"border-box" as const,cursor:"pointer" }} onClick={goChat}>
                           <ArrowRight/>
                         </div>
                       </BrutalShadow>

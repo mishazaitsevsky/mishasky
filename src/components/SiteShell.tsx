@@ -959,7 +959,8 @@ function AboutCard({ card, defaultOpen, onPlay }: { card: typeof ABOUT_CARDS[0];
         )}
         {/* Share — right-aligned, same treatment as the resume tile's download */}
         <div style={{flex:1, display:"flex", justifyContent:"flex-end"}}>
-          <ShareButton url={`/?about=${card.id}`} title={card.title}/>
+          <ShareButton url={`/?about=${card.id}`} title={card.title}
+            style={card.gbScreen ? {background:"#3A4324", color:"#fff", border:"1px solid rgba(255,255,255,0.9)"} : undefined}/>
         </div>
       </div>
     </div>
@@ -994,7 +995,7 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
         border:"1px solid rgba(255,255,255,0.9)",
         boxShadow: shadow, cursor:"pointer",
         userSelect:"none",
-      }} onClick={() => setOpen(o => !o)}>
+      }} className="hover-blue" onClick={() => setOpen(o => !o)}>
         <span className="faq-q" style={{fontFamily:'"T-Star Mono",monospace', fontWeight:300, fontSize:30, lineHeight:"39px", color:"#000"}}>{q}</span>
         <ChevronIcon open={open}/>
       </div>
@@ -1013,7 +1014,7 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
       boxShadow: shadow, cursor:"pointer",
       userSelect:"none",
       transition:"background 0.15s, border-radius 0.15s",
-    }} onClick={() => setOpen(o => !o)}>
+    }} className={open ? undefined : "hover-blue"} onClick={() => setOpen(o => !o)}>
       <div style={{display:"flex", width:"100%", alignItems: open ? "flex-start" : "center", justifyContent:"space-between", gap:16}}>
         <span className="faq-q" style={{fontFamily:'"T-Star Mono",monospace', fontWeight:300, fontSize:30, lineHeight:"39px", color:"#000", flex:1}}>{q}</span>
         <div style={{paddingTop: open ? 8 : 0, flexShrink:0}}><ChevronIcon open={open}/></div>
@@ -1363,7 +1364,7 @@ function ResumeInlineCard() {
           </button>
           {/* Download icon — right-aligned */}
           <div style={{ flex:1, display:"flex", justifyContent:"flex-end" }}>
-            <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf" aria-label="Download resume (PDF)"
+            <a className="hover-blue" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf" aria-label="Download resume (PDF)"
               style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none", color:"#000" }}>
               <Icon name="download" size="L"/>
             </a>
@@ -1451,7 +1452,7 @@ function ResumeInlineCard() {
           Close
           <Icon name="arrow" dir="left" size="M"/>
         </button>
-        <a href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf" aria-label="Download resume (PDF)"
+        <a className="hover-blue" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf" aria-label="Download resume (PDF)"
           style={{ width:40, height:40, borderRadius:"50%", background:"#fff", border:"1px solid #000", boxShadow:shadow, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none", color:"#000" }}>
           <Icon name="download" size="L"/>
         </a>
@@ -1533,17 +1534,17 @@ function BrutalResumeCard() {
         <div className="bc-cta-wrap" style={{display:"flex",gap:0,marginTop:-1}}>
           <div style={{flex:1,overflow:"visible"}}>
             <BrutalShadow block>
-              <div className="bc-cta" onClick={()=>setOpen(false)} style={{cursor:"pointer"}}>
-                <span>CLOSE</span><ArrowRight/>
+              <div className="bc-cta bc-cta-sm" onClick={()=>setOpen(false)} style={{cursor:"pointer"}}>
+                <span>CLOSE</span><ArrowRight size="M"/>
               </div>
             </BrutalShadow>
           </div>
-          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+          <div style={{width:40,overflow:"visible",flexShrink:0,marginLeft:-1}}>
             <BrutalShadow block>
-              <a className="bc-cta" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
+              <a className="bc-cta bc-cta-sm" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
                 aria-label="Download resume (PDF)"
                 style={{justifyContent:"center",padding:0,cursor:"pointer",textDecoration:"none"}}>
-                <Icon name="download" size="XL"/>
+                <Icon name="download" size="L"/>
               </a>
             </BrutalShadow>
           </div>
@@ -1555,17 +1556,17 @@ function BrutalResumeCard() {
         <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
           <div style={{flex:1,overflow:"visible"}}>
             <BrutalShadow block>
-              <div className="bc-cta" onClick={()=>setOpen(true)} style={{cursor:"pointer"}}>
-                <span>Resumé</span><ArrowRight/>
+              <div className="bc-cta bc-cta-sm" onClick={()=>setOpen(true)} style={{cursor:"pointer"}}>
+                <span>Resumé</span><ArrowRight size="M"/>
               </div>
             </BrutalShadow>
           </div>
-          <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+          <div style={{width:40,overflow:"visible",flexShrink:0,marginLeft:-1}}>
             <BrutalShadow block>
-              <a className="bc-cta" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
+              <a className="bc-cta bc-cta-sm" href="/misha-sky-resume.pdf" download="Misha-Sky-Resume.pdf"
                 aria-label="Download resume (PDF)"
                 style={{justifyContent:"center",padding:0,cursor:"pointer",textDecoration:"none"}}>
-                <Icon name="download" size="XL"/>
+                <Icon name="download" size="L"/>
               </a>
             </BrutalShadow>
           </div>
@@ -1588,17 +1589,17 @@ function BrutalArticleExpand({ card, defaultOpen, shareUrl }: { card: {id:string
       <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
         <div style={{flex:1,overflow:"visible"}}>
           <BrutalShadow block>
-            <div className="bc-cta" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
+            <div className="bc-cta bc-cta-sm" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
               <span>{open?"CLOSE":"LEARN MORE"}</span>
               <span style={{transform:open?"rotate(-90deg)":"rotate(0deg)",display:"inline-block",transition:"transform 200ms ease"}}>
-                <ArrowRight/>
+                <ArrowRight size="M"/>
               </span>
             </div>
           </BrutalShadow>
         </div>
-        <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+        <div style={{width:40,overflow:"visible",flexShrink:0,marginLeft:-1}}>
           <BrutalShadow block>
-            <ShareButton variant="bare" className="bc-cta" url={shareUrl} iconSize="XL"
+            <ShareButton variant="bare" className="bc-cta bc-cta-sm" url={shareUrl}
               style={{justifyContent:"center",padding:0}}/>
           </BrutalShadow>
         </div>
@@ -1643,12 +1644,12 @@ function BrutalRpgExpand({ defaultOpen, openChat }: { defaultOpen?: boolean; ope
       <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
         <div style={{flex:1,overflow:"visible"}}>
           <BrutalShadow block>
-            <div className="bc-cta" onClick={()=>setOpen(o=>!o)}
+            <div className="bc-cta bc-cta-sm" onClick={()=>setOpen(o=>!o)}
               style={{background:"#3A4324",color:"#fff",borderColor:"#000",cursor:"pointer"}}>
               <span>{open?"CLOSE":"INFO"}</span>
               {open && (
                 <span style={{transform:"rotate(-90deg)",display:"inline-block",transition:"transform 200ms ease"}}>
-                  <ArrowRight/>
+                  <ArrowRight size="M"/>
                 </span>
               )}
             </div>
@@ -1656,7 +1657,7 @@ function BrutalRpgExpand({ defaultOpen, openChat }: { defaultOpen?: boolean; ope
         </div>
         <div style={{flex:1,overflow:"visible",marginLeft:-1}}>
           <BrutalShadow block>
-            <div className="bc-cta" onClick={()=>{window.scrollTo({top:0,behavior:"smooth"});openChat();}}
+            <div className="bc-cta bc-cta-sm" onClick={()=>{window.scrollTo({top:0,behavior:"smooth"});openChat();}}
               style={{cursor:"pointer"}}>
               <span>QUIZ</span>
             </div>
@@ -1666,7 +1667,7 @@ function BrutalRpgExpand({ defaultOpen, openChat }: { defaultOpen?: boolean; ope
       {/* Share — stacked below like FAQ tile */}
       <div className="bc-cta-wrap" style={{marginTop:-1}}>
         <BrutalShadow block>
-          <ShareButton variant="bare" className="bc-cta" label="SHARE"
+          <ShareButton variant="bare" className="bc-cta bc-cta-sm" label="SHARE"
             url="/?about=rpg"
             title="Fit RPG — Are We A Good Fit?"
             style={{justifyContent:"space-between"}}/>
@@ -1700,17 +1701,17 @@ function BrutalExpandCard({ body, defaultOpen, shareUrl }: { body: string; defau
       <div className="bc-cta-wrap" style={{display:"flex",gap:0}}>
         <div style={{flex:1,overflow:"visible"}}>
           <BrutalShadow block>
-            <div className="bc-cta" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
+            <div className="bc-cta bc-cta-sm" onClick={()=>setOpen(o=>!o)} style={{cursor:"pointer"}}>
               <span>{open ? "CLOSE" : "LEARN MORE"}</span>
               <span style={{transform: open ? "rotate(-90deg)" : "rotate(0deg)", display:"inline-block", transition:"transform 200ms ease"}}>
-                <ArrowRight/>
+                <ArrowRight size="M"/>
               </span>
             </div>
           </BrutalShadow>
         </div>
-        <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+        <div style={{width:40,overflow:"visible",flexShrink:0,marginLeft:-1}}>
           <BrutalShadow block>
-            <ShareButton variant="bare" className="bc-cta" url={shareUrl} iconSize="XL"
+            <ShareButton variant="bare" className="bc-cta bc-cta-sm" url={shareUrl}
               style={{justifyContent:"center",padding:0}}/>
           </BrutalShadow>
         </div>
@@ -1726,7 +1727,7 @@ function BrutalFaqItem({ q, a }: { q: string; a: string }) {
       <BrutalShadow block>
         <div onClick={()=>setOpen(o=>!o)} className="bc-cta"
           style={{cursor:"pointer", height:"auto", minHeight:64, alignItems:"center", gap:12,
-            background: open ? "#fff" : "#FFCE00"}}>
+            background: open ? "#fff" : undefined}}>
           <div style={{flex:1, display:"flex", flexDirection:"column", justifyContent:"center",
             padding: open ? "12px 0 16px" : "0", gap:4,
             transition:"padding 250ms ease"}}>
@@ -1756,14 +1757,14 @@ function LearnMoreCta({ onLearnMore }: { onLearnMore?: () => void }) {
   return <>
     <div style={{flex:1,overflow:"visible"}}>
       <BrutalShadow block>
-        <div className="bc-cta" onClick={onLearnMore} style={{cursor:onLearnMore?"pointer":"default"}}>
-          <span>LEARN MORE</span><ArrowRight/>
+        <div className="bc-cta bc-cta-sm" onClick={onLearnMore} style={{cursor:onLearnMore?"pointer":"default"}}>
+          <span>LEARN MORE</span><ArrowRight size="M"/>
         </div>
       </BrutalShadow>
     </div>
-    <div style={{width:64,overflow:"visible",flexShrink:0,marginLeft:-1}}>
+    <div style={{width:40,overflow:"visible",flexShrink:0,marginLeft:-1}}>
       <BrutalShadow block>
-        <ShareButton variant="bare" className="bc-cta" iconSize="XL" style={{justifyContent:"center",padding:0}}/>
+        <ShareButton variant="bare" className="bc-cta bc-cta-sm" style={{justifyContent:"center",padding:0}}/>
       </BrutalShadow>
     </div>
   </>;
@@ -2914,6 +2915,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
           transition:background .12s,color .12s;
         }
         .card:hover .bc-cta{background:#1B6EF3;color:#fff;border-color:#1B6EF3}
+        /* Standalone Brutalist CTAs (About, Work, resume): same blue as the home cards.
+           Not !important, so specially colored cells (help, info, play) keep their color. */
+        .bc-cta:hover{background:#1B6EF3;color:#fff;border-color:#1B6EF3}
+        /* 40px CTA with body text (matches Brutalist project cards) */
+        .bc-cta.bc-cta-sm{height:40px;font-size:16px !important;font-weight:700 !important;padding:0 16px}
+        /* Brutalist Work CTAs styled inline (yellow) need !important to override */
+        .hover-blue-b:hover{background:#1B6EF3 !important;color:#fff !important;border-color:#1B6EF3 !important}
         /* Bottom spacer: 48px = 32px visible + 16px for shadow bleed */
         .bc-spacer-last{height:48px;flex-shrink:0}
 
@@ -3012,7 +3020,13 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
 
         /* ── ABOUT ── */
         .about{margin:32px 0;border-radius:${R};background:#f3f3f7;padding:2.5rem 2rem}
+        /* Standard About/Work: container 32px below the nav on desktop; flat, no gap on mobile */
+        .std-section{margin:32px 0 0}
+        @media(max-width:720px){.std-section{background:transparent!important;border-radius:0!important;margin:0!important}}
         .about-pill-btn:hover{background:#1B6EF3 !important;color:#fff !important}
+        /* Shared Standard hover: blue fill, white text + icon */
+        .hover-blue:hover{background:#1B6EF3 !important;color:#fff !important}
+        .hover-blue:hover .faq-q{color:#fff !important}
         .resume-node-btn:not(.open):hover{background:#FFD132 !important}
         .resume-node-btn.open:hover{background:#1B6EF3 !important;color:#fff !important}
         .gb-card-btn{transition:transform 300ms cubic-bezier(0.5,0,0.85,1),filter 300ms cubic-bezier(0.5,0,0.85,1)}
@@ -3468,7 +3482,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                       </div>
                       <div style={{display:"flex",borderBottom:"1px solid #000",boxSizing:"border-box",flexShrink:0}}>
                         <div style={{flex:1,padding:"0 24px",height:64,display:"flex",alignItems:"center",fontFamily:'"T-Star Mono",monospace',fontWeight:400,fontSize:32,color:"#000"}}>QUIZ</div>
-                        <div style={{width:64,borderLeft:"1px solid #000",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:'"T-Star Mono",monospace',fontWeight:400,fontSize:32,color:"#000"}}>i</div>
+                        <div style={{width:64,borderLeft:"1px solid #000",display:"flex",alignItems:"center",justifyContent:"center",color:"#000"}}><Icon name="info" size="L"/></div>
                       </div>
                       <div style={{display:"flex",flexShrink:0,overflow:"visible",marginLeft:-16,paddingRight:16,marginTop:-16,gap:0}}>
                         <div style={{flex:1,overflow:"visible"}}><BrutalShadow block animateOnMount mountDelay={150}><div onClick={e=>{e.stopPropagation();window.scrollTo({top:0,behavior:"smooth"});openChat();}} className="bc-cta" style={{background:"#D9D4CF"}}><span/><span/></div></BrutalShadow></div>
@@ -3736,8 +3750,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
       {(mode === "about" || aboutClosing) && (
         <div className="w">
           <div
-            className={`about${aboutClosing ? " proj-card-out" : " proj-card-in"}`}
-            style={isBrutalist ? {outline:"1px solid #000",boxSizing:"border-box"} : {background:"transparent", padding:0, margin:0}}
+            className={`about${isBrutalist ? "" : " std-section"}${aboutClosing ? " proj-card-out" : " proj-card-in"}`}
+            style={isBrutalist ? {outline:"1px solid #000",boxSizing:"border-box"} : {padding:0}}
           >
             {isBrutalist
               ? <BrutalAboutSection onClose={closeAbout} openChat={openChat} initialOpenId={aboutInitialCard}/>
@@ -3782,8 +3796,8 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
       {(mode === "work" || workClosing) && (
         <div className="w">
           <div
-            className={`about${workClosing ? " proj-card-out" : " proj-card-in"}`}
-            style={isBrutalist ? {borderRadius:32, background:"#f3f3f7", padding:0, overflow:"hidden"} : {background:"transparent", padding:0, margin:0}}
+            className={`about${isBrutalist ? "" : " std-section"}${workClosing ? " proj-card-out" : " proj-card-in"}`}
+            style={isBrutalist ? {borderRadius:32, background:"#f3f3f7", padding:0, overflow:"hidden"} : {padding:0}}
           >
             <WorkSection
               onClose={closeWork}

@@ -14,20 +14,20 @@ export const metadata: Metadata = {
   // Lets share-image and other URL fields use site paths
   metadataBase: new URL("https://mishasky.net"),
   title: SITE_TITLE,
-  description: "Portfolio of Misha Sky — 0→1 product design, AI, and building.",
+  description: "Misha Sky is a 0→1 product designer working in AI: agents, tools and narrow use cases. Case studies from Amazon Nova, Funko, Sony and more, plus articles on taste, AI and the future of design.",
   alternates: { canonical: "/" },
   // Link previews (LinkedIn, Slack, iMessage). Every page uses this until pages get their own.
   openGraph: {
     type: "website",
     siteName: "Misha Sky",
     title: SITE_TITLE,
-    description: "Portfolio of Misha Sky — 0→1 product design, AI, and building.",
+    description: "Misha Sky is a 0→1 product designer working in AI: agents, tools and narrow use cases. Case studies from Amazon Nova, Funko, Sony and more, plus articles on taste, AI and the future of design.",
     images: [SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
-    description: "Portfolio of Misha Sky — 0→1 product design, AI, and building.",
+    description: "Misha Sky is a 0→1 product designer working in AI: agents, tools and narrow use cases. Case studies from Amazon Nova, Funko, Sony and more, plus articles on taste, AI and the future of design.",
     images: [SHARE_IMAGE.url],
   },
 };
@@ -44,7 +44,8 @@ const PERSON_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Misha Sky",
-  alternateName: "Michaela Zaitsevsky",
+  alternateName: ["Misha A. Sky", "Michael A. Sky"],
+  gender: "Male",
   jobTitle: "Product Designer",
   url: "https://mishasky.net",
   sameAs: [

@@ -65,7 +65,7 @@ export default function ShareButton({
   return (
     <button
       type="button"
-      className={className}
+      className={[className, variant === "round" ? "hover-blue" : ""].filter(Boolean).join(" ") || undefined}
       aria-label={copied ? "Link copied" : "Share"}
       onClick={e => { e.stopPropagation(); share(); }}
       style={{ ...(variant === "round" ? round : bare), ...style }}
