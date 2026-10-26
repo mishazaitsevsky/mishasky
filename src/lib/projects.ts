@@ -69,7 +69,7 @@ export const projects: Project[] = [
     theme: "dark",
     seoTitle: "Amazon Nova — AI Platform Design | Misha Sky",
     seoDescription: "Product design across Amazon's frontier AI platform — model catalog, icons, design system, Builder Studio, Content Partners, Nova Sonic and more.",
-    shareImage: "/images/Preview/NBS_home_Preview.png",
+    shareImage: "/images/Preview/amazon-preview.png",
     sections: [
       // ── 1. NBS Hero — under page title ──────────────────────────────────
       {

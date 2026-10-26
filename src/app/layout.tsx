@@ -4,10 +4,10 @@ import "./globals.css";
 const SITE_TITLE = "0→1 Product | Misha Sky";
 
 const SHARE_IMAGE = {
-  url: "/images/Preview/NBS_home_Preview.png",
+  url: "/images/Preview/home-preview.png",
   width: 1200,
   height: 600,
-  alt: "Amazon Nova Builder Studio, designed by Misha Sky",
+  alt: "Misha Sky portfolio home: projects, interactive quiz, and about",
 };
 
 export const metadata: Metadata = {
