@@ -1252,7 +1252,7 @@ function FaqSection() {
 const RESUME_JOBS = [
   {
     company: "Amazon",
-    role: "Product Designer, AI (Amazon Nova), Jan 2024–Oct 2026",
+    role: "Product Designer, AI (Amazon Nova), Jan 2025–Oct 2026",
     bullets: [
       "Shipped code, not just mocks. Designed, built and merged Nova's Model Catalog to mainline on a 70-developer enterprise codebase, through the same code review as every engineer.",
       "Built RUNE (patent pending), an icon agent that encodes my design judgment as instructions a model can follow. It came out of hand-drawing and shipping 130+ icons for Nova.",
@@ -1302,7 +1302,7 @@ const RESUME_JOBS = [
   },
   {
     company: "Microsoft",
-    role: "UX Designer, 2014–2017",
+    role: "UX Designer, 2012–2017",
     bullets: ["Dynamics CRM style guide, mobile and web portals; Bing Mobile Image Search; Xbox One launch motion."],
   },
   {
