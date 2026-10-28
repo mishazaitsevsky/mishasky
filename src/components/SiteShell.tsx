@@ -3393,7 +3393,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
                             {endState==="win" ? (
                               <>
                                 <BrutalShadow>
-                                  <a href="mailto:hello@mishasky.net" className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#1B6EF3",color:"#fff",textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Contact</a>
+                                  <a href="mailto:contact@mishasky.net" className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#1B6EF3",color:"#fff",textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Contact</a>
                                 </BrutalShadow>
                                 <BrutalShadow>
                                   <button onClick={()=>setShowFreeform(true)} className="nav-btn" style={{borderRadius:0,border:"1px solid #000",boxShadow:"none",background:"#FFCE00",color:"#000",height:56,padding:"0 24px",width:"auto",fontFamily:'"T-Star Mono",monospace',fontSize:30,fontWeight:300}}>Fake Misha Chat</button>
@@ -3900,7 +3900,7 @@ export default function SiteShell({ initialSlug }: { initialSlug?: string } = {}
               ) : !showFreeform && endState ? (
                 <>
                   {endState === "win" && (
-                    <a href="mailto:hello@mishasky.net" className="go ready"
+                    <a href="mailto:contact@mishasky.net" className="go ready"
                       style={{textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",height:64,fontSize:30,background:"#1B6EF3",color:"#fff"}}>
                       Contact
                     </a>

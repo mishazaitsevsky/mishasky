@@ -380,7 +380,7 @@ export const RPG_SCENES = [
   },
   {
     id: "contact",
-    text: "You did it.\nA confirmation appears:\nhello@mishasky.net",
+    text: "You did it.\nA confirmation appears:\ncontact@mishasky.net",
     options: [
       { label: "↑ Send an email", next: "email" },
     ],
@@ -389,6 +389,6 @@ export const RPG_SCENES = [
     id: "email",
     text: "The adventure ends here.\nFor now.",
     options: [],
-    exit: "mailto:hello@mishasky.net",
+    exit: "mailto:contact@mishasky.net",
   },
 ];

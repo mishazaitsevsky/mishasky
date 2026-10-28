@@ -756,7 +756,7 @@ export default function GameboyShell({
                           <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap"}}>
                             <button onClick={openChat} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer"}}>Retry</button>
                             <button onClick={() => setMode("aichat")} style={{background:"#3A4324",color:"#889D58",border:"none",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer"}}>Chat</button>
-                            <a href="mailto:misha@mishasky.net" style={{background:"none",border:"1px solid #3A4324",color:"#3A4324",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer",textDecoration:"none",display:"inline-block"}}>Contact</a>
+                            <a href="mailto:contact@mishasky.net" style={{background:"none",border:"1px solid #3A4324",color:"#3A4324",fontFamily:'"T-Star Mono",monospace',fontSize:14,fontWeight:300,padding:"6px 14px",cursor:"pointer",textDecoration:"none",display:"inline-block"}}>Contact</a>
                           </div>
                         ) : (
                           <div style={{marginTop:8,display:"flex",gap:8,flexWrap:"wrap",justifyContent:"space-between",alignItems:"flex-end"}}>
